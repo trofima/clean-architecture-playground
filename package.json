@@ -1,0 +1,20 @@
+{
+  "name": "tdd",
+  "version": "1.0.0",
+  "description": "TDD examples",
+  "type": "module",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/trofima/tdd-examples.git"
+  },
+  "scripts": {
+    "test": "mocha -u tdd --timeout 10000 --colors src/**/*.spec.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "chai": "^4.3.6",
+    "mocha": "^10.0.0"
+  }
+}

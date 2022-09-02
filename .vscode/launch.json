@@ -1,0 +1,22 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+   {
+      "name": "Unit",
+      "args": [
+        "-u", "tdd",
+        "--timeout", "10000",
+        "--colors",
+        "${relativeFile}"
+      ],
+      "program": "./node_modules/.bin/mocha",
+      "request": "launch",
+      "type": "node",
+      "runtimeArgs": ["--experimental-specifier-resolution=node"],
+      "console": "integratedTerminal"
+    }
+  ]
+}
