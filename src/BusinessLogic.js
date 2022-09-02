@@ -11,7 +11,7 @@ class BusinessLogic {
   async getUser(id, cached = true) {
     const user = cached ? await this.#userCache.get(id) : await this.#userStore.get(id)
     
-    return this.#convert(user)
+    return BusinessLogic.convertUser(user)
   }
 
   async getList(cached = true) {
