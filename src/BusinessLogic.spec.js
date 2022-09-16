@@ -12,7 +12,12 @@ suite('Business Logic', () => {
 
 class TestFixtures {
   constructor() {
-    new BusinessLogic({userStore: new UserStoreMock(), userCache: new UserCacheMock()})
+    new BusinessLogic({
+      userStore: new UserStoreMock(),
+      userCache: new UserCacheMock(),
+      tokenStore: new TokenStoreMock(),
+      infoStore: new InfoStoreMock(),
+    })
   }
 }
 
@@ -21,5 +26,12 @@ class UserStoreMock {
 }
 
 class UserCacheMock {
+  get() {}
+}
+class TokenStoreMock {
+  get() {}
+}
+
+class InfoStoreMock {
   get() {}
 }

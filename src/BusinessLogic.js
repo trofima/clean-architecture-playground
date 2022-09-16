@@ -1,7 +1,9 @@
 class BusinessLogic {
-  constructor({userStore, userCache}) {
+  constructor({userStore, userCache, tokenStore, infoStore}) {
     this.#userStore = userStore
     this.#userCache = userCache
+    this.#tokenStore = tokenStore
+    this.#infoStore = infoStore
   }
 
   static convertUser({id, name, age}) {
@@ -20,6 +22,13 @@ class BusinessLogic {
     return users.map(BusinessLogic.convertUser)
   }
 
+  getInfo(id) {
+    const {token} = this.#tokenStore.get(id)
+    return this.#infoStore.get(token)
+  }
+
   #userStore
   #userCache
+  #tokenStore
+  #infoStore
 }
