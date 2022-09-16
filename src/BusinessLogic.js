@@ -12,19 +12,18 @@ class BusinessLogic {
 
   async getUser(id, cached = true) {
     const user = cached ? await this.#userCache.get(id) : await this.#userStore.get(id)
-    
     return BusinessLogic.convertUser(user)
   }
 
   async getList(cached = true) {
     const users = cached ? await this.#userCache.get() : await this.#userStore.get()
-    
     return users.map(BusinessLogic.convertUser)
   }
 
   getInfo(id) {
     const {token} = this.#tokenStore.get(id)
-    return this.#infoStore.get(token)
+    const {age, address} = this.#infoStore.get(token)
+    return {address, canDrink: age >= 21};
   }
 
   #userStore
