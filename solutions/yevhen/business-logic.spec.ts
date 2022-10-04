@@ -317,8 +317,8 @@ class BusinessLogic {
     return new Set(gatewayUsers.map(BusinessLogic.#convertGatewayUserToUser));
   }
 
-  #userStore;
-  #userCache;
+  readonly #userStore;
+  readonly #userCache;
 }
 
 type User = {
@@ -355,8 +355,8 @@ class MockUserGateway implements UserGateway, UserGatewayMock {
     await this.#listUsersSpy.resolveAt(index, users);
   }
 
-  #getUserByIdSpy = new AsyncFunctionSpy<[GatewayUser['id']], GatewayUser>();
-  #listUsersSpy = new AsyncFunctionSpy<[], ReadonlySet<GatewayUser>>();
+  readonly #getUserByIdSpy = new AsyncFunctionSpy<[GatewayUser['id']], GatewayUser>();
+  readonly #listUsersSpy = new AsyncFunctionSpy<[], ReadonlySet<GatewayUser>>();
 }
 
 interface UserGateway {
