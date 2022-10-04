@@ -183,7 +183,7 @@ describe('business logic', () => {
     await expect(userListing).resolves.toEqual(new Set([expect.objectContaining({id: 'ID'})]));
   });
 
-  it('should resolve with a given users when the user listing from the cache succeeds', async () => {
+  it('should resolve with given users when the user listing from the cache succeeds', async () => {
     const {businessLogic, userCacheMock} = setUp();
 
     const userListing = businessLogic.getUsers();
@@ -206,7 +206,7 @@ describe('business logic', () => {
     await expect(userListing).resolves.toEqual(new Set([expect.objectContaining({id: 'ID'})]));
   });
 
-  it('should resolve with a given users when the user listing from the store succeeds', async () => {
+  it('should resolve with given users when the user listing from the store succeeds', async () => {
     const {businessLogic, userStoreMock} = setUp();
 
     const userListing = businessLogic.getUsers(/* fromCache= */ false);
