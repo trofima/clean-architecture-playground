@@ -1,4 +1,4 @@
-class BusinessLogic {
+export default class BusinessLogic {
   constructor({userStore, userCache, tokenStore, infoStore}) {
     this.#userStore = userStore
     this.#userCache = userCache

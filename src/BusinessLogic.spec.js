@@ -1,4 +1,5 @@
 import {assert} from 'chai'
+import BusinessLogic from './BusinessLogic'
 
 suite('Business Logic', () => {
   test('dummy fail', async () => {
