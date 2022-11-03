@@ -15,6 +15,27 @@
   "license": "ISC",
   "devDependencies": {
     "chai": "^4.3.6",
+    "eslint": "^8.26.0",
     "mocha": "^10.0.0"
+  },
+  "eslintConfig": {
+    "extends": "eslint:recommended",
+    "env": {
+      "browser": true,
+      "node": true,
+      "mocha": true,
+      "es2022": true
+    },
+    "ignorePatterns": ["playground/dist/**/*"],
+    "parserOptions": {
+      "sourceType": "module",
+      "ecmaVersion": 13
+    },
+    "rules": {
+      "quotes": ["warn", "single"],
+      "semi": ["warn", "never"],
+      "no-trailing-spaces": ["warn"],
+      "no-unused-vars": ["warn"]
+    }
   }
 }
