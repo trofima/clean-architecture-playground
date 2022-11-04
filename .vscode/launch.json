@@ -15,6 +15,7 @@
       "program": "./node_modules/.bin/mocha",
       "request": "launch",
       "type": "node",
+      "runtimeVersion": "18",
       "runtimeArgs": ["--experimental-specifier-resolution=node"],
       "console": "integratedTerminal"
     }
