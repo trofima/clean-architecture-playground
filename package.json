@@ -9,7 +9,7 @@
     "url": "git+https://github.com/trofima/tdd-examples.git"
   },
   "scripts": {
-    "test": "mocha -u tdd --timeout 10000 --colors src/**/*.spec.js"
+    "test": "node --experimental-specifier-resolution=node ./node_modules/.bin/mocha -u tdd --timeout 10000 --colors src/**/*.spec.js"
   },
   "author": "",
   "license": "ISC",
