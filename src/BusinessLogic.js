@@ -23,8 +23,12 @@ export default class BusinessLogic {
 
   /** gets a user by id either from cache or store depending on cached flag value */
   async getUser(id, cached = true) {
-    const user = cached ? await this.#userCache.get(id) : await this.#userStore.get(id)
-    return BusinessLogic.#convertUser(user)
+    try {
+      const user = cached ? this.#userCache.get(id) : await this.#userStore.get(id)
+      return BusinessLogic.#convertUser(user)
+    } catch (error) {
+      throw new Error('Can not get user', {cause: error})
+    }
   }
 
   /** gets a list of users either from cache or store depending on cached flag value */
