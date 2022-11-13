@@ -33,8 +33,12 @@ export default class BusinessLogic {
 
   /** gets a list of users either from cache or store depending on cached flag value */
   async getList(cached = true) {
-    const users = cached ? await this.#userCache.get() : await this.#userStore.get()
-    return users.map(BusinessLogic.#convertUser)
+    try {
+      const users = cached ? this.#userCache.get() : await this.#userStore.get()
+      return users.map(BusinessLogic.#convertUser)
+    } catch (error) {
+      throw new Error('Can not get list', {cause: error})
+    }
   }
 
   /** logs in a user by third party token,
@@ -43,13 +47,17 @@ export default class BusinessLogic {
    * emits userUpdated
    * returns the user */
   async logIn() {
-    const {token} = await this.#tokenProvider.get()
-    this.#eventEmitter.emit('loggingIn')
-    const {id} = await this.#userInfoStore.get(token)
-    const {name, address, profession} = await this.getUser(id)
-    this.#user = {id, name, address, profession}
-    this.#eventEmitter.emit('userUpdated')
-    return this.#user
+    try {
+      const {token} = await this.#tokenProvider.get()
+      this.#eventEmitter.emit('loggingIn')
+      const {id} = await this.#userInfoStore.get(token)
+      const {name, address, profession} = await this.getUser(id)
+      this.#user = {id, name, address, profession}
+      this.#eventEmitter.emit('userUpdated')
+      return this.#user
+    } catch (error) {
+      throw new Error('Can not log in', {cause: error})
+    }
   }
 
   /** displays saved user on output device if there is saved one */
