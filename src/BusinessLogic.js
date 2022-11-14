@@ -52,11 +52,29 @@ export default class BusinessLogic {
       this.#eventEmitter.emit('loggingIn')
       const {id} = await this.#userInfoStore.get(token)
       const {name, address, profession} = await this.getUser(id)
-      this.#user = {id, name, address, profession}
-      this.#eventEmitter.emit('userUpdated')
+      const updatedUser = {id, name, address, profession};
+      this.#eventEmitter.emit('userUpdate', updatedUser, this.#user)
+      this.#user = updatedUser
       return this.#user
     } catch (error) {
       throw new Error('Can not log in', {cause: error})
+    }
+  }
+
+  async logOut() {
+    this.#eventEmitter.emit('loggingOut')
+    this.#eventEmitter.emit('userUpdate', undefined, this.#user)
+    this.#user = undefined
+  }
+
+  async deleteAccount() {
+    try {
+      const {id} = this.#user
+      this.#userCache.delete(id)
+      await this.#userStore.delete(id)
+      this.logOut()
+    } catch (error) {
+      throw new Error('Can not delete account', {cause: error})
     }
   }
 
