@@ -7,14 +7,14 @@
  * stateful
 */
 
+import EventEmitter from './EventEmitter'
 
 export default class BusinessLogic {
-  constructor({userStore, userCache, tokenProvider, userInfoStore, eventEmitter, outputDevice}) {
+  constructor({userStore, userCache, tokenProvider, userInfoStore, outputDevice}) {
     this.#userStore = userStore
     this.#userCache = userCache
     this.#tokenProvider = tokenProvider
     this.#userInfoStore = userInfoStore
-    this.#eventEmitter = eventEmitter
     this.#outputDevice = outputDevice
   }
 
@@ -51,7 +51,7 @@ export default class BusinessLogic {
       const {token} = await this.#tokenProvider.get()
       this.#eventEmitter.emit('loggingIn')
       const {id} = await this.#userInfoStore.get(token)
-      const {name, address, profession} = await this.getUser(id)
+      const {name, address, profession} = await this.getUser(id, false)
       const updatedUser = {id, name, address, profession};
       this.#eventEmitter.emit('userUpdate', updatedUser, this.#user)
       this.#user = updatedUser
@@ -86,12 +86,12 @@ export default class BusinessLogic {
     throw new Error('There is no remembered user to display')
   }
 
+  #eventEmitter = new EventEmitter()
   #user
   #userStore
   #userCache
   #tokenProvider
   #userInfoStore
-  #eventEmitter
   #outputDevice
 
   static #convertUser({id, name, age, address, profession}) {
