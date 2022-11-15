@@ -13,8 +13,8 @@ export default class EventEmitter {
       ?.filter(eventListener => eventListener !== listener)
   }
 
-  emit(event, params) {
-    this.#listenersByEvent[event]?.forEach(listener => listener(params))
+  emit(event, ...params) {
+    this.#listenersByEvent[event]?.forEach(listener => listener(...params))
   }
 
   #listenersByEvent = {}

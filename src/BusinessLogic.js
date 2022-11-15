@@ -9,8 +9,9 @@
 
 import EventEmitter from './EventEmitter'
 
-export default class BusinessLogic {
+export default class BusinessLogic extends EventEmitter {
   constructor({userStore, userCache, tokenProvider, userInfoStore, outputDevice}) {
+    super()
     this.#userStore = userStore
     this.#userCache = userCache
     this.#tokenProvider = tokenProvider
@@ -49,21 +50,20 @@ export default class BusinessLogic {
   async logIn() {
     try {
       const {token} = await this.#tokenProvider.get()
-      this.#eventEmitter.emit('loggingIn')
+      this.emit('loggingIn')
       const {id} = await this.#userInfoStore.get(token)
-      const {name, address, profession} = await this.getUser(id, false)
-      const updatedUser = {id, name, address, profession};
-      this.#eventEmitter.emit('userUpdate', updatedUser, this.#user)
-      this.#user = updatedUser
-      return this.#user
+      const user = await this.getUser(id, false)
+      this.emit('userUpdate', user, this.#user)
+      this.#user = user
+      return user
     } catch (error) {
       throw new Error('Can not log in', {cause: error})
     }
   }
 
   async logOut() {
-    this.#eventEmitter.emit('loggingOut')
-    this.#eventEmitter.emit('userUpdate', undefined, this.#user)
+    this.emit('loggingOut')
+    this.emit('userUpdate', undefined, this.#user)
     this.#user = undefined
   }
 
@@ -86,7 +86,6 @@ export default class BusinessLogic {
     throw new Error('There is no remembered user to display')
   }
 
-  #eventEmitter = new EventEmitter()
   #user
   #userStore
   #userCache
