@@ -19,10 +19,20 @@ export default class BusinessLogic extends EventEmitter {
     this.#outputDevice = outputDevice
   }
 
-  /** contains current user remembered by the system */
+  /** Use case: Current User.
+   * holds a user remembered by the system
+   * */
   get user() {return this.#user}
 
-  /** gets a user by id either from cache or store depending on cached flag value */
+  /** Use case: User Obtaining.
+   * gets a user by id from cache by default
+   * if demanded, gets a user by id from store instead of cache
+   * converts user according to the contract
+   * returns the converted user
+   *
+   * Error:
+   * any step failed
+   * */
   async getUser(id, cached = true) {
     try {
       const user = cached ? this.#userCache.get(id) : await this.#userStore.get(id)
@@ -32,7 +42,15 @@ export default class BusinessLogic extends EventEmitter {
     }
   }
 
-  /** gets a list of users either from cache or store depending on cached flag value */
+  /** Use case: User's List Obtaining.
+   * gets a list of users from cache by default
+   * if demanded, gets a list of users from store instead of cache
+   * converts each user according to the contract
+   * returns the converted user's list
+   *
+   * Error:
+   * any step failed
+   * */
   async getList(cached = true) {
     try {
       const users = cached ? this.#userCache.get() : await this.#userStore.get()
@@ -42,18 +60,25 @@ export default class BusinessLogic extends EventEmitter {
     }
   }
 
-  /** logs in a user by third party token,
-   * emits loggingIn event obtains id from dependency,
-   * obtains user data by id and saves it to state,
-   * emits userUpdated
-   * returns the user */
+  /** Use case: Log In.
+   * get's authentication token from token provider
+   * emits 'loggingIn' event
+   * obtains user id from userStoreInfo by token
+   * obtains user by id (User obtaining from store use case)
+   * emits 'userUpdated' event with a new user
+   * sets the user to state
+   * returns the user
+   *
+   * Error:
+   * any step failed
+   * */
   async logIn() {
     try {
       const {token} = await this.#tokenProvider.get()
       this.emit('loggingIn')
       const {id} = await this.#userInfoStore.get(token)
       const user = await this.getUser(id, false)
-      this.emit('userUpdate', user, this.#user)
+      this.emit('userUpdate', user)
       this.#user = user
       return user
     } catch (error) {
@@ -61,12 +86,28 @@ export default class BusinessLogic extends EventEmitter {
     }
   }
 
+  /** Use case: Log Out.
+   * emits 'loggingOut' event
+   * emits 'userUpdate' event with undefined and logged out user
+   * resets the user in state
+   *
+   * Error:
+   * any step failed
+   * */
   async logOut() {
     this.emit('loggingOut')
     this.emit('userUpdate', undefined, this.#user)
     this.#user = undefined
   }
 
+  /** Use case: Delete Account.
+   * deletes current user from cache by id
+   * deletes current user from store bu id
+   * logs out the user (Log Out use case)
+   *
+   * Error:
+   * any step failed
+   * */
   async deleteAccount() {
     try {
       const {id} = this.#user
@@ -78,7 +119,12 @@ export default class BusinessLogic extends EventEmitter {
     }
   }
 
-  /** displays saved user on output device if there is saved one */
+  /** Use case: Display User.
+   * displays current user to the output device
+   *
+   * Error:
+   * current user is not set
+   * */
   async displayUser() {
     if (this.#user)
       await this.#outputDevice.display(this.#user)
