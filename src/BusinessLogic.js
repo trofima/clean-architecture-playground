@@ -102,7 +102,7 @@ export default class BusinessLogic extends EventEmitter {
 
   /** Use case: Delete Account.
    * deletes current user from cache by id
-   * deletes current user from store bu id
+   * deletes current user from store by id
    * logs out the user (Log Out use case)
    *
    * Error:
@@ -130,6 +130,20 @@ export default class BusinessLogic extends EventEmitter {
       await this.#outputDevice.display(this.#user)
 
     throw new Error('There is no remembered user to display')
+  }
+
+  /** Use case: Search Users
+   * searches user in user store
+   * debounces search requests for 300ms
+   * emits 'userListUpdate' event
+   * updates user list state
+   * * should use only the last request's result for the event emission and state update
+   *
+   * state userList and error
+   *
+  */
+  async search(text) {
+
   }
 
   #user
