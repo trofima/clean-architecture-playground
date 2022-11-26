@@ -121,15 +121,15 @@ export default class BusinessLogic extends EventEmitter {
 
   /** Use case: Display User.
    * displays current user to the output device
-   *
+   * indicates whether the user is cached or not
    * Error:
    * current user is not set
    * */
   async displayUser() {
     if (this.#user)
-      await this.#outputDevice.display(this.#user)
+      return await this.#outputDevice.display(this.#user, Boolean(this.#userCache.get(this.#user.id)))
 
-    throw new Error('There is no remembered user to display')
+    throw new Error('There is no logged in user to display')
   }
 
   /** Use case: Search Users
