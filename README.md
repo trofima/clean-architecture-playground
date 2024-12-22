@@ -37,5 +37,11 @@ User should be able to open the order to see its details.
 ### Remove Order
 User should be able to remove order from the list
 
+### Change Order Payment status
+User should be able to change an order payment status
+
+### Change Order Fulfillment status
+User should be able to change an order fulfillment status
+
 ### Render Next Page Of The Order List
 User should be able to load next page to the the rest of the orders (It might be infinite scroll or pagination, decision has not been made yet)
