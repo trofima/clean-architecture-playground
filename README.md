@@ -29,7 +29,7 @@ Stolen from net UI example (no, I'm not going to waste time on styles; only stru
 In this example I implement part of backoffice for the online store. I do not intend to cover all edge cases and implement fully functional online store admin app. <b>I intend to implement practical example of several parts just as a showcase</b>. The following user stories will give you idea of what is or going to be covered.
 
 ### Render Order List
-User should see list of the orders. Each order should contain id, created date, customer name, sum, payment status, fulfillment status.
+User should see list of the orders (first page) and total order count. Each order should contain id, created date, customer name, sum, payment status, fulfillment status.
 
 ### Open Order
 User should be able to open the order to see its details.
