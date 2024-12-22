@@ -2,7 +2,9 @@
 Opinionated example of how you can apply SOLID principles and CA to UI Web development. Based on Uncle Bob Martin Clean Architecture and Functional Design books.
 You will see UseCases, Entities, Presenters, Controllers, inverted dependencies etc.
 <br>
-And TESTS of course - simple, fast Developer tests (by Kent Beck)
+And TESTS of course - simple, fast Developer tests (by Kent Beck).
+<br>
+Used `mocha/chai` for testing (you prefer `jest` - you are my enemy). 
 <br>
 <br>
 The examples are not intended to be "true" FP, since true FP is readable only to chosen ones.
