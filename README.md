@@ -11,6 +11,8 @@ If you have better ideas (unlikely) - create a PR and prepare to fight.
 <br>
 <br>
 Stolen from net UI example (no, I'm not going to waste time on styles; only structure matters)
+<img width="970" alt="image" src="https://github.com/user-attachments/assets/dc21ed21-7b9e-4e13-933c-b7f7001e9f23" />
+
 
 ## User Stories
 // TODO: be patient
