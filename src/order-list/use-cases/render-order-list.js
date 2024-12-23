@@ -15,6 +15,6 @@
  * * present listing failure
  * */
 
-const RenderOrderList = () => () => {
-
+export const RenderOrderList = ({presentation}) => () => {
+  presentation.update(() => ({listing: true}))
 }
