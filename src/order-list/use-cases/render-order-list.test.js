@@ -22,6 +22,7 @@ suite('Render order list', () => {
     await renderOrderList()
     assert.deepInclude(presentation.get(), {
       listing: false,
+      list: [],
       error: {
         message: 'Oj vej',
         code: '001',
@@ -32,6 +33,7 @@ suite('Render order list', () => {
     await renderOrderList()
     assert.deepInclude(presentation.get(), {
       listing: false,
+      list: [],
       error: {
         message: 'Oj vavoj',
         code: '100',
@@ -144,6 +146,36 @@ suite('Render order list', () => {
       paymentStatus: 'paid',
       fulfillmentStatus: 'fulfilled',
     }])
+  })
+
+  test('present orders of the same user', async () => {
+    const {renderOrderList, presentation, dataStore} = setup()
+
+    dataStore.get.for('orders', {offset: 0, limit: 20}).returns([{
+      id: 'id',
+      createdDate: '2023-11-12T08:12:01.010Z',
+      updatedDate: '2024-12-24T17:57:03.444Z',
+      user: 'userId',
+      sum: 0.5,
+      paymentStatus: 'unpaid',
+      fulfillmentStatus: 'pending',
+    }, {
+      id: 'anotherId',
+      createdDate: '2024-07-10T11:85:20.390Z',
+      updatedDate: '2024-10-30T24:48:15.555Z',
+      user: 'userId',
+      sum: 5.6,
+      paymentStatus: 'paid',
+      fulfillmentStatus: 'fulfilled',
+    }])
+    dataStore.get.for('users', ['userId']).returns([{id: 'userId', name: 'name'}])
+
+    await renderOrderList()
+
+    assert.deepEqual(presentation.get().list.at(0).user, {id: 'userId', name: 'name'})
+    assert.deepEqual(presentation.get().list.at(1).user, {id: 'userId', name: 'name'})
+    assert.deepEqual(dataStore.get.lastCall, ['users', ['userId']])
+    assert.deepEqual(dataStore.get.callCount, 2)
   })
 })
 
