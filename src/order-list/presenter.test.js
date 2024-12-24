@@ -1,5 +1,7 @@
 import {assert} from 'chai'
 import {presentOrderList} from './presenter.js'
+import {OrderList} from './entities/order-list.js'
+import {Order} from './entities/order.js'
 
 suite('present order list', () => {
   test('format order data', () => {
@@ -23,23 +25,3 @@ suite('present order list', () => {
     assert.equal(allViewModel.list.at(1).createdDate, '2024-12-24, 17:57')
   })
 })
-
-const User = {
-  make: ({id = '', name = ''} = {}) => ({id, name}),
-}
-
-const Order = {
-  make: ({
-    id = '',
-    createdDate = '',
-    updatedDate = '',
-    user = User.make(),
-    sum = 0,
-    paymentStatus = '',
-    fulfillmentStatus = '',
-  } = {}) => ({id, createdDate, updatedDate, user, sum, paymentStatus, fulfillmentStatus}),
-}
-
-const OrderList = {
-  make: ({listing = false, error = undefined, list = []} = {}) => ({listing, error, list}),
-}
