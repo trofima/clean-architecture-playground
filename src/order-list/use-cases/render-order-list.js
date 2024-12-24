@@ -15,6 +15,24 @@
  * * present listing failure
  * */
 
-export const RenderOrderList = ({presentation}) => () => {
-  presentation.update(() => ({listing: true}))
+export const RenderOrderList = ({presentation, dataStore}) => async () => {
+  presentation.update(() => ({listing: true, list: [], error: undefined}))
+  try {
+    const orders = await dataStore.get('orders', {offset: 0, limit: 20})
+    const users = orders.length ? await dataStore.get('users', orders.map(({user}) => user)) : []
+
+    presentation.update((model) => ({
+      ...model,
+      list: orders.map((order, index) => ({...order, user: users[index]})),
+      listing: false,
+    }))
+  } catch (error) {
+    presentation.update(() => ({
+      listing: false,
+      error: {
+        message: error.message,
+        code: error.code,
+      },
+    }))
+  }
 }
