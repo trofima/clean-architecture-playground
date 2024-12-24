@@ -1,4 +1,4 @@
-import {User} from '../../user/entities/user'
+import {User} from '../../user/entities/user.js'
 
 export const Order = {
   make: ({
