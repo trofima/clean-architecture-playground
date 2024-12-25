@@ -13,7 +13,7 @@ suite('Render order list', () => {
     assert.deepEqual(presentation.get(), {loading: true, list: [], error: undefined, offset: 0, limit: 20, total: 0})
     assert.deepEqual(dataStore.get.lastCall, ['orders', {offset: 0, limit: 20}])
 
-    await dataStore.get.return(0, OrderListData.make({list: [], offset: 0, limit: 20, total: 0}))
+    await dataStore.get.resolve(0, OrderListData.make({list: [], offset: 0, limit: 20, total: 0}))
     await listing
     assert.deepEqual(presentation.get(), {loading: false, list: [], error: undefined, offset: 0, limit: 20, total: 0})
   })
