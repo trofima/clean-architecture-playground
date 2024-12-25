@@ -1,5 +1,5 @@
 import {assert} from 'chai'
-import {AsyncFunctionSpy, Atom} from '@borshch/utilities'
+import {Atom} from '@borshch/utilities'
 import {RenderOrderList} from './render-order-list.js'
 import {OrderData} from '../../dependencies/data-store/order-data.js'
 import {OrderListData} from '../../dependencies/data-store/order-list-data.js'

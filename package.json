@@ -11,7 +11,7 @@
     "url": "git+https://github.com/trofima/tdd-examples.git"
   },
   "scripts": {
-    "test": "mocha -u tdd --timeout 10000 --colors ./src/**/*.test.js",
+    "test": "mocha -u tdd --timeout 10000 --colors './src/**/*.test.js'",
     "lint": "eslint --fix",
     "lint-staged": "lint-staged"
   },

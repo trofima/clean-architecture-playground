@@ -1,5 +1,5 @@
 import {assert} from 'chai'
-import {AsyncFunctionSpy, Atom} from '@borshch/utilities'
+import {Atom} from '@borshch/utilities'
 import {OpenOrder} from './open-order.js'
 import {NavigatorError} from '../../dependencies/navigator/index.js'
 import {NavigatorMock} from '../../dependencies/test-utilities.js'
