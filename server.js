@@ -13,4 +13,4 @@ app.use(express.static('.'))
 
 app.route('*').get((_, response) => response.render('index'))
 
-app.listen(3000, () => console.info(chalk.blue('Playground app started on port 3000')))
+app.listen(3000, () => console.info(chalk.blue('Playground app started at http://localhost:3000/')))
