@@ -14,14 +14,11 @@ export const RenderOrderList = ({presentation, dataStore}) => async () => {
       list: list.map((order) => ({...order, user: users.find(({id}) => id === order.user)})),
       loading: false,
     }))
-  } catch (error) {
+  } catch ({message, code}) {
     presentation.update((model) => ({
       ...model,
       loading: false,
-      error: {
-        message: error.message,
-        code: error.code,
-      },
+      error: {message, code},
     }))
   }
 }

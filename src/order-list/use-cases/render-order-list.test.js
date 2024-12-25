@@ -3,6 +3,7 @@ import {AsyncFunctionSpy, Atom} from '@borshch/utilities'
 import {RenderOrderList} from './render-order-list.js'
 import {OrderData} from '../../dependencies/data-store/order-data.js'
 import {OrderListData} from '../../dependencies/data-store/order-list-data.js'
+import {DataStoreError} from '../../dependencies/data-store/index.js'
 
 suite('Render order list', () => {
   test('present empty list', async () => {
@@ -203,13 +204,6 @@ const setup = () => {
 
 class DataStoreMock {
   get = new AsyncFunctionSpy()
-}
-
-class DataStoreError extends Error {
-  constructor(message, {code, cause}) {
-    super(message, {cause})
-    this.code = code
-  }
 }
 
 const makeDummyOrders = (count) => Array(count).fill(undefined).map(OrderData.make)
