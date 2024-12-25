@@ -2,6 +2,7 @@ import {assert} from 'chai'
 import {AsyncFunctionSpy, Atom} from '@borshch/utilities'
 import {OpenOrder} from './open-order.js'
 import {NavigatorError} from '../../dependencies/navigator/index.js'
+import {NavigatorMock} from '../../dependencies/test-utilities.js'
 
 suite('open order', () => {
   test('navigate to order', async () => {
@@ -45,8 +46,4 @@ const setup = () => {
     navigator,
     openOrder: OpenOrder({presentation, navigator})
   }
-}
-
-class NavigatorMock {
-  open = new AsyncFunctionSpy()
 }

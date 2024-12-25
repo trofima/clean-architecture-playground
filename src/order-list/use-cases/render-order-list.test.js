@@ -4,6 +4,7 @@ import {RenderOrderList} from './render-order-list.js'
 import {OrderData} from '../../dependencies/data-store/order-data.js'
 import {OrderListData} from '../../dependencies/data-store/order-list-data.js'
 import {DataStoreError} from '../../dependencies/data-store/index.js'
+import {DataStoreMock, makeDummyOrders} from '../../dependencies/test-utilities.js'
 
 suite('Render order list', () => {
   test('present empty list', async () => {
@@ -201,9 +202,3 @@ const setup = () => {
     renderOrderList: RenderOrderList({presentation, dataStore})
   }
 }
-
-class DataStoreMock {
-  get = new AsyncFunctionSpy()
-}
-
-const makeDummyOrders = (count) => Array(count).fill(undefined).map(OrderData.make)
