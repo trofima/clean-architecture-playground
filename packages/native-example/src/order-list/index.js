@@ -1,5 +1,5 @@
 import {BorshchComponent} from '@borshch/components'
-import {Atom} from '@borshch/utilities'
+import {Atom, Deferred} from '@borshch/utilities'
 import {RenderOrderList} from '@clean-architecture-playground/core'
 import {renderOrderListView} from './view.js'
 
@@ -10,35 +10,39 @@ class DataStore { // TODO: move out
 
   #entityToStore = {
     orders: async () => {
-      return { // TODO: move dummy data to core or other place from which it can be shared
-        list: [{
-          id: '1',
-          createdDate: '2023-11-12T08:12:01.010Z',
-          updatedDate: '2024-12-24T17:57:03.444Z',
-          user: '1',
-          sum: 0.5,
-          paymentStatus: 'unpaid',
-          fulfillmentStatus: 'pending',
-        }, {
-          id: '2',
-          createdDate: '2024-07-10T11:85:20.390Z',
-          updatedDate: '2024-10-30T24:48:15.555Z',
-          user: '2',
-          sum: 5.6,
-          paymentStatus: 'paid',
-          fulfillmentStatus: 'fulfilled',
-        }, {
-          id: '3',
-          createdDate: '2023-11-12T08:12:01.010Z',
-          updatedDate: '2024-12-24T17:57:03.444Z',
-          user: '1',
-          sum: 10,
-          paymentStatus: 'unpaid',
-          fulfillmentStatus: 'pending',
-        }],
-        offset: 3,
-        total: 3,
-      }
+      const waiting = new Deferred()
+      setTimeout(() => {
+        waiting.resolve({ // TODO: move dummy data to core or other place from which it can be shared
+          list: [{
+            id: '1',
+            createdDate: '2023-11-12T08:12:01.010Z',
+            updatedDate: '2024-12-24T17:57:03.444Z',
+            user: '1',
+            sum: 0.5,
+            paymentStatus: 'unpaid',
+            fulfillmentStatus: 'pending',
+          }, {
+            id: '2',
+            createdDate: '2024-07-10T11:85:20.390Z',
+            updatedDate: '2024-10-30T24:48:15.555Z',
+            user: '2',
+            sum: 5.6,
+            paymentStatus: 'paid',
+            fulfillmentStatus: 'fulfilled',
+          }, {
+            id: '3',
+            createdDate: '2023-11-12T08:12:01.010Z',
+            updatedDate: '2024-12-24T17:57:03.444Z',
+            user: '1',
+            sum: 10,
+            paymentStatus: 'unpaid',
+            fulfillmentStatus: 'pending',
+          }],
+          offset: 3,
+          total: 3,
+        })
+      }, 1000)
+      return waiting.promise
     },
 
     users: async (ids) => {
