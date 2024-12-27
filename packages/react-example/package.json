@@ -1,0 +1,51 @@
+{
+  "name": "react-example",
+  "version": "0.0.1",
+  "description": "Clean Architecture Playground integration for React",
+  "type": "module",
+  "exports": "./index.js",
+  "author": "trofima",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com:trofima/clean-architecture-playground.git"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "lint": "eslint --fix",
+    "lint-staged": "lint-staged"
+  },
+  "pre-commit": [
+    "lint"
+  ],
+  "pre-push": [
+    "test"
+  ],
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "dependencies": {
+    "cra-template": "1.2.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-scripts": "5.0.1"
+  }
+}
