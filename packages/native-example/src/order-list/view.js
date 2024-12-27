@@ -1,4 +1,4 @@
-const renderOrderListView = ({list, loading, error}) => `
+export const renderOrderListView = ({list, loading, error}) => `
   <style>
     div.order-page {
       --baseline: 15px;

@@ -3,6 +3,7 @@ import {fileURLToPath} from 'url'
 import {dirname} from 'path'
 import {rollup} from 'rollup'
 import nodeResolve from '@rollup/plugin-node-resolve'
+import commonjs from '@rollup/plugin-commonjs'
 import chalk from 'chalk'
 
 process.chdir(dirname(fileURLToPath(import.meta.url)))
@@ -20,7 +21,10 @@ app.use(async (request, __, next) => {
     try {
       const bundle = await rollup({
         input: './src/index.js',
-        plugins: [nodeResolve()],
+        plugins: [commonjs(), nodeResolve()],
+        treeshake: {
+          moduleSideEffects: false,
+        },
       })
 
       await bundle.write({

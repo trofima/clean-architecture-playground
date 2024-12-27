@@ -23,10 +23,12 @@
     "test"
   ],
   "dependencies": {
-    "@borshch/utilities": "^2.1.1",
+    "@borshch/components": "^0.3.6",
+    "@borshch/utilities": "^2.1.6",
     "@clean-architecture-playground/core": "file:../core"
   },
   "devDependencies": {
+    "@rollup/plugin-commonjs": "^28.0.2",
     "@rollup/plugin-node-resolve": "^16.0.0",
     "chai": "^5.1.2",
     "chalk": "^5.4.1",
