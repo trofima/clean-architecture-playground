@@ -1,5 +1,6 @@
 {
   "name": "clean-architecture-playground",
+  "private": true,
   "workspaces": [
     "packages/*"
   ],
