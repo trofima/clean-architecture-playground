@@ -116,7 +116,7 @@ export const renderOrderListView = ({list, loading, error}) => `
       </div>
       
       ${list.map(({ createdDate, user, sum, paymentStatus, fulfillmentStatus }) => `
-        <li>
+        <li class="order-line">
           <div class="user-name">
               <p class="text-style-t2 dark">${user.name}</p>
           </div>
