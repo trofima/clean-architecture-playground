@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Clean Architecture Playground (javascript)",
   "type": "module",
-  "main": "src/index.js",
+  "exports": "./src/index.js",
   "author": "trofima",
   "license": "ISC",
   "repository": {
