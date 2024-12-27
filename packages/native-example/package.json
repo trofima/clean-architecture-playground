@@ -1,7 +1,7 @@
 {
-  "name": "react-native",
+  "name": "native-example",
   "version": "0.0.1",
-  "description": "Clean Architecture Playground integration for React",
+  "description": "Clean Architecture Playground integration for native (web components)",
   "type": "module",
   "exports": "./index.js",
   "author": "trofima",
@@ -11,7 +11,7 @@
     "url": "git+https://github.com:trofima/clean-architecture-playground.git"
   },
   "scripts": {
-    "start": "echo \"Error: 'start' command not implemented yet\" && exit 1",
+    "start": "node server.js",
     "test": "mocha -u tdd --timeout 10000 --colors './src/**/*.test.js'",
     "lint": "eslint --fix",
     "lint-staged": "lint-staged"
@@ -22,6 +22,15 @@
   "pre-push": [
     "test"
   ],
+  "dependencies": {
+    "@borshch/utilities": "^2.1.1",
+    "@clean-architecture-playground/core": "file:../core"
+  },
   "devDependencies": {
+    "chai": "^5.1.2",
+    "chalk": "^5.4.1",
+    "ejs": "^3.1.10",
+    "express": "^4.21.2",
+    "mocha": "^11.0.1"
   }
 }
