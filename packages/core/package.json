@@ -2,6 +2,7 @@
   "name": "clean-architecture-playground-core",
   "version": "0.0.1",
   "description": "Core for Clean Architecture Playground",
+  "type": "module",
   "exports": "./index.js",
   "author": "trofima",
   "license": "ISC",

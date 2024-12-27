@@ -1,0 +1,1 @@
+console.log('Native index welcomes you')

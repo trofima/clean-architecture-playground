@@ -2,6 +2,7 @@
   "name": "clean-architecture-playground-native",
   "version": "0.0.1",
   "description": "Clean Architecture Playground integration for native (web components)",
+  "type": "module",
   "exports": "./index.js",
   "author": "trofima",
   "license": "ISC",
@@ -10,6 +11,7 @@
     "url": "git+https://github.com:trofima/clean-architecture-playground.git"
   },
   "scripts": {
+    "start": "node server.js",
     "test": "mocha -u tdd --timeout 10000 --colors './src/**/*.test.js'",
     "lint": "eslint --fix",
     "lint-staged": "lint-staged"
