@@ -8,7 +8,7 @@ process.chdir(dirname(fileURLToPath(import.meta.url)))
 const app = express()
 
 app.set('view engine', 'ejs')
-app.set('views', './views')
+app.set('views', './entrypoints')
 app.use(express.static('.'))
 
 app.route('*').get((_, response) => response.render('index'))

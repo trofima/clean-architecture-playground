@@ -1,0 +1,28 @@
+{
+  "name": "clean-architecture-playground-core",
+  "version": "0.0.1",
+  "description": "Core for Clean Architecture Playground",
+  "exports": "./index.js",
+  "author": "trofima",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com:trofima/clean-architecture-playground.git"
+  },
+  "scripts": {
+    "test": "mocha -u tdd --timeout 10000 --colors './src/**/*.test.js'",
+    "lint": "eslint --fix",
+    "lint-staged": "lint-staged"
+  },
+  "pre-commit": [
+    "lint"
+  ],
+  "pre-push": [
+    "test"
+  ],
+  "devDependencies": {
+    "@borshch/utilities": "^2.1.1",
+    "chai": "^5.1.2",
+    "mocha": "^11.0.1"
+  }
+}
