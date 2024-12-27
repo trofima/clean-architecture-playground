@@ -1,5 +1,5 @@
 {
-  "name": "clean-architecture-playground-native",
+  "name": "native",
   "version": "0.0.1",
   "description": "Clean Architecture Playground integration for native (web components)",
   "type": "module",
@@ -24,7 +24,7 @@
   ],
   "dependencies": {
     "@borshch/utilities": "^2.1.1",
-    "clean-architecture-playground-core": "file:../core"
+    "@clean-architecture-playground/core": "file:../core"
   },
   "devDependencies": {
     "chai": "^5.1.2",
