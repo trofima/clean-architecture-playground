@@ -21,7 +21,7 @@ const renderOrderListView = ({list, loading, error}) => `
         padding: 0;
         box-sizing: border-box;
 
-        div.head-of-list {
+        div.head-of-list, li.order-line{
           height: fit-content;
           padding: calc(var(--baseline)/3) var(--baseline);
 
@@ -45,6 +45,13 @@ const renderOrderListView = ({list, loading, error}) => `
               pointer-events: none;
               overflow: hidden;
               text-overflow: ellipsis;
+            }
+          }
+        }
+
+        div.head-of-list {
+          div {
+            p {
               font-family: Arial, Helvetica, sans-serif;
               font-size: small;
               color: #333;
@@ -54,38 +61,17 @@ const renderOrderListView = ({list, loading, error}) => `
 
         li.order-line {
           width: 100%;
-          height: fit-content;
-          padding: calc(var(--baseline)/3) var(--baseline);
-
-          display: grid;
-          grid-template-columns: repeat(5, 2fr);
-          grid-gap: var(--baseline);
-          justify-content: flex-start;
-          align-items: center;
-
 
           background-color: #fff;
           border-radius: 8px;
-          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Initial light shadow */
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
           transition: transform 0.3s ease, box-shadow 0.3s ease;
           font-size: 16px;
           color: gray;
           box-sizing: border-box;
 
           div {
-            height: fit-content;
-            width: 100%;
-
             p {
-              height: fit-content;
-              width: 100%;
-
-              text-align: center;
-              white-space: nowrap;
-              user-select: none;
-              pointer-events: none;
-              overflow: hidden;
-              text-overflow: ellipsis;
               font-family: Arial, Helvetica, sans-serif;
               font-size: large;
               color: black;
@@ -93,8 +79,8 @@ const renderOrderListView = ({list, loading, error}) => `
           }
         }
         li.order-line:hover {
-          transform: translateY(-10px); /* Move up to create levitation */
-          box-shadow: 0 10px 20px rgba(0, 0, 0, 0.9); /* Deeper shadow for levitation */
+          transform: translateY(-10px);
+          box-shadow: 0 10px 20px rgba(0, 0, 0, 0.9);
         }
       }
     }
