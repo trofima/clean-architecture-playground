@@ -1,10 +1,8 @@
 import {assert} from 'chai'
 import {Atom} from '@borshch/utilities'
 import {RenderOrderList} from './render-order-list.js'
-import {OrderData} from '../../dependencies/data-store/order-data.js'
-import {OrderListData} from '../../dependencies/data-store/order-list-data.js'
-import {DataStoreError} from '../../dependencies/data-store/index.js'
-import {DataStoreMock, makeDummyOrders} from '../../dependencies/test-utilities.js'
+import {DataStoreError} from '../../dependencies/index.js'
+import {DataStoreMock, OrderListData} from '../../dependencies/test-utilities.js'
 
 suite('Render order list', () => {
   test('present empty list', async () => {
@@ -51,7 +49,7 @@ suite('Render order list', () => {
     dataStore.get.returns([])
     dataStore.get
       .for('orders', {offset: 0, limit: 20})
-      .returns(OrderListData.make({list: [makeDummyOrders(1)], offset: 1, total: 1}))
+      .returns(OrderListData.make({list: OrderListData.makeDummyOrders(1), total: 1}))
 
     await renderOrderList()
 
@@ -63,7 +61,7 @@ suite('Render order list', () => {
     dataStore.get.returns([])
     dataStore.get
       .for('orders', {offset: 0, limit: 20})
-      .returns(OrderListData.make({list: [makeDummyOrders(21)], offset: 20, total: 21}))
+      .returns(OrderListData.make({list: OrderListData.makeDummyOrders(20), total: 21}))
 
     await renderOrderList()
 
@@ -74,7 +72,7 @@ suite('Render order list', () => {
     const {renderOrderList, presentation, dataStore} = setup()
 
     dataStore.get.for('orders', {offset: 0, limit: 20}).returns(OrderListData.make({
-      list: [OrderData.make({
+      list: [OrderListData.makeOrder({
         id: 'id',
         createdDate: '2023-11-12T08:12:01.010Z',
         updatedDate: '2024-12-24T17:57:03.444Z',
@@ -103,7 +101,7 @@ suite('Render order list', () => {
     const {renderOrderList, presentation, dataStore} = setup()
 
     dataStore.get.for('orders', {offset: 0, limit: 20}).returns(OrderListData.make({
-      list: [OrderData.make({
+      list: [OrderListData.makeOrder({
         id: 'anotherId',
         createdDate: '2024-07-10T11:85:20.390Z',
         updatedDate: '2024-10-30T24:48:15.555Z',
@@ -132,7 +130,7 @@ suite('Render order list', () => {
     const {renderOrderList, presentation, dataStore} = setup()
 
     dataStore.get.for('orders', {offset: 0, limit: 20}).returns(OrderListData.make({
-      list: [OrderData.make({
+      list: [OrderListData.makeOrder({
         id: 'id',
         createdDate: '2023-11-12T08:12:01.010Z',
         updatedDate: '2024-12-24T17:57:03.444Z',
@@ -140,7 +138,7 @@ suite('Render order list', () => {
         sum: 0.5,
         paymentStatus: 'unpaid',
         fulfillmentStatus: 'pending',
-      }), OrderData.make({
+      }), OrderListData.makeOrder({
         id: 'anotherId',
         createdDate: '2024-07-10T11:85:20.390Z',
         updatedDate: '2024-10-30T24:48:15.555Z',
@@ -181,7 +179,7 @@ suite('Render order list', () => {
     dataStore.get
       .for('orders', {offset: 0, limit: 20})
       .returns(OrderListData.make({
-        list: [OrderData.make({user: 'userId'}), OrderData.make({user: 'userId'})]
+        list: [OrderListData.makeOrder({user: 'userId'}), OrderListData.makeOrder({user: 'userId'})]
       }))
     dataStore.get.for('users', ['userId']).returns([{id: 'userId', name: 'name'}])
 
