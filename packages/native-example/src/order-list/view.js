@@ -122,7 +122,7 @@ export const renderOrderListView = ({list, loading, error, total}) => `
   
     <div class="order-page-header">
       <h1>Orders List</h1>
-      <button class="add-order-button">Add New Order</button>
+      <button class="add-order-button">Refresh order list</button>
     </div>
     
     <ul class="order-list">
@@ -155,7 +155,8 @@ export const renderOrderListView = ({list, loading, error, total}) => `
   </div>
 `
 
-const renderOrderItem = ({id, createdDate, user, sum, paymentStatus, fulfillmentStatus}) => `<li class="order-line">
+const renderOrderItem = ({id, createdDate, user, sum, paymentStatus, fulfillmentStatus}) => `
+  <li class="order-line">
     <div class="user-name">
         <p>${user.name}</p>
     </div>
@@ -183,5 +184,5 @@ const renderOrderItem = ({id, createdDate, user, sum, paymentStatus, fulfillment
 `
 
 const makeEmptyOrderPresentation = () => ({
-  createdDate: '', user: {name: ''}, sum: '', paymentStatus: '', fulfillmentStatus: '',
+  createdDate: '...', user: {name: '...'}, sum: '...', paymentStatus: '...', fulfillmentStatus: '...',
 })
