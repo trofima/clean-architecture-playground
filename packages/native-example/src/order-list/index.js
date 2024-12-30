@@ -1,7 +1,6 @@
 import {Atom} from '@borshch/utilities'
-import {RenderOrderList} from '@clean-architecture-playground/core'
+import {RenderOrderList, presentOrderList} from '@clean-architecture-playground/core'
 import {renderOrderListView} from './view.js'
-import {presentOrderList} from '../../../core/src/order-list/presenter.js'
 import {DataStore} from '../../../core/src/dummy-dependencies/index.js'
 
 export class OrderList extends HTMLElement {
