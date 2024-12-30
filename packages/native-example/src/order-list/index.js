@@ -1,19 +1,13 @@
-import {BorshchComponent} from '@borshch/components'
 import {Atom} from '@borshch/utilities'
 import {RenderOrderList} from '@clean-architecture-playground/core'
 import {renderOrderListView} from './view.js'
 import {presentOrderList} from '../../../core/src/order-list/presenter.js'
 import {DataStore} from '../../../core/src/dummy-dependencies/index.js'
 
-export class OrderList extends BorshchComponent {
-  render() {
-    return renderOrderListView(this.#presentation.get())
-  }
-
-  onConnected() {
-    super.onConnected()
-    // TODO: think of a more cool way to rerender
-    this.#presentation.subscribe((model) => this.host.innerHTML = renderOrderListView(presentOrderList(model)))
+export class OrderList extends HTMLElement {
+  connectedCallback() {
+    this.attachShadow({mode: 'open'})
+    this.#presentation.subscribe((model) => this.#renderHtml(model))
     this.#renderOrderList()
   }
 
@@ -23,6 +17,12 @@ export class OrderList extends BorshchComponent {
     presentation: this.#presentation,
     dataStore: new DataStore(),
   })
+
+  #renderHtml(presentation) {
+    this.shadowRoot.innerHTML = renderOrderListView(presentOrderList(presentation))
+  }
 }
 
-export default OrderList.define()
+customElements.define('order-list', OrderList)
+
+export default OrderList
