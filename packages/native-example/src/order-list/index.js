@@ -1,5 +1,5 @@
 import {Atom} from '@borshch/utilities'
-import {RenderOrderList, presentOrderList} from '@clean-architecture-playground/core'
+import {RenderOrderList, UpdateOrderList, presentOrderList} from '@clean-architecture-playground/core'
 import {renderOrderListView} from './view.js'
 import {DataStore} from '@clean-architecture-playground/core/dummy-dependencies'
 
@@ -14,7 +14,10 @@ export class OrderList extends HTMLElement {
 
   #renderOrderList = RenderOrderList({
     presentation: this.#presentation,
-    dataStore: new DataStore(),
+    updateOrderList: UpdateOrderList({
+      presentation: this.#presentation,
+      dataStore: new DataStore(),
+    }),
   })
 
   #renderHtml(presentation) {

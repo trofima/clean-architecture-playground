@@ -1,4 +1,4 @@
-export const renderOrderListView = ({list, loading, error}) => `
+export const renderOrderListView = ({list, loading, error, total}) => `
   <style>
     div.order-page {
       --baseline: 15px;
@@ -131,6 +131,8 @@ export const renderOrderListView = ({list, loading, error}) => `
     <ul class="order-list">
       ${loading ? '<p>Loading...</p>' : ''}
       ${error ? `<p>Error: ${error.message}; Code: ${error.code}</p>` : ''}
+
+      <span>Total order count: ${total}</span>
       
       <div class="head-of-list">
         <div class="user-name">
