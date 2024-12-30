@@ -7,6 +7,7 @@ export const renderOrderListView = ({list, loading, error, total}) => `
       width: 100svw;
       padding: var(--baseline) calc(var(--baseline)*3);
       box-sizing: border-box;
+      font-family: Arial, Helvetica, sans-serif;
 
       > div.order-page-header {
         width: 100%;
@@ -14,14 +15,12 @@ export const renderOrderListView = ({list, loading, error, total}) => `
         justify-content: space-between;
         align-items: center;
         
-        font-family: Arial, Helvetica, sans-serif;
         font-size: calc(var(--baseline)*2);
         color: #333;
         
         > button.add-order-button {
           padding: var(--baseline);
           border-radius: calc(var(--baseline)/2);
-          font-family: Arial, Helvetica, sans-serif;
           font-size: var(--baseline);
           font-weight: 600;
           color: #333;
@@ -70,7 +69,6 @@ export const renderOrderListView = ({list, loading, error, total}) => `
         > div.head-of-list {
           > div {
             > p {
-              font-family: Arial, Helvetica, sans-serif;
               font-size: var(--baseline);
               font-weight: 600;
               color: #333;
@@ -91,7 +89,6 @@ export const renderOrderListView = ({list, loading, error, total}) => `
 
           > div {
             > p {
-              font-family: Arial, Helvetica, sans-serif;
               font-size: var(--baseline);
               font-weight: 600;
               color: #333;
@@ -129,7 +126,6 @@ export const renderOrderListView = ({list, loading, error, total}) => `
     </div>
     
     <ul class="order-list">
-      ${loading ? '<p>Loading...</p>' : ''}
       ${error ? `<p>Error: ${error.message}; Code: ${error.code}</p>` : ''}
 
       <span>Total order count: ${total}</span>
@@ -152,30 +148,40 @@ export const renderOrderListView = ({list, loading, error, total}) => `
         </div>
       </div>
       
-      ${list.map(({ createdDate, user, sum, paymentStatus, fulfillmentStatus }) => `
-        <li class="order-line">
-          <div class="user-name">
-              <p>${user.name}</p>
-          </div>
-          <div class="user-name">
-              <p>${createdDate}</p>
-          </div>
-          <div class="user-name">
-              <p>${sum}</p>
-          </div>
-          <div class="user-name">
-              <p>${paymentStatus}</p>
-          </div>
-          <div class="user-name">
-              <p>${fulfillmentStatus}</p>
-          </div>
-          <div class="delete-button">
-            <button>
-              <img src = "static/delete.svg" alt="Delete order button"/>
-            </button>
-          </div>
-        </li>
-      `).join('')}
+      ${loading && !list.length
+        ? Array(3).fill(makeEmptyOrderPresentation()).map(renderOrderItem).join('')
+        : list.map(renderOrderItem).join('')}
     </ul>
   </div>
 `
+
+const renderOrderItem = ({id, createdDate, user, sum, paymentStatus, fulfillmentStatus}) => `<li class="order-line">
+    <div class="user-name">
+        <p>${user.name}</p>
+    </div>
+    <div class="user-name">
+        <p>${createdDate}</p>
+    </div>
+    <div class="user-name">
+        <p>${sum}</p>
+    </div>
+    <div class="user-name">
+        <p>${paymentStatus}</p>
+    </div>
+    <div class="user-name">
+        <p>${fulfillmentStatus}</p>
+    </div>
+    ${id
+      ? `<div class="delete-button">
+          <button>
+            <img src = "static/delete.svg" alt="Delete order button"/>
+          </button>
+        </div>`
+      : ''
+      }
+  </li>
+`
+
+const makeEmptyOrderPresentation = () => ({
+  createdDate: '', user: {name: ''}, sum: '', paymentStatus: '', fulfillmentStatus: '',
+})
