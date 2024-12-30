@@ -6,8 +6,12 @@ import {DataStore, Notifier} from '@clean-architecture-playground/core/dummy-dep
 export class OrderList extends HTMLElement {
   connectedCallback() {
     this.attachShadow({mode: 'open'})
-    this.#presentation.subscribe((model) => this.#renderHtml(model))
+    this.#presentation.subscribe(this.#renderHtml)
     this.#renderOrderList()
+  }
+
+  disconnectedCallback() {
+    this.#presentation.unsubscribe(this.#renderHtml)
   }
 
   #presentation = Atom.of({list: []})
@@ -21,8 +25,8 @@ export class OrderList extends HTMLElement {
     }),
   })
 
-  #renderHtml(presentation) {
-    const viewModel = presentOrderList(presentation)
+  #renderHtml = (presentationModel) => {
+    const viewModel = presentOrderList(presentationModel)
     this.shadowRoot.innerHTML = renderOrderListView(viewModel)
   }
 }
