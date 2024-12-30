@@ -21,7 +21,8 @@ export class OrderList extends HTMLElement {
   })
 
   #renderHtml(presentation) {
-    this.shadowRoot.innerHTML = renderOrderListView(presentOrderList(presentation))
+    const viewModel = presentOrderList(presentation)
+    this.shadowRoot.innerHTML = renderOrderListView(viewModel)
   }
 }
 
