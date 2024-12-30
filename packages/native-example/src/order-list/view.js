@@ -122,7 +122,7 @@ export const renderOrderListView = ({list, loading, error, total}) => `
   
     <div class="order-page-header">
       <h1>Orders List</h1>
-      <button class="add-order-button">Refresh order list</button>
+      <button id="refresh" class="add-order-button">Refresh order list</button>
     </div>
     
     <ul class="order-list">
@@ -172,14 +172,16 @@ const renderOrderItem = ({id, createdDate, user, sum, paymentStatus, fulfillment
     <div class="user-name">
         <p>${fulfillmentStatus}</p>
     </div>
+    <div class="delete-button" data-order-id="${id}">
     ${id
-      ? `<div class="delete-button">
-          <button>
-            <img src = "static/delete.svg" alt="Delete order button"/>
-          </button>
-        </div>`
+      ? `
+        <button data-order-id="${id}">
+          <img src = "static/delete.svg" alt="Delete order button"/>
+        </button>
+      `
       : ''
-      }
+    }
+    </div>
   </li>
 `
 
