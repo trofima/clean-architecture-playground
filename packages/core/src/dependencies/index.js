@@ -4,3 +4,7 @@ export class DependencyError extends Error {
     this.code = code
   }
 }
+
+export class DataStoreError extends DependencyError {}
+
+export class NavigatorError extends DependencyError {}
