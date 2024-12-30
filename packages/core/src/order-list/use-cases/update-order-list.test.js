@@ -1,8 +1,8 @@
 import {assert} from 'chai'
-import {AsyncFunctionSpy, Atom, FunctionSpy} from '@borshch/utilities'
+import {Atom} from '@borshch/utilities'
 import {UpdateOrderList} from './update-order-list.js'
 import {DataStoreError} from '../../dependencies/index.js'
-import {DataStoreMock, OrderListData} from '../../dependencies/test-utilities.js'
+import {DataStoreMock, NotifierMock, OrderListData} from '../../dependencies/test-utilities.js'
 import {OrderList} from '../entities/order-list.js'
 import {Order} from '../entities/order.js'
 
@@ -222,8 +222,4 @@ const setup = () => {
     presentation, dataStore, notifier,
     updateOrderList: UpdateOrderList({presentation, dataStore, notifier})
   }
-}
-
-class NotifierMock {
-  showNotification = new AsyncFunctionSpy()
 }

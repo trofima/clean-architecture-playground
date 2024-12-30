@@ -10,6 +10,10 @@ export class NavigatorMock {
   openModal = new AsyncFunctionSpy()
 }
 
+export class NotifierMock {
+  showNotification = new AsyncFunctionSpy()
+}
+
 export const OrderListData = {
   make: ({list = [], total = 0} = {}) => ({list, total}),
   makeOrder: ({

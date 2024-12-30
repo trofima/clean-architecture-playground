@@ -8,8 +8,6 @@ export const renderOrderListView = ({list, loading, error, total}) => `
     </div>
     
     <ul class="order-list">
-      ${error ? `<p>Error: ${error.message}; Code: ${error.code}</p>` : ''}
-
       <span>Total order count: ${total}</span>
       
       <div class="head-of-list">
@@ -29,10 +27,13 @@ export const renderOrderListView = ({list, loading, error, total}) => `
           <p>Fulfillment Status</p>
         </div>
       </div>
-      
-      ${loading && !list.length
-        ? Array(3).fill(makeEmptyOrderPresentation()).map(renderOrderItem).join('')
-        : list.map(renderOrderItem).join('')}
+
+      ${error
+        ? `<p>Error: ${error.message}; Code: ${error.code}</p>`
+        : loading && !list.length
+          ? Array(3).fill(makeEmptyOrderPresentation()).map(renderOrderItem).join('')
+          : list.map(renderOrderItem).join('')
+      }
     </ul>
   </div>
 `

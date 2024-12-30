@@ -76,6 +76,12 @@ export class DataStore {
   }
 }
 
+export class Notifier {
+  showNotification({type, message}) {
+    window.alert(`${type}: ${message}`)
+  }
+}
+
 const dummyData = {
   orders: [{
     id: '1',

@@ -1,7 +1,7 @@
 import {Atom} from '@borshch/utilities'
 import {RenderOrderList, UpdateOrderList, presentOrderList} from '@clean-architecture-playground/core'
 import {renderOrderListView} from './view.js'
-import {DataStore} from '@clean-architecture-playground/core/dummy-dependencies'
+import {DataStore, Notifier} from '@clean-architecture-playground/core/dummy-dependencies'
 
 export class OrderList extends HTMLElement {
   connectedCallback() {
@@ -17,6 +17,7 @@ export class OrderList extends HTMLElement {
     updateOrderList: UpdateOrderList({
       presentation: this.#presentation,
       dataStore: new DataStore(),
+      notifier: new Notifier(),
     }),
   })
 
