@@ -14,7 +14,7 @@ export class OrderList extends HTMLElement {
     this.#presentation.unsubscribe(this.#renderHtml)
   }
 
-  #presentation = Atom.of({list: []})
+  #presentation = Atom.of({})
 
   #renderOrderList = RenderOrderList({
     presentation: this.#presentation,

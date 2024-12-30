@@ -1,0 +1,52 @@
+<div class="order-page">
+  <div class="order-page-header">
+    <h1>Orders List</h1>
+    <button id="refresh" class="add-order-button">Refresh order list</button>
+  </div>
+  
+  <ul class="order-list">
+    <p *ngIf="viewModel.error">Error: {{viewModel.error.message}} Code: {{viewModel.error.code}}</p>
+
+    <span>Total order count: {{viewModel.list?.length}}</span>
+    
+    <div class="head-of-list">
+      <div class="user-name">
+        <p>User Name</p>
+      </div>
+      <div class="create-date">
+        <p>Create Date</p>
+      </div>
+      <div class="sum">
+        <p>Sum</p>
+      </div>
+      <div class="payment-status">
+        <p>Payment Status</p>
+      </div>
+      <div class="fulfillment-status">
+        <p>Fulfillment Status</p>
+      </div>
+    </div>
+      <li *ngFor="let order of orders" class="order-line">
+        <div class="user-name">
+            <p>{{order.user.name}}</p>
+        </div>
+        <div class="user-name">
+            <p>{{order.createdDate}}</p>
+        </div>
+        <div class="user-name">
+            <p>{{order.sum}}</p>
+        </div>
+        <div class="user-name">
+            <p>{{order.paymentStatus}}</p>
+        </div>
+        <div class="user-name">
+            <p>{{order.fulfillmentStatus}}</p>
+        </div>
+        <div class="delete-button">
+          <button *ngIf="order.id" class="delete-order-button" data-order-id="order.id">
+            <img src = "../../static/delete.svg" alt="Delete order button"/>
+          </button>
+        </div>
+      </li>
+  </ul>
+</div>
