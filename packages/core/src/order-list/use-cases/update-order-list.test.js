@@ -1,9 +1,10 @@
 import {assert} from 'chai'
-import {Atom} from '@borshch/utilities'
+import {AsyncFunctionSpy, Atom, FunctionSpy} from '@borshch/utilities'
 import {UpdateOrderList} from './update-order-list.js'
 import {DataStoreError} from '../../dependencies/index.js'
 import {DataStoreMock, OrderListData} from '../../dependencies/test-utilities.js'
 import {OrderList} from '../entities/order-list.js'
+import {Order} from '../entities/order.js'
 
 suite('update order list', () => {
   test('present empty list', async () => {
@@ -19,8 +20,9 @@ suite('update order list', () => {
     assert.deepEqual(presentation.get(), {loading: false, list: [], error: undefined, offset: 0, limit: 20, total: 0})
   })
 
-  test('present error, when data getting failed', async () => {
+  test('present error, when data getting failed and list is empty', async () => {
     const {updateOrderList, presentation, dataStore} = setup()
+    presentation.update(() => OrderList.make())
 
     dataStore.get.fails(new DataStoreError('Oj vej', {code: '001'}))
     await updateOrderList()
@@ -41,6 +43,21 @@ suite('update order list', () => {
         code: '100',
       },
     })
+  })
+
+  test('show error notification, when data getting failed and list is not empty', async () => {
+    const {updateOrderList, presentation, dataStore, notifier} = setup()
+    presentation.update(() => OrderList.make({list: [Order.make()]}))
+
+    dataStore.get.fails(new DataStoreError('Oj vej', {code: '001'}))
+    await updateOrderList()
+    assert.deepEqual(notifier.showNotification.lastCall, [{type: 'error', message: 'Oj vej'}])
+    assert.deepInclude(presentation.get(), {loading: false, error: undefined})
+
+    dataStore.get.fails(new DataStoreError('Oj vavoj', {code: '100'}))
+    await updateOrderList()
+    assert.deepEqual(notifier.showNotification.lastCall, [{type: 'error', message: 'Oj vavoj'}])
+    assert.deepInclude(presentation.get(), {loading: false, error: undefined})
   })
 
   test('update an order list meta data', async () => {
@@ -200,8 +217,13 @@ suite('update order list', () => {
 const setup = () => {
   const presentation = Atom.of({})
   const dataStore = new DataStoreMock()
+  const notifier = new NotifierMock()
   return {
-    presentation, dataStore,
-    updateOrderList: UpdateOrderList({presentation, dataStore})
+    presentation, dataStore, notifier,
+    updateOrderList: UpdateOrderList({presentation, dataStore, notifier})
   }
+}
+
+class NotifierMock {
+  showNotification = new AsyncFunctionSpy()
 }

@@ -1,9 +1,10 @@
 import {OrderList} from '../entities/order-list.js'
 import {Order} from '../entities/order.js'
 
-export const UpdateOrderList = ({presentation, dataStore}) => async () => {
+export const UpdateOrderList = ({presentation, dataStore, notifier}) => async () => {
+  const presentationModel = presentation.get()
   try {
-    const readOptions = OrderList.getReadOptions(presentation.get())
+    const readOptions = OrderList.getReadOptions(presentationModel)
     const {list, total} = await dataStore.get('orders', readOptions)
     const uniqueUserIds = new Set(list.map(({user}) => user))
     const users = list.length ? await dataStore.get('users', Array.from(uniqueUserIds)) : []
@@ -15,10 +16,13 @@ export const UpdateOrderList = ({presentation, dataStore}) => async () => {
       loading: false,
     }))
   } catch ({message, code}) {
+    const orderCount = presentationModel.list.length
     presentation.update((model) => ({
       ...model,
       loading: false,
-      error: {message, code},
+      error: !orderCount ? {message, code} : undefined,
     }))
+
+    if (orderCount) notifier.showNotification({type: 'error', message})
   }
 }
