@@ -3,7 +3,10 @@
   "version": "0.0.1",
   "description": "Core for Clean Architecture Playground",
   "type": "module",
-  "exports": "./index.js",
+  "exports": {
+    ".": "./index.js",
+    "./dummy-dependencies": "./src/dummy-dependencies/index.js"
+  },
   "author": "trofima",
   "license": "ISC",
   "repository": {

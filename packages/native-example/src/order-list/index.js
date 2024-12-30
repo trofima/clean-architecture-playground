@@ -1,7 +1,7 @@
 import {Atom} from '@borshch/utilities'
 import {RenderOrderList, presentOrderList} from '@clean-architecture-playground/core'
 import {renderOrderListView} from './view.js'
-import {DataStore} from '../../../core/src/dummy-dependencies/index.js'
+import {DataStore} from '@clean-architecture-playground/core/dummy-dependencies'
 
 export class OrderList extends HTMLElement {
   connectedCallback() {
