@@ -2,6 +2,7 @@ import {BorshchComponent} from '@borshch/components'
 import {Atom, Deferred} from '@borshch/utilities'
 import {RenderOrderList} from '@clean-architecture-playground/core'
 import {renderOrderListView} from './view.js'
+import {presentOrderList} from '../../../core/src/order-list/presenter.js'
 
 class DataStore { // TODO: move out
   async get(entity, options) {
@@ -62,7 +63,7 @@ export class OrderList extends BorshchComponent {
   onConnected() {
     super.onConnected()
     // TODO: think of a more cool way to rerender
-    this.#presentation.subscribe((model) => this.host.innerHTML = renderOrderListView(model))
+    this.#presentation.subscribe((model) => this.host.innerHTML = renderOrderListView(presentOrderList(model)))
     this.#renderOrderList()
   }
 

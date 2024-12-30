@@ -133,7 +133,7 @@ export const renderOrderListView = ({list, loading, error}) => `
               <p class="text-style-t2 dark">${fulfillmentStatus}</p>
           </div>
         </li>
-      `)}
+      `).join('')}
     </ul>
   </div>
 `
