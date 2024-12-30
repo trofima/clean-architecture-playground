@@ -173,7 +173,7 @@ export const renderOrderListView = ({list, loading, error}) => `
             </button>
           </div>
         </li>
-      `)}
+      `).join('')}
     </ul>
   </div>
 `
