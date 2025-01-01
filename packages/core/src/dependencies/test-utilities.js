@@ -24,6 +24,7 @@ export const OrderListData = {
     sum = 0,
     paymentStatus = '',
     fulfillmentStatus = '',
-  } = {}) => ({id, createdDate, updatedDate, user, sum, paymentStatus, fulfillmentStatus}),
+    shippingAddress = '',
+  } = {}) => ({id, createdDate, updatedDate, user, sum, paymentStatus, fulfillmentStatus, shippingAddress}),
   makeDummyOrders: (count) => Array(count).fill(undefined).map(OrderListData.makeOrder),
 }

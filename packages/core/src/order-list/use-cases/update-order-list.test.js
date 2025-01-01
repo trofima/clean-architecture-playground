@@ -95,22 +95,20 @@ suite('update order list', () => {
       list: [OrderListData.makeOrder({
         id: 'id',
         createdDate: '2023-11-12T08:12:01.010Z',
-        updatedDate: '2024-12-24T17:57:03.444Z',
         user: 'userId',
         sum: 0.5,
         paymentStatus: 'unpaid',
         fulfillmentStatus: 'pending',
       })]
     }))
-    dataStore.get.for('users', ['userId']).returns([User.make(({id: 'userId', name: 'name'}))])
+    dataStore.get.for('users', ['userId']).returns([User.make(({id: 'userId', name: 'user name'}))])
 
     await updateOrderList()
 
     assert.deepEqual(presentation.get().list, [{
       id: 'id',
       createdDate: '2023-11-12T08:12:01.010Z',
-      updatedDate: '2024-12-24T17:57:03.444Z',
-      user: {id: 'userId', name: 'name'},
+      user: 'user name',
       sum: 0.5,
       paymentStatus: 'unpaid',
       fulfillmentStatus: 'pending',
@@ -125,22 +123,20 @@ suite('update order list', () => {
       list: [OrderListData.makeOrder({
         id: 'anotherId',
         createdDate: '2024-07-10T11:85:20.390Z',
-        updatedDate: '2024-10-30T24:48:15.555Z',
         user: 'anotherUserId',
         sum: 5.6,
         paymentStatus: 'paid',
         fulfillmentStatus: 'fulfilled',
       })]
     }))
-    dataStore.get.for('users', ['anotherUserId']).returns([User.make({id: 'anotherUserId', name: 'another name'})])
+    dataStore.get.for('users', ['anotherUserId']).returns([User.make({id: 'anotherUserId', name: 'another user name'})])
 
     await updateOrderList()
 
     assert.deepEqual(presentation.get().list, [{
       id: 'anotherId',
       createdDate: '2024-07-10T11:85:20.390Z',
-      updatedDate: '2024-10-30T24:48:15.555Z',
-      user: {id: 'anotherUserId', name: 'another name'},
+      user: 'another user name',
       sum: 5.6,
       paymentStatus: 'paid',
       fulfillmentStatus: 'fulfilled',
@@ -155,7 +151,6 @@ suite('update order list', () => {
       list: [OrderListData.makeOrder({
         id: 'id',
         createdDate: '2023-11-12T08:12:01.010Z',
-        updatedDate: '2024-12-24T17:57:03.444Z',
         user: 'userId',
         sum: 0.5,
         paymentStatus: 'unpaid',
@@ -163,7 +158,6 @@ suite('update order list', () => {
       }), OrderListData.makeOrder({
         id: 'anotherId',
         createdDate: '2024-07-10T11:85:20.390Z',
-        updatedDate: '2024-10-30T24:48:15.555Z',
         user: 'anotherUserId',
         sum: 5.6,
         paymentStatus: 'paid',
@@ -172,23 +166,21 @@ suite('update order list', () => {
     }))
     dataStore.get
       .for('users', ['userId', 'anotherUserId'])
-      .returns([User.make({id: 'userId', name: 'name'}), User.make({id: 'anotherUserId', name: 'another name'})])
+      .returns([User.make({id: 'userId', name: 'user name'}), User.make({id: 'anotherUserId', name: 'another user name'})])
 
     await updateOrderList()
 
     assert.deepEqual(presentation.get().list, [{
       id: 'id',
       createdDate: '2023-11-12T08:12:01.010Z',
-      updatedDate: '2024-12-24T17:57:03.444Z',
-      user: {id: 'userId', name: 'name'},
+      user: 'user name',
       sum: 0.5,
       paymentStatus: 'unpaid',
       fulfillmentStatus: 'pending',
     }, {
       id: 'anotherId',
       createdDate: '2024-07-10T11:85:20.390Z',
-      updatedDate: '2024-10-30T24:48:15.555Z',
-      user: {id: 'anotherUserId', name: 'another name'},
+      user: 'another user name',
       sum: 5.6,
       paymentStatus: 'paid',
       fulfillmentStatus: 'fulfilled',
@@ -204,12 +196,12 @@ suite('update order list', () => {
       .returns(OrderListData.make({
         list: [OrderListData.makeOrder({user: 'userId'}), OrderListData.makeOrder({user: 'userId'})]
       }))
-    dataStore.get.for('users', ['userId']).returns([User.make({id: 'userId', name: 'name'})])
+    dataStore.get.for('users', ['userId']).returns([User.make({id: 'userId', name: 'user name'})])
 
     await updateOrderList()
 
-    assert.deepEqual(presentation.get().list.at(0).user, {id: 'userId', name: 'name'})
-    assert.deepEqual(presentation.get().list.at(1).user, {id: 'userId', name: 'name'})
+    assert.deepEqual(presentation.get().list.at(0).user, 'user name')
+    assert.deepEqual(presentation.get().list.at(1).user, 'user name')
     assert.deepEqual(dataStore.get.lastCall, ['users', ['userId']])
     assert.deepEqual(dataStore.get.callCount, 2)
   })

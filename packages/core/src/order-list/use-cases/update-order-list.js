@@ -1,5 +1,4 @@
 import {OrderList} from '../entities/order-list.js'
-import {Order} from '../../order/entities/order.js'
 
 export const UpdateOrderList = ({presentation, dataStore, notifier}) => async () => {
   const presentationModel = presentation.get()
@@ -12,10 +11,10 @@ export const UpdateOrderList = ({presentation, dataStore, notifier}) => async ()
     presentation.update((model) => OrderList.make({
       ...model, total,
       offset: readOptions.offset + list.length,
-      list: list.map((order) => {
-        const {id, name} = users.find(({id}) => id === order.user) ?? {}
-        return Order.make({...order, user: {id, name}})
-      }),
+      list: list.map(({user, ...rest}) => OrderList.makeOrder({
+        user: users.find(({id: userId}) => userId === user)?.name,
+        ...rest,
+      })),
       loading: false,
     }))
   } catch ({message, code}) {

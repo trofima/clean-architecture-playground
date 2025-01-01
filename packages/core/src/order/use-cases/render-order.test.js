@@ -25,8 +25,9 @@ suite('Render order', () => {
       sum: 0.5,
       paymentStatus: 'unpaid',
       fulfillmentStatus: 'pending',
+      shippingAddress: 'address',
     }))
-    dataStore.get.for('user', 'userId').returns(User.make({id: 'userId', name: 'name'}))
+    dataStore.get.for('user', 'userId').returns(User.make({id: 'userId', name: 'name', billingAddress: 'billing address'}))
 
     await renderOrder('id')
 
@@ -34,10 +35,11 @@ suite('Render order', () => {
       id: 'id',
       createdDate: '2023-11-12T08:12:01.010Z',
       updatedDate: '2024-12-24T17:57:03.444Z',
-      user: {id: 'userId', name: 'name'},
+      user: {id: 'userId', name: 'name', billingAddress: 'billing address'},
       sum: 0.5,
       paymentStatus: 'unpaid',
       fulfillmentStatus: 'pending',
+      shippingAddress: 'address',
     })
   })
 
@@ -51,8 +53,9 @@ suite('Render order', () => {
       sum: 5.6,
       paymentStatus: 'paid',
       fulfillmentStatus: 'fulfilled',
+      shippingAddress: 'another shipping address',
     }))
-    dataStore.get.for('user', 'anotherUserId').returns(User.make({id: 'anotherUserId', name: 'another name'}))
+    dataStore.get.for('user', 'anotherUserId').returns(User.make({id: 'anotherUserId', name: 'another name', billingAddress: 'another billing address'}))
 
     await renderOrder('anotherId')
 
@@ -60,10 +63,11 @@ suite('Render order', () => {
       id: 'anotherId',
       createdDate: '2024-07-10T11:85:20.390Z',
       updatedDate: '2024-10-30T24:48:15.555Z',
-      user: {id: 'anotherUserId', name: 'another name'},
+      user: {id: 'anotherUserId', name: 'another name', billingAddress: 'another billing address'},
       sum: 5.6,
       paymentStatus: 'paid',
       fulfillmentStatus: 'fulfilled',
+      shippingAddress: 'another shipping address',
     })
   })
 
