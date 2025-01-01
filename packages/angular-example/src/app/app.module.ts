@@ -6,13 +6,13 @@ import { AppRoutingModule, routes } from './app-routing.module';
 // Import your components
 import { AppComponent } from './app.component';
 import { OrderListPageComponent } from './pages/order-list-page';
-import { OrderComponent } from './pages/order/order.component';
+import { OrderPageComponent } from './pages/order-page';
 
 @NgModule({
   declarations: [
     AppComponent,
     OrderListPageComponent,
-    OrderComponent
+    OrderPageComponent
   ],
   imports: [
     RouterModule.forRoot(routes, {

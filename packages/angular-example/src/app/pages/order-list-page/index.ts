@@ -2,7 +2,6 @@ import { Atom } from '@borshch/utilities';
 import { Component, ElementRef, Input, SimpleChanges } from '@angular/core';
 import { RenderOrderList, UpdateOrderList, presentOrderList, OpenOrder } from '@clean-architecture-playground/core';
 import { DataStore, Notifier } from '@clean-architecture-playground/core/dummy-dependencies';
-import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 
 @Component({
@@ -16,9 +15,9 @@ export class OrderListPageComponent {
   #presentation = Atom.of({})
   viewModel = {} as any
   #navigator = {
-    open: (page: string, project: {id: string}) => {
-      console.log('navigate to order', project.id)
-      return this.router.navigate([page]);
+    open: (path: string) => {
+      console.log('navigate to order', path)
+      return this.router.navigate([path]);
     }
   }
   
