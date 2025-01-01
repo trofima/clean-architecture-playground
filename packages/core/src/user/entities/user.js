@@ -1,3 +1,3 @@
 export const User = {
-  make: ({id = '', name = ''} = {}) => ({id, name}),
+  make: ({id = '', name = '', billingAddress = ''} = {}) => ({id, name, billingAddress}),
 }

@@ -3,6 +3,7 @@ import {Atom} from '@borshch/utilities'
 import {RenderOrder} from './render-order.js'
 import {DataStoreMock, OrderListData} from '../../dependencies/test-utilities.js'
 import {DataStoreError} from '../../dependencies/index.js'
+import {User} from '../../user/entities/user.js'
 
 suite('Render order', () => {
   test('present order loading', async () => {
@@ -25,7 +26,7 @@ suite('Render order', () => {
       paymentStatus: 'unpaid',
       fulfillmentStatus: 'pending',
     }))
-    dataStore.get.for('user', 'userId').returns({id: 'userId', name: 'name'})
+    dataStore.get.for('user', 'userId').returns(User.make({id: 'userId', name: 'name'}))
 
     await renderOrder('id')
 
@@ -51,7 +52,7 @@ suite('Render order', () => {
       paymentStatus: 'paid',
       fulfillmentStatus: 'fulfilled',
     }))
-    dataStore.get.for('user', 'anotherUserId').returns({id: 'anotherUserId', name: 'another name'})
+    dataStore.get.for('user', 'anotherUserId').returns(User.make({id: 'anotherUserId', name: 'another name'}))
 
     await renderOrder('anotherId')
 
@@ -69,7 +70,7 @@ suite('Render order', () => {
   test('hide loader when order loaded', async () => {
     const {renderOrder, presentation, dataStore} = setup()
     dataStore.get.for('order', {id: 'id'}).returns(OrderListData.makeOrder())
-    dataStore.get.for('user', 'userId').returns({id: 'userId', name: 'name'})
+    dataStore.get.for('user', 'userId').returns(User.make())
 
     await renderOrder('id')
 

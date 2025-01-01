@@ -5,6 +5,7 @@ import {DataStoreError} from '../../dependencies/index.js'
 import {DataStoreMock, NotifierMock, OrderListData} from '../../dependencies/test-utilities.js'
 import {OrderList} from '../entities/order-list.js'
 import {Order} from '../../order/entities/order.js'
+import {User} from '../../user/entities/user.js'
 
 suite('update order list', () => {
   test('present empty list', async () => {
@@ -101,7 +102,7 @@ suite('update order list', () => {
         fulfillmentStatus: 'pending',
       })]
     }))
-    dataStore.get.for('users', ['userId']).returns([{id: 'userId', name: 'name'}])
+    dataStore.get.for('users', ['userId']).returns([User.make(({id: 'userId', name: 'name'}))])
 
     await updateOrderList()
 
@@ -131,7 +132,7 @@ suite('update order list', () => {
         fulfillmentStatus: 'fulfilled',
       })]
     }))
-    dataStore.get.for('users', ['anotherUserId']).returns([{id: 'anotherUserId', name: 'another name'}])
+    dataStore.get.for('users', ['anotherUserId']).returns([User.make({id: 'anotherUserId', name: 'another name'})])
 
     await updateOrderList()
 
@@ -171,7 +172,7 @@ suite('update order list', () => {
     }))
     dataStore.get
       .for('users', ['userId', 'anotherUserId'])
-      .returns([{id: 'userId', name: 'name'}, {id: 'anotherUserId', name: 'another name'}])
+      .returns([User.make({id: 'userId', name: 'name'}), User.make({id: 'anotherUserId', name: 'another name'})])
 
     await updateOrderList()
 
@@ -203,7 +204,7 @@ suite('update order list', () => {
       .returns(OrderListData.make({
         list: [OrderListData.makeOrder({user: 'userId'}), OrderListData.makeOrder({user: 'userId'})]
       }))
-    dataStore.get.for('users', ['userId']).returns([{id: 'userId', name: 'name'}])
+    dataStore.get.for('users', ['userId']).returns([User.make({id: 'userId', name: 'name'})])
 
     await updateOrderList()
 

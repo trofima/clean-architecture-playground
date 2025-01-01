@@ -12,7 +12,10 @@ export const UpdateOrderList = ({presentation, dataStore, notifier}) => async ()
     presentation.update((model) => OrderList.make({
       ...model, total,
       offset: readOptions.offset + list.length,
-      list: list.map((order) => Order.make({...order, user: users.find(({id}) => id === order.user)})),
+      list: list.map((order) => {
+        const {id, name} = users.find(({id}) => id === order.user) ?? {}
+        return Order.make({...order, user: {id, name}})
+      }),
       loading: false,
     }))
   } catch ({message, code}) {
