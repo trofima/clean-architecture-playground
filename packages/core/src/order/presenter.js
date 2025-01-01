@@ -1,5 +1,5 @@
 export const presentOrder = (presentation) => {
-  const {createdDate, sum, user, ...rest} = presentation.order
+  const {createdDate, updatedDate, sum, user, ...rest} = presentation.order
   return ({
     ...presentation,
     order: {
@@ -7,6 +7,7 @@ export const presentOrder = (presentation) => {
       user: user.name,
       billingAddress: user.billingAddress,
       createdDate: formatDate(createdDate),
+      updatedDate: formatDate(updatedDate),
       sum: formatSum(sum),
     },
   })

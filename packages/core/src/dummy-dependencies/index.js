@@ -93,9 +93,12 @@ class DataStore {
 
     order: {
       get: ({id}) => {
+        const request = new Deferred()
         const orders = this.#get('orders')
         const order = orders.find(({id: orderId}) => orderId === id)
-        return order
+
+        setTimeout(() => request.resolve(order), 2000)
+        return request.promise
       },
 
       set: (order) => {

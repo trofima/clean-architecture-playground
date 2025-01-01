@@ -1,6 +1,7 @@
 import {Atom} from '@borshch/utilities'
 import {dataStore} from '@clean-architecture-playground/core/dummy-dependencies'
-import {RenderOrder} from '@clean-architecture-playground/core'
+import {presentOrder, RenderOrder} from '@clean-architecture-playground/core'
+import {renderOrderLoadingErrorView, renderOrderLoadingView, renderOrderView} from './view.js'
 
 export class Order extends HTMLElement {
   connectedCallback() {
@@ -21,7 +22,12 @@ export class Order extends HTMLElement {
   })
 
   #renderHtml = (presentationModel) => {
-    this.shadowRoot.innerHTML = `<div>Order page, ${presentationModel.order?.id}</div>`
+    const {loading, error} = presentationModel
+    this.shadowRoot.innerHTML = loading
+      ? renderOrderLoadingView()
+      : error
+        ? renderOrderLoadingErrorView(error)
+        : renderOrderView(presentOrder(presentationModel).order)
   }
 }
 

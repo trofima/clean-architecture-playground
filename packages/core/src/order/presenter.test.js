@@ -7,6 +7,7 @@ suite('present order', () => {
   test('build view model', () => {
     const viewModel = presentOrder({
       order: Order.make({
+        id: 'id',
         user: User.make({name: 'A Name', billingAddress: 'billing address'}),
         paymentStatus: 'unpaid',
         fulfillmentStatus: 'pending',
@@ -14,6 +15,7 @@ suite('present order', () => {
       }),
     })
     assert.deepInclude(viewModel.order, {
+      id: 'id',
       user: 'A Name',
       paymentStatus: 'unpaid',
       fulfillmentStatus: 'pending',
@@ -23,6 +25,7 @@ suite('present order', () => {
 
     const anotherViewModel = presentOrder({
       order: Order.make({
+        id: 'anotherId',
         user: User.make({name: 'Another Name', billingAddress: 'another billing address'}),
         paymentStatus: 'paid',
         fulfillmentStatus: 'fulfilled',
@@ -30,6 +33,7 @@ suite('present order', () => {
       }),
     })
     assert.deepInclude(anotherViewModel.order, {
+      id: 'anotherId',
       user: 'Another Name',
       paymentStatus: 'paid',
       fulfillmentStatus: 'fulfilled',
@@ -38,7 +42,7 @@ suite('present order', () => {
     })
   })
 
-  test('format date', () => {
+  test('format created date', () => {
     const {order: {createdDate: emptyCreatedDate}} = presentOrder({
       order: Order.make({createdDate: ''}),
     })
@@ -53,6 +57,23 @@ suite('present order', () => {
       order: Order.make({createdDate: '2024-12-24T17:57:03.444Z'}),
     })
     assert.equal(anotherCreatedDate, '2024-12-24, 17:57')
+  })
+
+  test('format updated date', () => {
+    const {order: {updatedDate: emptyUpdatedDate}} = presentOrder({
+      order: Order.make({updatedDate: ''}),
+    })
+    assert.equal(emptyUpdatedDate, '')
+
+    const {order: {updatedDate}} = presentOrder({
+      order: Order.make({updatedDate: '2023-11-12T08:12:01.010Z'}),
+    })
+    assert.equal(updatedDate, '2023-11-12, 08:12')
+
+    const {order: {updatedDate: anotherUpdatedDate}} = presentOrder({
+      order: Order.make({updatedDate: '2024-12-24T17:57:03.444Z'}),
+    })
+    assert.equal(anotherUpdatedDate, '2024-12-24, 17:57')
   })
 
   test('format sum', () => {
