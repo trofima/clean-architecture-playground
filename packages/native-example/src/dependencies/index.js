@@ -1,4 +1,10 @@
 class AppNavigator {
+  constructor() {
+    window.addEventListener('popstate', () => {
+      this.open(window.location.pathname)
+    })
+  }
+
   open(path) {
     const {search, pathname} = new URL(`${window.location.origin}${path}`)
     const componentName = pathToComponent[pathname]

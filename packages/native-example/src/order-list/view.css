@@ -1,4 +1,4 @@
-div.order-page {
+div.order-list-page {
   --baseline: 15px;
   --option-transition-time: 0.3s;
 
@@ -7,7 +7,7 @@ div.order-page {
   box-sizing: border-box;
   font-family: Arial, Helvetica, sans-serif;
 
-  > div.order-page-header {
+  > div.order-list-page-header {
     width: 100%;
     display: flex;
     justify-content: space-between;
@@ -34,7 +34,7 @@ div.order-page {
     box-sizing: border-box;
 
     > div.head-of-list,
-      li.order-line {
+    > div.list > li.order-item {
       height: fit-content;
       padding: calc(var(--baseline)/3) var(--baseline);
 
@@ -75,7 +75,7 @@ div.order-page {
       }
     }
 
-    > li.order-line {
+    > div.list > li.order-item {
       width: 100%;
       padding: calc(var(--baseline)/3) var(--baseline);
 
@@ -108,7 +108,7 @@ div.order-page {
         }
       }
     }
-    > li.order-line:hover {
+    > div.list > li.order-item:hover {
       transform: calc(var(--baseline)/2);
       box-shadow: 0 calc(var(--baseline)/2) var(--baseline) rgba(0, 0, 0, 0.9);
     }

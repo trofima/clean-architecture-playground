@@ -1,14 +1,14 @@
-export const renderOrderListView = ({list, loading, error, total}) => `
+export const renderOrderListView = () => `
   <link rel="stylesheet" href="src/order-list/view.css">
     
-  <div class="order-page">
+  <div class="order-list-page">
     <div class="order-page-header">
-      <h1>Orders List</h1>
+      <h1>Order List</h1>
       <button id="refresh" class="add-order-button">Refresh order list</button>
     </div>
     
     <ul class="order-list">
-      <span>Total order count: ${total}</span>
+      <p>Total order count: <span id="total-count"></span></p>
       
       <div class="head-of-list">
         <div>
@@ -28,18 +28,13 @@ export const renderOrderListView = ({list, loading, error, total}) => `
         </div>
       </div>
 
-      ${error
-        ? `<p>Error: ${error.message}; Code: ${error.code}</p>`
-        : loading && !list.length
-          ? Array(3).fill(makeEmptyOrderPresentation()).map(renderOrderItem).join('')
-          : list.map(renderOrderItem).join('')
-      }
+      <div id="list" class="list"></div>
     </ul>
   </div>
 `
 
-const renderOrderItem = ({id, createdDate, user, sum, paymentStatus, fulfillmentStatus}) => `
-  <li class="order-line" data-order-id="${id}">
+export const renderOrderItem = ({id, createdDate, user, sum, paymentStatus, fulfillmentStatus}) => `
+  <li class="order-item" data-order-id="${id}">
     <div>
         <p>${user.name}</p>
     </div>
@@ -68,6 +63,8 @@ const renderOrderItem = ({id, createdDate, user, sum, paymentStatus, fulfillment
   </li>
 `
 
-const makeEmptyOrderPresentation = () => ({
+export const renderEmptyOrderItem = () => ({
   createdDate: '...', user: {name: '...'}, sum: '...', paymentStatus: '...', fulfillmentStatus: '...',
 })
+
+export const renderErrorView = (error) => `<p>Error: ${error.message}; Code: ${error.code}</p>`
