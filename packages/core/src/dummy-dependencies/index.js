@@ -1,7 +1,7 @@
 import {Deferred} from '@borshch/utilities'
 import {DataStoreError} from '../dependencies/index.js'
 
-export class DataStore {
+class DataStore {
   constructor() {
     for (const [key, data] of Object.entries(dummyData))
       localStorage.setItem(key, JSON.stringify(data))
@@ -84,11 +84,15 @@ export class DataStore {
   }
 }
 
-export class Notifier {
+export const dataStore = new DataStore()
+
+class Notifier {
   showNotification({type, message}) {
     window.alert(`${type}: ${message}`)
   }
 }
+
+export const notifier = new Notifier()
 
 const dummyData = {
   orders: [{
@@ -99,6 +103,7 @@ const dummyData = {
     sum: 0.5,
     paymentStatus: 'unpaid',
     fulfillmentStatus: 'pending',
+    shippingAddress: 'Ukraine, Sevastopol, Kvitucha St, 48',
   }, {
     id: '2',
     createdDate: '2024-07-10T11:85:20.390Z',
@@ -107,6 +112,7 @@ const dummyData = {
     sum: 5.6,
     paymentStatus: 'paid',
     fulfillmentStatus: 'fulfilled',
+    shippingAddress: 'Ukraine, Donetsk, Lisnyi blvd, 1',
   }, {
     id: '3',
     createdDate: '2023-11-12T08:12:01.010Z',
@@ -115,6 +121,7 @@ const dummyData = {
     sum: 10,
     paymentStatus: 'unpaid',
     fulfillmentStatus: 'pending',
+    shippingAddress: 'Ukraine, Luhansk, Naberezhna Ave, 15',
   }, {
     id: '4',
     createdDate: '2024-12-12T07:12:01.010Z',
@@ -123,6 +130,7 @@ const dummyData = {
     sum: 100.234,
     paymentStatus: 'paid',
     fulfillmentStatus: 'pending',
+    shippingAddress: 'Ukraine, Sevastopol, Kvitucha St, 48',
   }, {
     id: '5',
     createdDate: '2024-12-12T07:12:01.010Z',
@@ -131,11 +139,12 @@ const dummyData = {
     sum: 1100.234,
     paymentStatus: 'paid',
     fulfillmentStatus: 'pending',
+    shippingAddress: 'Ukraine, Luhansk, Naberezhna Ave, 15',
   }
 ],
   users: [
-    {id: '1', name: 'Punjk Srenjk'},
-    {id: '2', name: 'Chmykh Zhvykh'},
-    {id: '3', name: 'Chvjak Pjak'},
+    {id: '1', name: 'Punjk Srenjk', billingAddress: 'Ukraine, Sevastopol, Kvitucha St, 48'},
+    {id: '2', name: 'Chmykh Zhvykh', billingAddress: 'Ukraine, Donetsk, Lisnyi blvd, 1'},
+    {id: '3', name: 'Chvjak Pjak', billingAddress: 'Ukraine, Luhansk, Naberezhna Ave, 15'},
   ],
 }

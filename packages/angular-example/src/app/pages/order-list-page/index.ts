@@ -1,7 +1,7 @@
 import { Atom } from '@borshch/utilities';
 import { Component, ElementRef, Input, SimpleChanges } from '@angular/core';
 import { RenderOrderList, UpdateOrderList, presentOrderList } from '@clean-architecture-playground/core';
-import { DataStore, Notifier } from '@clean-architecture-playground/core/dummy-dependencies';
+import { dataStore, notifier } from '@clean-architecture-playground/core/dummy-dependencies';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -41,8 +41,8 @@ export class OrderListPageComponent {
     presentation: this.#presentation,
     updateOrderList: UpdateOrderList({
       presentation: this.#presentation,
-      dataStore: new DataStore(),
-      notifier: new Notifier(),
+      dataStore: dataStore(),
+      notifier: notifier(),
     }),
   })
   

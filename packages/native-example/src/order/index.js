@@ -1,5 +1,5 @@
 import {Atom} from '@borshch/utilities'
-import {DataStore} from '@clean-architecture-playground/core/dummy-dependencies'
+import {dataStore} from '@clean-architecture-playground/core/dummy-dependencies'
 import {RenderOrder} from '@clean-architecture-playground/core'
 
 export class Order extends HTMLElement {
@@ -16,8 +16,8 @@ export class Order extends HTMLElement {
   #presentation = Atom.of({})
 
   #renderOrder = RenderOrder({
+    dataStore,
     presentation: this.#presentation,
-    dataStore: new DataStore(),
   })
 
   #renderHtml = (presentationModel) => {
