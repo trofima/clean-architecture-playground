@@ -1,5 +1,5 @@
 import {OrderList} from '../entities/order-list.js'
-import {Order} from '../entities/order.js'
+import {Order} from '../../order/entities/order.js'
 
 export const UpdateOrderList = ({presentation, dataStore, notifier}) => async () => {
   const presentationModel = presentation.get()

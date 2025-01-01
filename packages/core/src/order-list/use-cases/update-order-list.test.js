@@ -4,7 +4,7 @@ import {UpdateOrderList} from './update-order-list.js'
 import {DataStoreError} from '../../dependencies/index.js'
 import {DataStoreMock, NotifierMock, OrderListData} from '../../dependencies/test-utilities.js'
 import {OrderList} from '../entities/order-list.js'
-import {Order} from '../entities/order.js'
+import {Order} from '../../order/entities/order.js'
 
 suite('update order list', () => {
   test('present empty list', async () => {

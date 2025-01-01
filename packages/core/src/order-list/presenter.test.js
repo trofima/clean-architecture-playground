@@ -1,7 +1,7 @@
 import {assert} from 'chai'
 import {presentOrderList} from './presenter.js'
 import {OrderList} from './entities/order-list.js'
-import {Order} from './entities/order.js'
+import {Order} from '../order/entities/order.js'
 
 suite('present order list', () => {
   test('build view model', () => {
