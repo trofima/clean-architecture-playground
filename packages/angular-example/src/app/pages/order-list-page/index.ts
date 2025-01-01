@@ -35,7 +35,7 @@ export class OrderListPageComponent {
   }
   
   get emptyOrderPresentation() {
-    return {createdDate: '...', user: {name: '...'}, sum: '...', paymentStatus: '...', fulfillmentStatus: '...',}
+    return {createdDate: '...', user: '...', sum: '...', paymentStatus: '...', fulfillmentStatus: '...'}
   }
   
   get orders() {

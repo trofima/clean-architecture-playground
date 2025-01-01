@@ -36,7 +36,7 @@ export const renderOrderListView = () => `
 export const renderOrderItem = ({id, createdDate, user, sum, paymentStatus, fulfillmentStatus}) => `
   <li class="order-item" data-order-id="${id}">
     <div>
-        <p>${user.name}</p>
+        <p>${user}</p>
     </div>
     <div>
         <p>${createdDate}</p>
@@ -64,7 +64,7 @@ export const renderOrderItem = ({id, createdDate, user, sum, paymentStatus, fulf
 `
 
 export const renderEmptyOrderItem = () => ({
-  createdDate: '...', user: {name: '...'}, sum: '...', paymentStatus: '...', fulfillmentStatus: '...',
+  createdDate: '...', user: '...', sum: '...', paymentStatus: '...', fulfillmentStatus: '...',
 })
 
 export const renderErrorView = (error) => `<p>Error: ${error.message}; Code: ${error.code}</p>`

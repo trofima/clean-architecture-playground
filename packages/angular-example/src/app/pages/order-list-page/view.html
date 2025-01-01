@@ -28,7 +28,7 @@
     </div>
       <li *ngFor="let order of orders" class="order-line" (click)="openOrder(order.id)">
         <div class="user-name">
-            <p>{{order.user.name}}</p>
+            <p>{{order.user}}</p>
         </div>
         <div class="user-name">
             <p>{{order.createdDate}}</p>
