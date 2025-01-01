@@ -11,7 +11,7 @@ export const renderOrderListView = ({list, loading, error, total}) => `
       <span>Total order count: ${total}</span>
       
       <div class="head-of-list">
-        <div>
+        <div class="user-name">
           <p>User Name</p>
         </div>
         <div class="create-date">
@@ -39,20 +39,20 @@ export const renderOrderListView = ({list, loading, error, total}) => `
 `
 
 const renderOrderItem = ({id, createdDate, user, sum, paymentStatus, fulfillmentStatus}) => `
-  <li class="order-line" data-order-id="${id}">
-    <div>
+  <li class="order-line">
+    <div class="user-name">
         <p>${user.name}</p>
     </div>
-    <div>
+    <div class="user-name">
         <p>${createdDate}</p>
     </div>
-    <div>
+    <div class="user-name">
         <p>${sum}</p>
     </div>
-    <div>
+    <div class="user-name">
         <p>${paymentStatus}</p>
     </div>
-    <div>
+    <div class="user-name">
         <p>${fulfillmentStatus}</p>
     </div>
     <div class="delete-button" data-order-id="${id}">

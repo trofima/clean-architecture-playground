@@ -1,6 +1,6 @@
-export {OrderList as default} from './order-list/index.js'
+export {OrderList} from './order-list/index.js'
+export {Order} from './order/index.js'
 
-import {AppNavigator} from './dependencies/index.js'
+import {appNavigator} from './dependencies/index.js'
 
-const appNavigator = new AppNavigator()
 appNavigator.open(window.location.pathname)

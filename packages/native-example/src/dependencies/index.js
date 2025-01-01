@@ -1,4 +1,4 @@
-export class AppNavigator {
+class AppNavigator {
   open(path) {
     const {search, pathname} = new URL(`${window.location.origin}${path}`)
     const componentName = pathToComponent[pathname]
@@ -15,6 +15,8 @@ export class AppNavigator {
 }
 
 const pathToComponent = {
-  '/': 'order-list',
-  '/order': 'order',
+  '/': 'app-order-list',
+  '/order': 'app-order',
 }
+
+export const appNavigator = new AppNavigator()

@@ -2,6 +2,7 @@ import {Atom} from '@borshch/utilities'
 import {RenderOrderList, UpdateOrderList, presentOrderList} from '@clean-architecture-playground/core'
 import {renderOrderListView} from './view.js'
 import {DataStore, Notifier} from '@clean-architecture-playground/core/dummy-dependencies'
+import {appNavigator} from '../dependencies/index.js'
 
 export class OrderList extends HTMLElement {
   connectedCallback() {
@@ -28,9 +29,15 @@ export class OrderList extends HTMLElement {
   #renderHtml = (presentationModel) => {
     const viewModel = presentOrderList(presentationModel)
     this.shadowRoot.innerHTML = renderOrderListView(viewModel)
+
+    this.shadowRoot.querySelectorAll('.order-line').forEach(element => {
+      element.addEventListener('click', ({currentTarget}) => {
+        appNavigator.open(`/order?id=${currentTarget.dataset.orderId}`)
+      })
+    })
   }
 }
 
-customElements.define('order-list', OrderList)
+customElements.define('app-order-list', OrderList)
 
 export default OrderList
