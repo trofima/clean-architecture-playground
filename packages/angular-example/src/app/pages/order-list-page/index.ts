@@ -1,20 +1,27 @@
 import { Atom } from '@borshch/utilities';
 import { Component, ElementRef, Input, SimpleChanges } from '@angular/core';
-import { RenderOrderList, UpdateOrderList, presentOrderList } from '@clean-architecture-playground/core';
+import { RenderOrderList, UpdateOrderList, presentOrderList, OpenOrder } from '@clean-architecture-playground/core';
 import { DataStore, Notifier } from '@clean-architecture-playground/core/dummy-dependencies';
-import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-order-list-page',
-  imports: [CommonModule],
   templateUrl: './view.html',
-  styleUrl: './view.css',
-  standalone: true
+  styleUrls: ['./view.css'],
+  standalone: false,
 })
 export class OrderListPageComponent {
   
   #presentation = Atom.of({})
   viewModel = {} as any
+  #navigator = {
+    open: (path: string) => {
+      console.log('navigate to order', path)
+      return this.router.navigate([path]);
+    }
+  }
+  
+  constructor(private router: Router) {}
   
   ngOnInit(): void {
     this.#presentation.subscribe((model: any) => {
@@ -37,6 +44,13 @@ export class OrderListPageComponent {
       : Array(3).fill(this.emptyOrderPresentation)
   }
   
+  openOrder(orderId: string) {
+    if (orderId) {
+      console.log('open order', orderId)
+      this.#openOrder(orderId)
+    }
+  }
+  
   #renderOrderList = RenderOrderList({
     presentation: this.#presentation,
     updateOrderList: UpdateOrderList({
@@ -44,6 +58,11 @@ export class OrderListPageComponent {
       dataStore: new DataStore(),
       notifier: new Notifier(),
     }),
+  })
+  
+  #openOrder = OpenOrder({
+    presentation: this.#presentation,
+    navigator: this.#navigator,
   })
   
   #unsubscribeFromPresentation: any
