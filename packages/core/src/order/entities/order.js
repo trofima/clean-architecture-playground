@@ -9,5 +9,6 @@ export const Order = {
     sum = 0,
     paymentStatus = '',
     fulfillmentStatus = '',
-  } = {}) => ({id, createdDate, updatedDate, user, sum, paymentStatus, fulfillmentStatus}),
+    shippingAddress = '',
+  } = {}) => ({id, createdDate, updatedDate, user, sum, paymentStatus, fulfillmentStatus, shippingAddress}),
 }
