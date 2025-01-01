@@ -58,6 +58,14 @@ export class DataStore {
         throw new DataStoreError('Impossible to set user list. This is nonsense')
       }
     },
+
+    user: {
+      get: (id) => {
+        const users = this.#get('users')
+        const user = users.find(({id: orderId}) => orderId === id)
+        return user
+      },
+    },
   }
 
   #get(key) {
