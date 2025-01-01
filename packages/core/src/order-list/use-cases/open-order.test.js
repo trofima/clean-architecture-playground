@@ -1,7 +1,7 @@
 import {assert} from 'chai'
 import {Atom} from '@borshch/utilities'
 import {OpenOrder} from './open-order.js'
-import {NavigatorError} from '../../dependencies/navigator/index.js'
+import {NavigatorError} from '../../dependencies/index.js'
 import {NavigatorMock} from '../../dependencies/test-utilities.js'
 
 suite('open order', () => {
@@ -9,10 +9,10 @@ suite('open order', () => {
     const {openOrder, navigator} = setup()
 
     await openOrder('id')
-    assert.deepEqual(navigator.open.lastCall, ['order', {id: 'id'}])
+    assert.deepEqual(navigator.open.lastCall, ['order/id'])
 
     await openOrder('anotherId')
-    assert.deepEqual(navigator.open.lastCall, ['order', {id: 'anotherId'}])
+    assert.deepEqual(navigator.open.lastCall, ['order/anotherId'])
   })
 
   test('present error when navigation failed', async () => {
