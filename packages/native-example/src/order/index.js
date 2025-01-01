@@ -1,10 +1,12 @@
 import {Atom} from '@borshch/utilities'
+import {DataStore} from '@clean-architecture-playground/core/dummy-dependencies'
+import {RenderOrder} from '@clean-architecture-playground/core'
 
 export class Order extends HTMLElement {
   connectedCallback() {
     this.attachShadow({mode: 'open'})
     this.#presentation.subscribe(this.#renderHtml)
-    this.#renderOrder()
+    this.#renderOrder(this.getAttribute('id'))
   }
 
   disconnectedCallback() {
@@ -13,11 +15,13 @@ export class Order extends HTMLElement {
 
   #presentation = Atom.of({})
 
-  #renderOrder = () => {console.log('Use case is not implemented yet')}
+  #renderOrder = RenderOrder({
+    presentation: this.#presentation,
+    dataStore: new DataStore(),
+  })
 
   #renderHtml = (presentationModel) => {
-    // const viewModel = presentOrderList(presentationModel)
-    // this.shadowRoot.innerHTML = renderOrderListView(viewModel)
+    this.shadowRoot.innerHTML = `<div>Order page, ${presentationModel.order?.id}</div>`
   }
 }
 
