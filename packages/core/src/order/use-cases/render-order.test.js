@@ -72,9 +72,7 @@ suite('Render order', () => {
   })
 
   test('hide loader when order loaded', async () => {
-    const {renderOrder, presentation, dataStore} = setup()
-    dataStore.get.for('order', {id: 'id'}).returns(OrderListData.makeOrder())
-    dataStore.get.for('user', 'userId').returns(User.make())
+    const {renderOrder, presentation} = setup()
 
     await renderOrder('id')
 
@@ -110,6 +108,8 @@ const setup = () => {
   const presentation = Atom.of({})
   const dataStore = new DataStoreMock()
   dataStore.get.returns(OrderListData.makeOrder())
+  dataStore.get.forArg(0, 'order').returns(OrderListData.makeOrder())
+  dataStore.get.forArg(0, 'user').returns(User.make())
   return {
     presentation, dataStore,
     renderOrder: RenderOrder({presentation, dataStore})

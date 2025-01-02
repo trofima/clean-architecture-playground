@@ -64,7 +64,6 @@ suite('update order list', () => {
   test('update an order list meta data', async () => {
     const {updateOrderList, presentation, dataStore} = setup()
     presentation.update(() => OrderList.make({offset: 0, limit: 1}))
-    dataStore.get.returns([])
     dataStore.get
       .for('orders', {offset: 0, limit: 1})
       .returns(OrderListData.make({list: OrderListData.makeDummyOrders(1), total: 1}))
@@ -77,7 +76,6 @@ suite('update order list', () => {
   test('update another order list meta data', async () => {
     const {updateOrderList, presentation, dataStore} = setup()
     presentation.update(() => OrderList.make({offset: 1, limit: 2}))
-    dataStore.get.returns([])
     dataStore.get
       .for('orders', {offset: 1, limit: 2})
       .returns(OrderListData.make({list: OrderListData.makeDummyOrders(2), total: 3}))
@@ -211,6 +209,8 @@ const setup = () => {
   const presentation = Atom.of({})
   const dataStore = new DataStoreMock()
   const notifier = new NotifierMock()
+  dataStore.get.forArg(0, 'users').returns([])
+  dataStore.get.forArg(0, 'orders').returns(OrderListData.make())
   return {
     presentation, dataStore, notifier,
     updateOrderList: UpdateOrderList({presentation, dataStore, notifier})
