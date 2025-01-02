@@ -8,7 +8,7 @@ suite('Render order list', () => {
 
     const listing = renderOrderList()
 
-    assert.deepEqual(presentation.get(), {loading: false, list: [], error: undefined, offset: 0, limit: 20, total: 0})
+    assert.deepEqual(presentation.get(), {loading: false, list: [], error: undefined, offset: 0, limit: 5, total: 0})
     await listing
   })
 
