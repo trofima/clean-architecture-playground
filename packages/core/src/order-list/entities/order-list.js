@@ -14,7 +14,7 @@ export const OrderList = {
     ...orderList,
     total,
     loading: false,
-    offset: orderList.offset + list.length,
+    offset: refresh ? orderList.offset : orderList.offset + list.length,
     list: refresh ? list : [...orderList.list, ...list],
   })
 }

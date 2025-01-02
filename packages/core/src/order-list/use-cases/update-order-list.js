@@ -10,8 +10,7 @@ export const UpdateOrderList = ({presentation, dataStore, notifier}) => async ({
     const users = list.length ? await dataStore.get('users', Array.from(uniqueUserIds)) : []
 
     presentation.update(OrderList.update, {
-      refresh,
-      total,
+      refresh, total,
       list: setUsers(list, users),
     })
   } catch (error) {

@@ -238,10 +238,11 @@ suite('update order list', () => {
 
     await updateOrderList({refresh: true})
 
-    const {list} = presentation.get()
+    const {list, offset} = presentation.get()
     assert.equal(list.length, 2)
     assert.equal(list.at(0).id, 'refreshedId1')
     assert.equal(list.at(1).id, 'refreshedId2')
+    assert.equal(offset, 2)
 
     presentation.update(() => OrderList.make({
       offset: 3,
@@ -260,11 +261,12 @@ suite('update order list', () => {
 
     await updateOrderList({refresh: true})
 
-    const {list: anotherList} = presentation.get()
+    const {list: anotherList, offset: anotherOffset} = presentation.get()
     assert.equal(anotherList.length, 3)
     assert.equal(anotherList.at(0).id, 'refreshedId1')
     assert.equal(anotherList.at(1).id, 'refreshedId2')
     assert.equal(anotherList.at(2).id, 'refreshedId3')
+    assert.equal(anotherOffset, 3)
   })
 })
 
