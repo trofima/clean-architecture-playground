@@ -7,60 +7,62 @@ export const renderOrderListView = () => `
       <button id="refresh" class="add-order-button">Refresh order list</button>
     </div>
     
-    <ul class="order-list">
-      <p>Total order count: <span id="total-count"></span></p>
+    <p>Total order count: <span id="total-count"></span></p>
       
-      <div class="head-of-list">
-        <div>
-          <p>User Name</p>
-        </div>
-        <div class="create-date">
-          <p>Create Date</p>
-        </div>
-        <div class="sum">
-          <p>Sum</p>
-        </div>
-        <div class="payment-status">
-          <p>Payment Status</p>
-        </div>
-        <div class="fulfillment-status">
-          <p>Fulfillment Status</p>
-        </div>
+    <div class="head-of-list">
+      <div>
+        <p>User Name</p>
       </div>
-
+      <div class="create-date">
+        <p>Create Date</p>
+      </div>
+      <div class="sum">
+        <p>Sum</p>
+      </div>
+      <div class="payment-status">
+        <p>Payment Status</p>
+      </div>
+      <div class="fulfillment-status">
+        <p>Fulfillment Status</p>
+      </div>
+    </div>
+    
+    <ul class="order-list">
       <div id="list" class="list"></div>
     </ul>
   </div>
 `
 
 export const renderOrderItem = ({id, createdDate, user, sum, paymentStatus, fulfillmentStatus}) => `
-  <li class="order-item" data-order-id="${id}">
-    <div>
-        <p>${user}</p>
-    </div>
-    <div>
-        <p>${createdDate}</p>
-    </div>
-    <div>
-        <p>${sum}</p>
-    </div>
-    <div>
-        <p>${paymentStatus}</p>
-    </div>
-    <div>
-        <p>${fulfillmentStatus}</p>
-    </div>
-    <div class="delete-button" data-order-id="${id}">
-    ${id
-      ? `
-        <button data-order-id="${id}">
-          <img src = "static/delete.svg" alt="Delete order button"/>
-        </button>
-      `
-      : ''
-    }
-    </div>
-  </li>
+
+
+    <li class="order-item" data-order-id="${id}">
+      <div>
+          <p>${user}</p>
+      </div>
+      <div>
+          <p>${createdDate}</p>
+      </div>
+      <div>
+          <p>${sum}</p>
+      </div>
+      <div>
+          <p>${paymentStatus}</p>
+      </div>
+      <div>
+          <p>${fulfillmentStatus}</p>
+      </div>
+      <div class="delete-button" data-order-id="${id}">
+      ${id
+        ? `
+          <button data-order-id="${id}">
+            <img src = "static/delete.svg" alt="Delete order button"/>
+          </button>
+        `
+        : ''
+      }
+      </div>
+    </li>
 `
 
 export const renderEmptyOrderItem = () => ({
