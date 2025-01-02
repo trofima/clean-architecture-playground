@@ -6,9 +6,10 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-order-list-page',
-  templateUrl: './view.html',
-  styleUrls: ['./view.css'],
   standalone: false,
+  
+  templateUrl: './view.html',
+  styleUrl: './view.css'
 })
 export class OrderListPageComponent {
   
@@ -55,8 +56,8 @@ export class OrderListPageComponent {
     presentation: this.#presentation,
     updateOrderList: UpdateOrderList({
       presentation: this.#presentation,
-      dataStore: dataStore(),
-      notifier: notifier(),
+      dataStore,
+      notifier,
     }),
   })
   

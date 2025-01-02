@@ -1,9 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { RouterModule } from '@angular/router';
-import { AppRoutingModule, routes } from './app-routing.module';
 
-// Import your components
+import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { OrderListPageComponent } from './pages/order-list-page';
 import { OrderPageComponent } from './pages/order-page';
@@ -12,17 +10,13 @@ import { OrderPageComponent } from './pages/order-page';
   declarations: [
     AppComponent,
     OrderListPageComponent,
-    OrderPageComponent
+    OrderPageComponent,
   ],
   imports: [
-    RouterModule.forRoot(routes, {
-      enableTracing: false,
-      scrollPositionRestoration: 'disabled',
-    }),
     BrowserModule,
-    AppRoutingModule,
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }
