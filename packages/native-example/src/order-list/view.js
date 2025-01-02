@@ -30,12 +30,11 @@ export const renderOrderListView = () => `
     <ul class="order-list">
       <div id="list" class="list"></div>
     </ul>
+    <button id="load-more" class="add-order-button">Load More</button>
   </div>
 `
 
 export const renderOrderItem = ({id, createdDate, user, sum, paymentStatus, fulfillmentStatus}) => `
-
-
     <li class="order-item" data-order-id="${id}">
       <div>
           <p>${user}</p>
