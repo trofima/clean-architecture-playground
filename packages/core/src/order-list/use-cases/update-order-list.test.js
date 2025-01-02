@@ -224,6 +224,48 @@ suite('update order list', () => {
     assert.equal(list.at(0).id, 'id')
     assert.equal(list.at(1).id, 'anotherId')
   })
+
+  test('refresh order list', async () => {
+    const {updateOrderList, presentation, dataStore} = setup()
+    presentation.update(() => OrderList.make({
+      offset: 2,
+      limit: 1,
+      list: [OrderList.makeOrder({id: 'id1'}), OrderList.makeOrder({id: 'id2'})],
+    }))
+    dataStore.get.for('orders', {offset: 0, limit: 2}).returns(OrderListData.make({
+      list: [OrderListData.makeOrder({id: 'refreshedId1'}), OrderListData.makeOrder({id: 'refreshedId2'})]
+    }))
+
+    await updateOrderList({refresh: true})
+
+    const {list} = presentation.get()
+    assert.equal(list.length, 2)
+    assert.equal(list.at(0).id, 'refreshedId1')
+    assert.equal(list.at(1).id, 'refreshedId2')
+
+    presentation.update(() => OrderList.make({
+      offset: 3,
+      limit: 1,
+      list: [
+        OrderList.makeOrder({id: 'id1'}),
+        OrderList.makeOrder({id: 'id2'}),
+        OrderList.makeOrder({id: 'id3'}),
+      ],
+    }))
+    dataStore.get.for('orders', {offset: 0, limit: 3}).returns(OrderListData.make({list: [
+      OrderListData.makeOrder({id: 'refreshedId1'}),
+      OrderListData.makeOrder({id: 'refreshedId2'}),
+      OrderListData.makeOrder({id: 'refreshedId3'}),
+    ]}))
+
+    await updateOrderList({refresh: true})
+
+    const {list: anotherList} = presentation.get()
+    assert.equal(anotherList.length, 3)
+    assert.equal(anotherList.at(0).id, 'refreshedId1')
+    assert.equal(anotherList.at(1).id, 'refreshedId2')
+    assert.equal(anotherList.at(2).id, 'refreshedId3')
+  })
 })
 
 const setup = () => {

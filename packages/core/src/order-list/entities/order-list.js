@@ -3,17 +3,18 @@ export const OrderList = {
     ({loading, error, list, offset, limit, total}),
   makeOrder: ({id, createdDate, user, sum, paymentStatus, fulfillmentStatus}) =>
     ({id, createdDate, user, sum, paymentStatus, fulfillmentStatus}),
-  getReadOptions: ({offset = 0, limit = 1}) => ({offset, limit}),
+  getReadOptions: ({offset = 0, limit = 1}, {refresh = false} = {}) =>
+    refresh ? {offset: 0, limit: offset} : {offset, limit},
   setLoading: (orderList, loading) => ({...orderList, loading}),
   setError: (orderList, {message, code}) => ({
     ...orderList,
     error: !orderList.list.length ? {message, code} : undefined, loading: false,
   }),
-  update: (orderList, {total, list}) => ({
+  update: (orderList, {total, list, refresh = false}) => ({
     ...orderList,
     total,
     loading: false,
     offset: orderList.offset + list.length,
-    list: [...orderList.list, ...list],
+    list: refresh ? list : [...orderList.list, ...list],
   })
 }

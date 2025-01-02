@@ -9,6 +9,7 @@ export class OrderList extends HTMLElement {
     this.attachShadow({mode: 'open'})
     this.shadowRoot.innerHTML = renderOrderListView()
     this.#loadMoreButton.addEventListener('click', () => this.#updateOrderList())
+    this.#refreshButton.addEventListener('click', () => this.#updateOrderList({refresh: true}))
     this.#presentation.subscribe(this.#renderHtml)
     this.#controller.renderOrderList()
   }
@@ -49,6 +50,10 @@ export class OrderList extends HTMLElement {
 
   get #loadMoreButton() {
     return this.shadowRoot.querySelector('#load-more')
+  }
+
+  get #refreshButton() {
+    return this.shadowRoot.querySelector('#refresh')
   }
 
   #getOrderList = ({loading, list}) => loading && !list.length
