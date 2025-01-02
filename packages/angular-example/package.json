@@ -33,7 +33,7 @@
     "@angular/platform-browser": "^19.0.0",
     "@angular/platform-browser-dynamic": "^19.0.0",
     "@angular/router": "^19.0.0",
-    "@borshch/utilities": "^2.1.6",
+    "@borshch/utilities": "^2.2.0",
     "@clean-architecture-playground/core": "file:../core",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
