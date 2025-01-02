@@ -75,7 +75,7 @@ class DataStore {
       get: async ({offset, limit}) => {
         const request = new Deferred()
         const orders = this.#get('orders')
-        const orderSlice = orders.slice(offset, limit)
+        const orderSlice = orders.slice(offset, offset + limit)
 
         const orderList = {
           total: orders.length,

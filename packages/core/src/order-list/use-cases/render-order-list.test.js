@@ -3,12 +3,12 @@ import {AsyncFunctionSpy, Atom} from '@borshch/utilities'
 import {RenderOrderList} from './render-order-list.js'
 
 suite('Render order list', () => {
-  test('present empty list', async () => {
+  test('initialize order list presentation', async () => {
     const {renderOrderList, presentation} = setup()
 
     const listing = renderOrderList()
 
-    assert.deepEqual(presentation.get(), {loading: true, list: [], error: undefined, offset: 0, limit: 20, total: 0})
+    assert.deepEqual(presentation.get(), {loading: false, list: [], error: undefined, offset: 0, limit: 20, total: 0})
     await listing
   })
 

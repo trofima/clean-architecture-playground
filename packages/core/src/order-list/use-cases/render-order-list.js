@@ -1,6 +1,6 @@
 import {OrderList} from '../entities/order-list.js'
 
 export const RenderOrderList = ({presentation, updateOrderList}) => async () => {
-  presentation.update(() => OrderList.make({loading: true, limit: 20}))
+  presentation.update(() => OrderList.make({loading: false, limit: 2, offset: 0, total: 0, list: []}))
   updateOrderList()
 }

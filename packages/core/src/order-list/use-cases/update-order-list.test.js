@@ -14,6 +14,7 @@ suite('update order list', () => {
     presentation.update(() => OrderList.make({offset: 0, limit: 20}))
 
     const listing = updateOrderList()
+    assert.deepEqual(presentation.get(), {loading: true, list: [], error: undefined, offset: 0, limit: 20, total: 0})
     assert.deepEqual(dataStore.get.lastCall, ['orders', {offset: 0, limit: 20}])
 
     await dataStore.get.resolve(0, OrderListData.make({list: [], total: 0}))
@@ -202,6 +203,26 @@ suite('update order list', () => {
     assert.deepEqual(presentation.get().list.at(1).user, 'user name')
     assert.deepEqual(dataStore.get.lastCall, ['users', ['userId']])
     assert.deepEqual(dataStore.get.callCount, 2)
+  })
+
+  test('update order list by default', async () => {
+    const {updateOrderList, presentation, dataStore} = setup()
+    presentation.update(() => OrderList.make({offset: 0, limit: 1}))
+
+    dataStore.get.for('orders', {offset: 0, limit: 1}).returns(OrderListData.make({
+      list: [OrderListData.makeOrder({id: 'id'})]
+    }))
+    dataStore.get.for('orders', {offset: 1, limit: 1}).returns(OrderListData.make({
+      list: [OrderListData.makeOrder({id: 'anotherId'})]
+    }))
+
+    await updateOrderList()
+    await updateOrderList()
+
+    const {list} = presentation.get()
+    assert.equal(list.length, 2)
+    assert.equal(list.at(0).id, 'id')
+    assert.equal(list.at(1).id, 'anotherId')
   })
 })
 
