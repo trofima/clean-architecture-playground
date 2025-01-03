@@ -8,8 +8,8 @@ export class OrderList extends HTMLElement {
   connectedCallback() {
     this.attachShadow({mode: 'open'})
     this.shadowRoot.innerHTML = renderOrderListView()
-    this.#loadMoreButton.addEventListener('click', () => this.#controller.updateOrderList())
-    this.#refreshButton.addEventListener('click', () => this.#controller.updateOrderList({refresh: true}))
+    this.#bind('#load-more', 'click', () => this.#controller.updateOrderList())
+    this.#bind('#refresh', 'click', () => this.#controller.updateOrderList({refresh: true}))
     this.#presentation.subscribe(this.#renderHtml)
     this.#controller.renderOrderList()
   }
@@ -44,30 +44,21 @@ export class OrderList extends HTMLElement {
 
   #renderHtml = (presentationModel) => {
     const viewModel = presentOrderList(presentationModel)
-    const {shadowRoot} = this
-    shadowRoot.querySelector('#total-count').innerHTML = viewModel.total
-    shadowRoot.querySelector('#list').innerHTML = viewModel.error
+    const listContent = viewModel.error
       ? renderErrorView(viewModel.error)
       : this.#getOrderList(viewModel).map(renderOrderItem).join('')
+
+    this.#setContent('#total-count', viewModel.total)
+    this.#setContent('#list', listContent)
     this.#updateLoadMoreButton(presentationModel)
 
-    shadowRoot.querySelectorAll('.order-item').forEach(element =>
-      element.addEventListener('click', ({currentTarget}) =>
-        this.#controller.openOrder(currentTarget.dataset.orderId)))
+    this.#bindAll('click', '.order-item', ({currentTarget}) =>
+      this.#controller.openOrder(currentTarget.dataset.orderId))
 
-    shadowRoot.querySelectorAll('.order-item > .delete-button > button').forEach(element =>
-      element.addEventListener('click', (event) => {
-        event.stopPropagation()
-        this.#controller.removeOrderFromList(event.currentTarget.dataset.orderId)
-      }))
-  }
-
-  get #loadMoreButton() {
-    return this.shadowRoot.querySelector('#load-more')
-  }
-
-  get #refreshButton() {
-    return this.shadowRoot.querySelector('#refresh')
+    this.#bindAll('click', '.order-item > .delete-button > button', (event) => {
+      event.stopPropagation()
+      this.#controller.removeOrderFromList(event.currentTarget.dataset.orderId)
+    })
   }
 
   #getOrderList = ({loading, list}) => loading && !list.length
@@ -75,12 +66,25 @@ export class OrderList extends HTMLElement {
     : list
 
   #updateLoadMoreButton = (presentationModel) => {
+    const loadMoreButton = this.shadowRoot.querySelector('#load-more')
     const hasMoreToLoad = presentationModel.total > presentationModel.list.length
-    this.#loadMoreButton.style
-      .setProperty('display', hasMoreToLoad ? 'block' : 'none')
-    this.#loadMoreButton.innerText = presentationModel.loading ? '...' : 'Load more'
-    if (presentationModel.loading) this.#loadMoreButton.setAttribute('disabled', '')
-    else this.#loadMoreButton.removeAttribute('disabled')
+    loadMoreButton.style.setProperty('display', hasMoreToLoad ? 'block' : 'none')
+    loadMoreButton.innerText = presentationModel.loading ? '...' : 'Load more'
+    if (presentationModel.loading) loadMoreButton.setAttribute('disabled', '')
+    else loadMoreButton.removeAttribute('disabled')
+  }
+
+  #bind(selector, event, handler) {
+    this.shadowRoot.querySelector(selector).addEventListener(event, handler)
+  }
+
+  #bindAll(event, selector, handler) {
+    this.shadowRoot.querySelectorAll(selector)
+      .forEach(element => element.addEventListener(event, handler))
+  }
+
+  #setContent(selector, content) {
+    this.shadowRoot.querySelector(selector).innerHTML = content
   }
 }
 
