@@ -75,7 +75,7 @@ User should be able to refresh order list in order to see current order data
 #### Render Order Details ✔️
 User see all order details.
 
-#### Change Order Fiedl
+#### Change Order Field
 User should be able to change allowed fields.
 <br>For now those are: payment status, fulfillments status, shipping address.
 
