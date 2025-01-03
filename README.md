@@ -22,8 +22,8 @@ The intent is make it conceivable to everyone.
 
 <br>
 
-The project contains [core](./packages/core) module and it's integration to the different ui frameworks, like [react](./packages/react-example), [angular](/tree/main/packages/angular-example), [vue](/tree/main/packages/vue-example) etc. There is also pure [native](/tree/main/packages/native-example) example.
-<br><b>It showcases how you can split business logic not only from view, but also from framework(!) and even platform</b> (yes there is [react-native](/tree/main/packages/react-native-example) integration).
+The project contains [core](./packages/core) module and it's integration to the different ui frameworks, like [react](./packages/react-example), [angular](./packages/angular-example), [vue](./packages/vue-example) etc. There is also pure [native](./packages/native-example) example.
+<br><b>It showcases how you can split business logic not only from view, but also from framework(!) and even platform</b> (yes there is [react-native](./packages/react-native-example) integration).
 <br>
 <br>
 
