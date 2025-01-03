@@ -22,7 +22,7 @@ The intent is make it conceivable to everyone.
 
 <br>
 The project contains core module and it's integration to the different ui frameworks, like react, angular, vue etc. There is also pure native example.
-<br>**It showcases how you can split business logic not only from view, but also from framework(!) and even platform** (yes there is react-native example).
+<br><b>It showcases how you can split business logic not only from view, but also from framework(!) and even platform</b> (yes there is react-native example).
 <br>
 
 >[!CAUTION]
