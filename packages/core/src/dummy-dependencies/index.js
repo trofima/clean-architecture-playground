@@ -185,7 +185,11 @@ class DataStore {
       },
 
       remove: async (id) => {
+        const request = new Deferred()
         this.#remove('orders', id)
+        setTimeout(() => request.resolve(), 1000)
+
+        return request.promise
       },
     },
 
@@ -233,8 +237,12 @@ class DataStore {
 }
 
 class Notifier {
-  showNotification({type, message}) {
+  async showNotification({type, message}) {
     window.alert(`${type}: ${message}`)
+  }
+
+  async confirm(message, {type}) {
+    return window.confirm(message)
   }
 }
 

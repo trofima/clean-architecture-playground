@@ -7,28 +7,42 @@ import {DataStoreMock, NotifierMock} from '../../dependencies/test-utilities.js'
 import {DataStoreError} from '../../dependencies/index.js'
 
 suite('Remove order from list', () => {
-  test('mark an order as updating', async () => {
-    const {removeOrderFromList, presentation} = setup()
+  test('ask for removal confirmation', async () => {
+    const {removeOrderFromList, presentation, notifier} = setup()
+    presentation.update(() => (OrderList.make({list: [OrderList.makeOrder({id: '1'})]})))
+
+    await removeOrderFromList('1')
+
+    assert.deepEqual(notifier.confirm.lastCall, ['Are you sure you want to remove this order?', {type: 'danger'}])
+  })
+
+  test('mark order as updating', async () => {
+    const {removeOrderFromList, presentation, notifier, dataStore} = setup()
     presentation.update(() => (OrderList.make({list: [
       OrderList.makeOrder({id: '1', updating: false}),
       OrderList.makeOrder({id: '2', updating: false}),
     ]})))
+    notifier.confirm.defer()
+    dataStore.remove.defer()
 
-    const removing = removeOrderFromList('1')
-    const anotherRemoving = removeOrderFromList('2')
+    removeOrderFromList('1')
+    removeOrderFromList('2')
+    await notifier.confirm.resolve(0, true)
+    await notifier.confirm.resolve(1, true)
 
-    const {list} = presentation.get()
-    assert.equal(list.at(0).updating, true)
-    assert.equal(list.at(1).updating, true)
+    const {list: [order1, order2]} = presentation.get()
+    assert.equal(order1.updating, true)
+    assert.equal(order2.updating, true)
 
-    await Promise.all([removing, anotherRemoving])
+    await Promise.all([dataStore.remove.resolve(0), dataStore.remove.resolve(1)])
   })
 
-  test('remove order from data store', async () => {
-    const {removeOrderFromList, presentation, dataStore} = setup()
+  test('remove order, when confirmed', async () => {
+    const {removeOrderFromList, presentation, dataStore, notifier} = setup()
     const order1 = OrderList.makeOrder({id: '1'})
     const order2 = OrderList.makeOrder({id: '2'})
     presentation.update(() => (OrderList.make({offset: 2, total: 3, list: [order1, order2]})))
+    notifier.confirm.returns(true)
 
     await removeOrderFromList('1')
 
@@ -46,6 +60,22 @@ suite('Remove order from list', () => {
       list: [],
       offset: 0,
       total: 1,
+    })
+  })
+
+  test('do not remove order, when not confirmed', async () => {
+    const {removeOrderFromList, presentation, dataStore, notifier} = setup()
+    notifier.confirm.returns(false)
+    const order = OrderList.makeOrder({id: '1'})
+    presentation.update(() => (OrderList.make({offset: 1, total: 2, list: [order]})))
+
+    await removeOrderFromList('1')
+
+    assert.deepEqual(dataStore.remove.called, false)
+    assert.deepInclude(presentation.get(), {
+      list: [order],
+      offset: 1,
+      total: 2,
     })
   })
 
@@ -67,6 +97,7 @@ suite('Remove order from list', () => {
     const {removeOrderFromList, presentation, dataStore, notifier} = setup()
     const order = OrderList.makeOrder({id: '1', updating: false})
     presentation.update(() => (OrderList.make({offset: 1, list: [order]})))
+    notifier.confirm.returns(true)
 
     dataStore.remove.fails(new DataStoreError('Oj vej', {code: '001'}))
     await removeOrderFromList('1')
@@ -82,6 +113,7 @@ const setup = () => {
   const presentation = Atom.of({})
   const dataStore = new DataStoreMock()
   const notifier = new NotifierMock()
+
   return {
     presentation,
     dataStore,

@@ -13,6 +13,7 @@ export class NavigatorMock {
 
 export class NotifierMock {
   showNotification = new AsyncFunctionSpy()
+  confirm = new AsyncFunctionSpy()
 }
 
 export const OrderListData = {
