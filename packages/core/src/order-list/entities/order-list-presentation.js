@@ -2,7 +2,7 @@ export const OrderListPresentation = {
   make: ({loading = false, error = undefined, list = [], offset = 0, limit = 0, total = 0} = {}) =>
     ({loading, error, list, offset, limit, total}),
 
-  makeOrder: ({id, createdDate, user, sum, paymentStatus, fulfillmentStatus, updating = false}) =>
+  makeOrder: ({id, createdDate, user, sum, paymentStatus, fulfillmentStatus, updating = false} = {}) =>
     ({id, createdDate, user, sum, paymentStatus, fulfillmentStatus, updating}),
 
   getReadOptions: ({offset = 0, limit = 1}, {refresh = false} = {}) =>

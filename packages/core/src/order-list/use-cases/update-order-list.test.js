@@ -4,7 +4,6 @@ import {UpdateOrderList} from './update-order-list.js'
 import {DataStoreError} from '../../dependencies/index.js'
 import {DataStoreMock, makeDummyOrders, NotifierMock} from '../../dependencies/test-utilities.js'
 import {OrderListPresentation} from '../entities/order-list-presentation.js'
-import {OrderPresentation} from '../../order/entities/order-presentation.js'
 import {User} from '../../user/entities/user.js'
 import {OrderList} from '../entities/order-list.js'
 import {Order} from '../../order/entities/order.js'
@@ -51,7 +50,7 @@ suite('update order list', () => {
 
   test('show error notification, when data getting failed and list is not empty', async () => {
     const {updateOrderList, presentation, dataStore, notifier} = setup()
-    presentation.update(() => OrderListPresentation.make({list: [OrderPresentation.make()]}))
+    presentation.update(() => OrderListPresentation.make({list: [OrderListPresentation.makeOrder()]}))
 
     dataStore.get.fails(new DataStoreError('Oj vej', {code: '001'}))
     await updateOrderList()
