@@ -72,6 +72,9 @@ User should be able to load next batch of the orders
 User should be able to refresh order list in order to see current order data
 
 ### Order Form
+#### Render Order Details
+User see all order details.
+
 #### Change Order Payment Status
 User should be able to change an order payment status.
 
