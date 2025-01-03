@@ -9,6 +9,7 @@ export class DataStoreMock {
 export class NavigatorMock {
   open = new AsyncFunctionSpy()
   openModal = new AsyncFunctionSpy()
+  close = new AsyncFunctionSpy()
 }
 
 export class NotifierMock {
