@@ -3,14 +3,14 @@ import {Atom} from '@borshch/utilities'
 import {OpenOrder} from './open-order.js'
 import {NavigatorError} from '../../dependencies/index.js'
 import {NavigatorMock, NotifierMock} from '../../dependencies/test-utilities.js'
-import {OrderList} from '../entities/order-list.js'
+import {OrderListPresentation} from '../entities/order-list-presentation.js'
 
 suite('open order', () => {
   test('navigate to order', async () => {
     const {openOrder, navigator, presentation} = setup()
-    presentation.update(() => OrderList.make({list: [
-      OrderList.makeOrder({id: 'id'}),
-      OrderList.makeOrder({id: 'anotherId'}),
+    presentation.update(() => OrderListPresentation.make({list: [
+      OrderListPresentation.makeOrder({id: 'id'}),
+      OrderListPresentation.makeOrder({id: 'anotherId'}),
     ]}))
 
     await openOrder('id')
@@ -22,9 +22,9 @@ suite('open order', () => {
 
   test('do not navigate to updating order', async () => {
     const {openOrder, navigator, presentation} = setup()
-    presentation.update(() => OrderList.make({list: [
-      OrderList.makeOrder({id: 'id', updating: true}),
-      OrderList.makeOrder({id: 'anotherId', updating: true}),
+    presentation.update(() => OrderListPresentation.make({list: [
+      OrderListPresentation.makeOrder({id: 'id', updating: true}),
+      OrderListPresentation.makeOrder({id: 'anotherId', updating: true}),
     ]}))
 
     await openOrder('id')
@@ -36,7 +36,7 @@ suite('open order', () => {
 
   test('present error when navigation failed', async () => {
     const {openOrder, navigator, presentation, notifier} = setup()
-    presentation.update(() => OrderList.make({list: [OrderList.makeOrder({id: 'id'})]}))
+    presentation.update(() => OrderListPresentation.make({list: [OrderListPresentation.makeOrder({id: 'id'})]}))
 
     navigator.open.fails(new NavigatorError('Oj vej', {code: '001'}))
     await openOrder('id')

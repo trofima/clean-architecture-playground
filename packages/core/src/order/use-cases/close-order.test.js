@@ -2,12 +2,12 @@ import {assert} from 'chai'
 import {Atom} from '@borshch/utilities'
 import {CloseOrder} from './close-order.js'
 import {NavigatorMock, NotifierMock} from '../../dependencies/test-utilities.js'
-import {Order} from '../entities/order.js'
+import {OrderPresentation} from '../entities/order-presentation.js'
 
 suite('Close order', () => {
   test('close order form', async () => {
     const {closeOrder, presentation, navigator} = setup()
-    presentation.update(() => Order.make({changes: {}}))
+    presentation.update(() => OrderPresentation.make({changes: {}}))
 
     await closeOrder()
 
@@ -16,7 +16,7 @@ suite('Close order', () => {
 
   test('do not close, when has changes and closing is not confirmed', async () => {
     const {closeOrder, presentation, notifier, navigator} = setup()
-    presentation.update(() => Order.make({paymentStatus: 'unpaid', changes: {paymentStatus: 'paid'}}))
+    presentation.update(() => OrderPresentation.make({paymentStatus: 'unpaid', changes: {paymentStatus: 'paid'}}))
     notifier.confirm
       .for('Changes will be lost. Are you sure you want to close this order?', {type: 'warning'})
       .returns(false)
@@ -28,7 +28,7 @@ suite('Close order', () => {
 
   test('close, when has changes and closing is confirmed', async () => {
     const {closeOrder, presentation, notifier, navigator} = setup()
-    presentation.update(() => Order.make({paymentStatus: 'unpaid', changes: {paymentStatus: 'paid'}}))
+    presentation.update(() => OrderPresentation.make({paymentStatus: 'unpaid', changes: {paymentStatus: 'paid'}}))
     notifier.confirm
       .for('Changes will be lost. Are you sure you want to close this order?', {type: 'warning'})
       .returns(true)

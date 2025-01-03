@@ -1,9 +1,10 @@
 import {assert} from 'chai'
 import {Atom} from '@borshch/utilities'
 import {RenderOrder} from './render-order.js'
-import {DataStoreMock, OrderListData} from '../../dependencies/test-utilities.js'
+import {DataStoreMock} from '../../dependencies/test-utilities.js'
 import {DataStoreError} from '../../dependencies/index.js'
 import {User} from '../../user/entities/user.js'
+import {Order} from '../entities/order.js'
 
 suite('Render order', () => {
   test('present order loading', async () => {
@@ -17,7 +18,7 @@ suite('Render order', () => {
 
   test('present an order data', async () => {
     const {renderOrder, presentation, dataStore} = setup()
-    dataStore.get.for('order', {id: 'id'}).returns(OrderListData.makeOrder({
+    dataStore.get.for('order', {id: 'id'}).returns(Order.make({
       id: 'id',
       createdDate: '2023-11-12T08:12:01.010Z',
       updatedDate: '2024-12-24T17:57:03.444Z',
@@ -45,7 +46,7 @@ suite('Render order', () => {
 
   test('present another order data', async () => {
     const {renderOrder, presentation, dataStore} = setup()
-    dataStore.get.for('order', {id: 'anotherId'}).returns(OrderListData.makeOrder({
+    dataStore.get.for('order', {id: 'anotherId'}).returns(Order.make({
       id: 'anotherId',
       createdDate: '2024-07-10T11:85:20.390Z',
       updatedDate: '2024-10-30T24:48:15.555Z',
@@ -107,8 +108,8 @@ suite('Render order', () => {
 const setup = () => {
   const presentation = Atom.of({})
   const dataStore = new DataStoreMock()
-  dataStore.get.returns(OrderListData.makeOrder())
-  dataStore.get.forArg(0, 'order').returns(OrderListData.makeOrder())
+  dataStore.get.returns(Order.make())
+  dataStore.get.forArg(0, 'order').returns(Order.make())
   dataStore.get.forArg(0, 'user').returns(User.make())
   return {
     presentation, dataStore,

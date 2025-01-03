@@ -2,29 +2,31 @@ import {assert} from 'chai'
 import {Atom} from '@borshch/utilities'
 import {UpdateOrderList} from './update-order-list.js'
 import {DataStoreError} from '../../dependencies/index.js'
-import {DataStoreMock, NotifierMock, OrderListData} from '../../dependencies/test-utilities.js'
+import {DataStoreMock, makeDummyOrders, NotifierMock} from '../../dependencies/test-utilities.js'
+import {OrderListPresentation} from '../entities/order-list-presentation.js'
+import {OrderPresentation} from '../../order/entities/order-presentation.js'
+import {User} from '../../user/entities/user.js'
 import {OrderList} from '../entities/order-list.js'
 import {Order} from '../../order/entities/order.js'
-import {User} from '../../user/entities/user.js'
 
 suite('update order list', () => {
   test('present empty list', async () => {
     const {updateOrderList, presentation, dataStore} = setup()
     dataStore.get.defer()
-    presentation.update(() => OrderList.make({offset: 0, limit: 20}))
+    presentation.update(() => OrderListPresentation.make({offset: 0, limit: 20}))
 
     const listing = updateOrderList()
     assert.deepEqual(presentation.get(), {loading: true, list: [], error: undefined, offset: 0, limit: 20, total: 0})
     assert.deepEqual(dataStore.get.lastCall, ['orders', {offset: 0, limit: 20}])
 
-    await dataStore.get.resolve(0, OrderListData.make({list: [], total: 0}))
+    await dataStore.get.resolve(0, OrderList.make({list: [], total: 0}))
     await listing
     assert.deepEqual(presentation.get(), {loading: false, list: [], error: undefined, offset: 0, limit: 20, total: 0})
   })
 
   test('present error, when data getting failed and list is empty', async () => {
     const {updateOrderList, presentation, dataStore} = setup()
-    presentation.update(() => OrderList.make())
+    presentation.update(() => OrderListPresentation.make())
 
     dataStore.get.fails(new DataStoreError('Oj vej', {code: '001'}))
     await updateOrderList()
@@ -49,7 +51,7 @@ suite('update order list', () => {
 
   test('show error notification, when data getting failed and list is not empty', async () => {
     const {updateOrderList, presentation, dataStore, notifier} = setup()
-    presentation.update(() => OrderList.make({list: [Order.make()]}))
+    presentation.update(() => OrderListPresentation.make({list: [OrderPresentation.make()]}))
 
     dataStore.get.fails(new DataStoreError('Oj vej', {code: '001'}))
     await updateOrderList()
@@ -64,10 +66,10 @@ suite('update order list', () => {
 
   test('update an order list meta data', async () => {
     const {updateOrderList, presentation, dataStore} = setup()
-    presentation.update(() => OrderList.make({offset: 0, limit: 1}))
+    presentation.update(() => OrderListPresentation.make({offset: 0, limit: 1}))
     dataStore.get
       .for('orders', {offset: 0, limit: 1})
-      .returns(OrderListData.make({list: OrderListData.makeDummyOrders(1), total: 1}))
+      .returns(OrderList.make({list: makeDummyOrders(1), total: 1}))
 
     await updateOrderList()
 
@@ -76,10 +78,10 @@ suite('update order list', () => {
 
   test('update another order list meta data', async () => {
     const {updateOrderList, presentation, dataStore} = setup()
-    presentation.update(() => OrderList.make({offset: 1, limit: 2}))
+    presentation.update(() => OrderListPresentation.make({offset: 1, limit: 2}))
     dataStore.get
       .for('orders', {offset: 1, limit: 2})
-      .returns(OrderListData.make({list: OrderListData.makeDummyOrders(2), total: 3}))
+      .returns(OrderList.make({list: makeDummyOrders(2), total: 3}))
 
     await updateOrderList()
 
@@ -88,10 +90,10 @@ suite('update order list', () => {
 
   test('present an order data', async () => {
     const {updateOrderList, presentation, dataStore} = setup()
-    presentation.update(() => OrderList.make({offset: 0, limit: 1}))
+    presentation.update(() => OrderListPresentation.make({offset: 0, limit: 1}))
 
-    dataStore.get.for('orders', {offset: 0, limit: 1}).returns(OrderListData.make({
-      list: [OrderListData.makeOrder({
+    dataStore.get.for('orders', {offset: 0, limit: 1}).returns(OrderList.make({
+      list: [Order.make({
         id: 'id',
         createdDate: '2023-11-12T08:12:01.010Z',
         user: 'userId',
@@ -117,10 +119,10 @@ suite('update order list', () => {
 
   test('present another order data', async () => {
     const {updateOrderList, presentation, dataStore} = setup()
-    presentation.update(() => OrderList.make({offset: 0, limit: 1}))
+    presentation.update(() => OrderListPresentation.make({offset: 0, limit: 1}))
 
-    dataStore.get.for('orders', {offset: 0, limit: 1}).returns(OrderListData.make({
-      list: [OrderListData.makeOrder({
+    dataStore.get.for('orders', {offset: 0, limit: 1}).returns(OrderList.make({
+      list: [Order.make({
         id: 'anotherId',
         createdDate: '2024-07-10T11:85:20.390Z',
         user: 'anotherUserId',
@@ -146,17 +148,17 @@ suite('update order list', () => {
 
   test('present all orders data', async () => {
     const {updateOrderList, presentation, dataStore} = setup()
-    presentation.update(() => OrderList.make({offset: 0, limit: 1}))
+    presentation.update(() => OrderListPresentation.make({offset: 0, limit: 1}))
 
-    dataStore.get.for('orders', {offset: 0, limit: 1}).returns(OrderListData.make({
-      list: [OrderListData.makeOrder({
+    dataStore.get.for('orders', {offset: 0, limit: 1}).returns(OrderList.make({
+      list: [Order.make({
         id: 'id',
         createdDate: '2023-11-12T08:12:01.010Z',
         user: 'userId',
         sum: 0.5,
         paymentStatus: 'unpaid',
         fulfillmentStatus: 'pending',
-      }), OrderListData.makeOrder({
+      }), Order.make({
         id: 'anotherId',
         createdDate: '2024-07-10T11:85:20.390Z',
         user: 'anotherUserId',
@@ -192,12 +194,12 @@ suite('update order list', () => {
 
   test('present orders of the same user', async () => {
     const {updateOrderList, presentation, dataStore} = setup()
-    presentation.update(() => OrderList.make({offset: 0, limit: 1}))
+    presentation.update(() => OrderListPresentation.make({offset: 0, limit: 1}))
 
     dataStore.get
       .for('orders', {offset: 0, limit: 1})
-      .returns(OrderListData.make({
-        list: [OrderListData.makeOrder({user: 'userId'}), OrderListData.makeOrder({user: 'userId'})]
+      .returns(OrderList.make({
+        list: [Order.make({user: 'userId'}), Order.make({user: 'userId'})]
       }))
     dataStore.get.for('users', ['userId']).returns([User.make({id: 'userId', name: 'user name'})])
 
@@ -211,13 +213,13 @@ suite('update order list', () => {
 
   test('update order list by default', async () => {
     const {updateOrderList, presentation, dataStore} = setup()
-    presentation.update(() => OrderList.make({offset: 0, limit: 1}))
+    presentation.update(() => OrderListPresentation.make({offset: 0, limit: 1}))
 
-    dataStore.get.for('orders', {offset: 0, limit: 1}).returns(OrderListData.make({
-      list: [OrderListData.makeOrder({id: 'id'})]
+    dataStore.get.for('orders', {offset: 0, limit: 1}).returns(OrderList.make({
+      list: [Order.make({id: 'id'})]
     }))
-    dataStore.get.for('orders', {offset: 1, limit: 1}).returns(OrderListData.make({
-      list: [OrderListData.makeOrder({id: 'anotherId'})]
+    dataStore.get.for('orders', {offset: 1, limit: 1}).returns(OrderList.make({
+      list: [Order.make({id: 'anotherId'})]
     }))
 
     await updateOrderList()
@@ -231,13 +233,13 @@ suite('update order list', () => {
 
   test('refresh order list', async () => {
     const {updateOrderList, presentation, dataStore} = setup()
-    presentation.update(() => OrderList.make({
+    presentation.update(() => OrderListPresentation.make({
       offset: 2,
       limit: 1,
-      list: [OrderList.makeOrder({id: 'id1'}), OrderList.makeOrder({id: 'id2'})],
+      list: [OrderListPresentation.makeOrder({id: 'id1'}), OrderListPresentation.makeOrder({id: 'id2'})],
     }))
-    dataStore.get.for('orders', {offset: 0, limit: 2}).returns(OrderListData.make({
-      list: [OrderListData.makeOrder({id: 'refreshedId1'}), OrderListData.makeOrder({id: 'refreshedId2'})]
+    dataStore.get.for('orders', {offset: 0, limit: 2}).returns(OrderList.make({
+      list: [Order.make({id: 'refreshedId1'}), Order.make({id: 'refreshedId2'})]
     }))
 
     await updateOrderList({refresh: true})
@@ -248,19 +250,19 @@ suite('update order list', () => {
     assert.equal(list.at(1).id, 'refreshedId2')
     assert.equal(offset, 2)
 
-    presentation.update(() => OrderList.make({
+    presentation.update(() => OrderListPresentation.make({
       offset: 3,
       limit: 1,
       list: [
-        OrderList.makeOrder({id: 'id1'}),
-        OrderList.makeOrder({id: 'id2'}),
-        OrderList.makeOrder({id: 'id3'}),
+        OrderListPresentation.makeOrder({id: 'id1'}),
+        OrderListPresentation.makeOrder({id: 'id2'}),
+        OrderListPresentation.makeOrder({id: 'id3'}),
       ],
     }))
-    dataStore.get.for('orders', {offset: 0, limit: 3}).returns(OrderListData.make({list: [
-      OrderListData.makeOrder({id: 'refreshedId1'}),
-      OrderListData.makeOrder({id: 'refreshedId2'}),
-      OrderListData.makeOrder({id: 'refreshedId3'}),
+    dataStore.get.for('orders', {offset: 0, limit: 3}).returns(OrderList.make({list: [
+      Order.make({id: 'refreshedId1'}),
+      Order.make({id: 'refreshedId2'}),
+      Order.make({id: 'refreshedId3'}),
     ]}))
 
     await updateOrderList({refresh: true})
@@ -279,7 +281,7 @@ const setup = () => {
   const dataStore = new DataStoreMock()
   const notifier = new NotifierMock()
   dataStore.get.forArg(0, 'users').returns([])
-  dataStore.get.forArg(0, 'orders').returns(OrderListData.make())
+  dataStore.get.forArg(0, 'orders').returns(OrderList.make())
   return {
     presentation, dataStore, notifier,
     updateOrderList: UpdateOrderList({presentation, dataStore, notifier})

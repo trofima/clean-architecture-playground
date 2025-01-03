@@ -1,17 +1,14 @@
-import {User} from '../../user/entities/user.js'
-
 export const Order = {
   make: ({
     id = '',
     createdDate = '',
     updatedDate = '',
-    user = User.make(),
+    user = '',
     sum = 0,
     paymentStatus = '',
     fulfillmentStatus = '',
     shippingAddress = '',
-    changes = {},
   } = {}) => ({
-    id, createdDate, updatedDate, user, sum, paymentStatus, fulfillmentStatus, shippingAddress, changes,
+    id, createdDate, updatedDate, user, sum, paymentStatus, fulfillmentStatus, shippingAddress,
   }),
 }

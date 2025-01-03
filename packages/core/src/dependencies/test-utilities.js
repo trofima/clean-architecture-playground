@@ -1,4 +1,5 @@
 import {AsyncFunctionSpy} from '@borshch/utilities'
+import {Order} from '../order/entities/order.js'
 
 export class DataStoreMock {
   get = new AsyncFunctionSpy()
@@ -17,17 +18,4 @@ export class NotifierMock {
   confirm = new AsyncFunctionSpy()
 }
 
-export const OrderListData = {
-  make: ({list = [], total = 0} = {}) => ({list, total}),
-  makeOrder: ({
-    id = '',
-    createdDate = '',
-    updatedDate = '',
-    user = '',
-    sum = 0,
-    paymentStatus = '',
-    fulfillmentStatus = '',
-    shippingAddress = '',
-  } = {}) => ({id, createdDate, updatedDate, user, sum, paymentStatus, fulfillmentStatus, shippingAddress}),
-  makeDummyOrders: (count) => Array(count).fill(undefined).map(OrderListData.makeOrder),
-}
+export const makeDummyOrders = (count) => Array(count).fill(undefined).map(Order.make)
