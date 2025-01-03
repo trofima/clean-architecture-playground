@@ -20,6 +20,12 @@ The intent is make it conceivable to everyone.
 ><br>
 >If you have better ideas (unlikely) - create a PR and prepare to fight.
 
+The project contains core module and it's integration to the different ui frameworks, like react, angular, vue etc. There is also pure native example.
+<br> **It showcases how you can split business logic not only from view, but also from framework(!) and even platform** (yes there is react-native example).
+>[!CAUTION]
+><br>
+>Not all examples are already integrated. Why? Because you didn't pay me for that.
+
 <br>
 UI example (no, I'm not going to waste time on styles; only structure and use cases matter. but your are welcome to PR better styles)
 <img width="997" alt="image" src="https://github.com/user-attachments/assets/0f7e7efb-a07c-4183-9005-45343eb3b6a3" />
