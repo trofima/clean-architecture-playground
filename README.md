@@ -88,6 +88,6 @@ User should be able to load next page to the the rest of the orders
 #### Save Order
 User should be able to save changed order.
 
-#### Close Order
+#### Close Order ✔️
 User should be able to close order.
 <br>Closing should be confirmed by user.
