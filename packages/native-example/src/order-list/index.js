@@ -1,5 +1,5 @@
 import {Atom} from '@borshch/utilities'
-import {RenderOrderList, RemoveOrderFromList, UpdateOrderList, presentOrderList} from '@clean-architecture-playground/core'
+import {OpenOrder, RenderOrderList, RemoveOrderFromList, UpdateOrderList, presentOrderList} from '@clean-architecture-playground/core'
 import {renderEmptyOrderItem, renderErrorView, renderOrderItem, renderOrderListView} from './view.js'
 import {dataStore, notifier} from '@clean-architecture-playground/core/dummy-dependencies'
 import {appNavigator} from '../dependencies/index.js'
@@ -34,7 +34,12 @@ export class OrderList extends HTMLElement {
     removeOrderFromList: RemoveOrderFromList({
       dataStore, notifier,
       presentation: this.#presentation,
-    })
+    }),
+    openOrder: OpenOrder({
+      notifier,
+      navigator: appNavigator,
+      presentation: this.#presentation,
+    }),
   }
 
   #renderHtml = (presentationModel) => {
@@ -48,7 +53,7 @@ export class OrderList extends HTMLElement {
 
     shadowRoot.querySelectorAll('.order-item').forEach(element =>
       element.addEventListener('click', ({currentTarget}) =>
-        appNavigator.open(`/order?id=${currentTarget.dataset.orderId}`)))
+        this.#controller.openOrder(currentTarget.dataset.orderId)))
 
     shadowRoot.querySelectorAll('.order-item > .delete-button > button').forEach(element =>
       element.addEventListener('click', (event) => {

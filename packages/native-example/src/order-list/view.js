@@ -34,8 +34,8 @@ export const renderOrderListView = () => `
   </div>
 `
 
-export const renderOrderItem = ({id, createdDate, user, sum, paymentStatus, fulfillmentStatus}) => `
-    <li class="order-item" data-order-id="${id}">
+export const renderOrderItem = ({id, createdDate, user, sum, paymentStatus, fulfillmentStatus, updating}) => `
+    <li class="order-item ${updating ? 'updating' : ''}" data-order-id="${id}">
       <div>
           <p>${user}</p>
       </div>
@@ -54,7 +54,7 @@ export const renderOrderItem = ({id, createdDate, user, sum, paymentStatus, fulf
       <div class="delete-button">
       ${id
         ? `
-          <button data-order-id="${id}">
+          <button data-order-id="${id}" ${updating ? 'disabled' : ''}>
             <img src = "static/delete.svg" alt="Delete order button"/>
           </button>
         `

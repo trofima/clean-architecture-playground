@@ -119,4 +119,7 @@ ul.order-list{
   >div.list>li.order-item:hover {
     background-color: rgba(0, 0, 0, 0.1);
   }
+  >div.list>li.order-item.updating {
+    background-color: rgba(0, 0, 0, 0.2);
+  }
 }
