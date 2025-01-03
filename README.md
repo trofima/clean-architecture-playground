@@ -75,15 +75,9 @@ User should be able to refresh order list in order to see current order data
 #### Render Order Details ✔️
 User see all order details.
 
-#### Change Order Payment Status
-User should be able to change an order payment status.
-
-#### Change Order Fulfillment Status
-User should be able to change an order fulfillment status.
-
-#### Change Shipping Address
-User should be able to load next page to the the rest of the orders
-<br>(It might be infinite scroll or pagination, decision has not been made yet)
+#### Change Order Fiedl
+User should be able to change allowed fields.
+<br>For now those are: payment status, fulfillments status, shipping address.
 
 #### Save Order
 User should be able to save changed order.
