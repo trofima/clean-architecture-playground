@@ -20,8 +20,10 @@ The intent is make it conceivable to everyone.
 ><br>
 >If you have better ideas (unlikely) - create a PR and prepare to fight.
 
+<br>
 The project contains core module and it's integration to the different ui frameworks, like react, angular, vue etc. There is also pure native example.
 <br> **It showcases how you can split business logic not only from view, but also from framework(!) and even platform** (yes there is react-native example).
+
 >[!CAUTION]
 ><br>
 >Not all examples are already integrated. Why? Because you didn't pay me for that.
