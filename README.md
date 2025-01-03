@@ -4,7 +4,7 @@ You will see UseCases, Entities, Presenters, Controllers, inverted dependencies 
 <br>
 And TESTS of course - simple, fast Developer tests (as Kent Beck commanded).
 <br>
-Used `mocha/chai` for testing (you prefer `jest` - you are my enemy). 
+Used `mocha/chai` for testing (you prefer `jest` - you are my enemy).
 <br>
 <br>
 The examples are not intended to be "true" FP, since true FP is readable only to chosen ones.
@@ -24,11 +24,23 @@ The intent is make it conceivable to everyone.
 
 The project contains [core](./packages/core) module and it's integration to the different ui frameworks, like [react](./packages/react-example), [angular](./packages/angular-example), [vue](./packages/vue-example) etc. There is also pure [native](./packages/native-example) example.
 <br><b>It showcases how you can split business logic not only from view, but also from framework(!) and even platform</b> (yes there is [react-native](./packages/react-native-example) integration).
+
 <br>
 <br>
 
 >[!CAUTION]
 >Not all examples are already integrated. Why? Because you didn't pay me for that.
+
+<br>
+
+To run example locally, clone repo, then navigate to example you are interested in (i.e. `packages/react-example`). Then:
+
+```
+npm i
+```
+```
+npm start
+```
 
 <br>
 UI example (no, I'm not going to waste time on styles; only structure and use cases matter. but your are welcome to PR better styles)
