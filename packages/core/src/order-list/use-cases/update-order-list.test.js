@@ -111,6 +111,7 @@ suite('update order list', () => {
       sum: 0.5,
       paymentStatus: 'unpaid',
       fulfillmentStatus: 'pending',
+      updating: false,
     }])
   })
 
@@ -126,7 +127,7 @@ suite('update order list', () => {
         sum: 5.6,
         paymentStatus: 'paid',
         fulfillmentStatus: 'fulfilled',
-      })]
+      })],
     }))
     dataStore.get.for('users', ['anotherUserId']).returns([User.make({id: 'anotherUserId', name: 'another user name'})])
 
@@ -139,6 +140,7 @@ suite('update order list', () => {
       sum: 5.6,
       paymentStatus: 'paid',
       fulfillmentStatus: 'fulfilled',
+      updating: false,
     }])
   })
 
@@ -176,6 +178,7 @@ suite('update order list', () => {
       sum: 0.5,
       paymentStatus: 'unpaid',
       fulfillmentStatus: 'pending',
+      updating: false,
     }, {
       id: 'anotherId',
       createdDate: '2024-07-10T11:85:20.390Z',
@@ -183,6 +186,7 @@ suite('update order list', () => {
       sum: 5.6,
       paymentStatus: 'paid',
       fulfillmentStatus: 'fulfilled',
+      updating: false,
     }])
   })
 
