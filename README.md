@@ -2,7 +2,7 @@
 Opinionated example of how you can apply SOLID principles and CA to UI Web development. Based on Uncle Bob Martin Clean Architecture and Functional Design books.
 You will see UseCases, Entities, Presenters, Controllers, inverted dependencies etc.
 <br>
-And TESTS of course - simple, fast Developer tests (by Kent Beck).
+And TESTS of course - simple, fast Developer tests (as Kent Beck commanded).
 <br>
 Used `mocha/chai` for testing (you prefer `jest` - you are my enemy). 
 <br>
@@ -26,28 +26,36 @@ UI example (no, I'm not going to waste time on styles; only structure and use ca
 
 
 ## User Stories
-In this example I implement part of backoffice for the online store. I do not intend to cover all edge cases and implement fully functional online store admin app. <b>I intend to implement practical example of several parts just as a showcase</b>. The following user stories will give you idea of what is or going to be covered.
+In this example I implement part of backoffice for the online store. I do not intend to cover all edge cases and implement fully functional online store admin app. <b>I intend to implement practical example of several parts just as a showcase</b>. The following user stories will give you an idea of what is covered.
 
-### Render Order List
+### Order List
+#### Render Order List :heavy_check_mark:
 User should see list of the orders (first page) and total order count.
 <br>Each order should contain id, created date, customer name, sum, payment status, fulfillment status.
 <br>While loading the orders, user should see some indication of that.
 
-### Open Order
+#### Open an Order :heavy_check_mark:
 User should be able to open the order to see its details.
 
-### Remove Order
+#### Remove an Order :heavy_check_mark:
 User should be able to remove order from the list.
+<br>Removal should be confirmed by user.
 <br>While removing, user should not be able to interact with the order.
 
-### Change Order Payment status
+#### Render Next Page of Order List :heavy_check_mark:
+User should be able to load next batch of the orders
+<br>(It might be infinite scroll or pagination, doesn't really matter)
+
+#### Refresh Order List :heavy_check_mark:
+User should be able to refresh order list in order to see current order data
+
+### Order Form
+#### Change Order Payment Status
 User should be able to change an order payment status.
-<br>While changing, user should not be able to interact with the order.
 
-### Change Order Fulfillment status
+#### Change Order Fulfillment Status
 User should be able to change an order fulfillment status.
-<br>While changing, user should not be able to interact with the order.
 
-### Render Next Page Of The Order List
+#### Change Shipping Address
 User should be able to load next page to the the rest of the orders
 <br>(It might be infinite scroll or pagination, decision has not been made yet)
