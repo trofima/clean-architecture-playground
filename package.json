@@ -1,5 +1,6 @@
 {
   "name": "clean-architecture-playground",
+  "description": "A playground to learn and experiment with Clean Architecture",
   "private": true,
   "workspaces": [
     "packages/*"
