@@ -141,6 +141,10 @@ class DataStore {
     return this.#entityToStore[key].set(data)
   }
 
+  remove(key, data) {
+    return this.#entityToStore[key].remove(data)
+  }
+
   #entityToStore = {
     orders: {
       get: async ({offset, limit}) => {
@@ -160,6 +164,10 @@ class DataStore {
       set: async () => {
         throw new DataStoreError('Impossible to set order list. This is nonsense')
       },
+
+      remove: async () => {
+        throw new DataStoreError('Impossible to remove order list. This is nonsense')
+      },
     },
 
     order: {
@@ -174,6 +182,10 @@ class DataStore {
 
       set: (order) => {
         this.#update('orders', order)
+      },
+
+      remove: async (id) => {
+        this.#remove('orders', id)
       },
     },
 
@@ -208,6 +220,13 @@ class DataStore {
     const updatedEntities = updatedEntity.id
       ? entities.map((entity) => entity.id === updatedEntity.id ? updatedEntity : entity)
       : [...entities, {...updatedEntity, id: (Number(entities.id) + 1).toString()}]
+    const updatedEntitiesString = JSON.stringify(updatedEntities)
+    localStorage.setItem(key, updatedEntitiesString)
+  }
+
+  #remove(key, id) {
+    const entities = this.#get(key)
+    const updatedEntities = entities.filter((entity) => entity.id !== id)
     const updatedEntitiesString = JSON.stringify(updatedEntities)
     localStorage.setItem(key, updatedEntitiesString)
   }

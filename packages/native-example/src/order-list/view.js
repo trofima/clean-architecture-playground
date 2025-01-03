@@ -51,7 +51,7 @@ export const renderOrderItem = ({id, createdDate, user, sum, paymentStatus, fulf
       <div>
           <p>${fulfillmentStatus}</p>
       </div>
-      <div class="delete-button" data-order-id="${id}">
+      <div class="delete-button">
       ${id
         ? `
           <button data-order-id="${id}">

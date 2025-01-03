@@ -3,6 +3,7 @@ import {AsyncFunctionSpy} from '@borshch/utilities'
 export class DataStoreMock {
   get = new AsyncFunctionSpy()
   set = new AsyncFunctionSpy()
+  remove = new AsyncFunctionSpy()
 }
 
 export class NavigatorMock {

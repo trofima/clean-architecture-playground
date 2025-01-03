@@ -1,5 +1,5 @@
 import {Atom} from '@borshch/utilities'
-import {RenderOrderList, UpdateOrderList, presentOrderList} from '@clean-architecture-playground/core'
+import {RenderOrderList, RemoveOrderFromList, UpdateOrderList, presentOrderList} from '@clean-architecture-playground/core'
 import {renderEmptyOrderItem, renderErrorView, renderOrderItem, renderOrderListView} from './view.js'
 import {dataStore, notifier} from '@clean-architecture-playground/core/dummy-dependencies'
 import {appNavigator} from '../dependencies/index.js'
@@ -8,8 +8,8 @@ export class OrderList extends HTMLElement {
   connectedCallback() {
     this.attachShadow({mode: 'open'})
     this.shadowRoot.innerHTML = renderOrderListView()
-    this.#loadMoreButton.addEventListener('click', () => this.#updateOrderList())
-    this.#refreshButton.addEventListener('click', () => this.#updateOrderList({refresh: true}))
+    this.#loadMoreButton.addEventListener('click', () => this.#controller.updateOrderList())
+    this.#refreshButton.addEventListener('click', () => this.#controller.updateOrderList({refresh: true}))
     this.#presentation.subscribe(this.#renderHtml)
     this.#controller.renderOrderList()
   }
@@ -21,8 +21,7 @@ export class OrderList extends HTMLElement {
   #presentation = Atom.of({})
 
   #updateOrderList = UpdateOrderList({
-    dataStore,
-    notifier,
+    dataStore, notifier,
     presentation: this.#presentation,
   })
 
@@ -32,6 +31,10 @@ export class OrderList extends HTMLElement {
       updateOrderList: this.#updateOrderList,
     }),
     updateOrderList: this.#updateOrderList,
+    removeOrderFromList: RemoveOrderFromList({
+      dataStore, notifier,
+      presentation: this.#presentation,
+    })
   }
 
   #renderHtml = (presentationModel) => {
@@ -46,6 +49,12 @@ export class OrderList extends HTMLElement {
     shadowRoot.querySelectorAll('.order-item').forEach(element =>
       element.addEventListener('click', ({currentTarget}) =>
         appNavigator.open(`/order?id=${currentTarget.dataset.orderId}`)))
+
+    shadowRoot.querySelectorAll('.order-item > .delete-button > button').forEach(element =>
+      element.addEventListener('click', (event) => {
+        event.stopPropagation()
+        this.#controller.removeOrderFromList(event.currentTarget.dataset.orderId)
+      }))
   }
 
   get #loadMoreButton() {
