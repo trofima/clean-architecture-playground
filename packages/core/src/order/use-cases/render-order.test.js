@@ -12,7 +12,21 @@ suite('Render order', () => {
 
     const rendering = renderOrder('id')
 
-    assert.deepEqual(presentation.get(), {loading: true, order: undefined, error: undefined})
+    assert.deepEqual(presentation.get(), {
+      loading: true,
+      data: {
+        id: '',
+        createdDate: '',
+        updatedDate: '',
+        user: {id: '', name: '', billingAddress: ''},
+        sum: 0,
+        paymentStatus: '',
+        fulfillmentStatus: '',
+        shippingAddress: '',
+      },
+      updates: {},
+      error: undefined,
+    })
     await rendering
   })
 
@@ -28,11 +42,12 @@ suite('Render order', () => {
       fulfillmentStatus: 'pending',
       shippingAddress: 'address',
     }))
-    dataStore.get.for('user', 'userId').returns(User.make({id: 'userId', name: 'name', billingAddress: 'billing address'}))
+    dataStore.get.for('user', 'userId')
+      .returns(User.make({id: 'userId', name: 'name', billingAddress: 'billing address'}))
 
     await renderOrder('id')
 
-    assert.deepEqual(presentation.get().order, {
+    assert.deepEqual(presentation.get().data, {
       id: 'id',
       createdDate: '2023-11-12T08:12:01.010Z',
       updatedDate: '2024-12-24T17:57:03.444Z',
@@ -56,11 +71,12 @@ suite('Render order', () => {
       fulfillmentStatus: 'fulfilled',
       shippingAddress: 'another shipping address',
     }))
-    dataStore.get.for('user', 'anotherUserId').returns(User.make({id: 'anotherUserId', name: 'another name', billingAddress: 'another billing address'}))
+    dataStore.get.for('user', 'anotherUserId')
+      .returns(User.make({id: 'anotherUserId', name: 'another name', billingAddress: 'another billing address'}))
 
     await renderOrder('anotherId')
 
-    assert.deepEqual(presentation.get().order, {
+    assert.deepEqual(presentation.get().data, {
       id: 'anotherId',
       createdDate: '2024-07-10T11:85:20.390Z',
       updatedDate: '2024-10-30T24:48:15.555Z',
