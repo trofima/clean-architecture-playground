@@ -1,6 +1,6 @@
 import { Atom } from '@borshch/utilities';
 import { Component, ElementRef, Input, SimpleChanges } from '@angular/core';
-import { RenderOrderList, UpdateOrderList, presentOrderList, OpenOrder } from '@clean-architecture-playground/core';
+import { RenderOrderList, UpdateOrderList, presentOrderList, OpenOrder, RemoveOrderFromList } from '@clean-architecture-playground/core';
 import { dataStore, notifier } from '@clean-architecture-playground/core/dummy-dependencies';
 import { Router } from '@angular/router';
 
@@ -17,7 +17,6 @@ export class OrderListPageComponent {
   viewModel = {} as any
   #navigator = {
     open: (path: string) => {
-      console.log('navigate to order', path)
       return this.router.navigate([path]);
     }
   }
@@ -40,18 +39,30 @@ export class OrderListPageComponent {
   }
   
   get orders() {
-    return !this.viewModel.loading && this.viewModel.list?.length
-      ? this.viewModel.list
-      : Array(3).fill(this.emptyOrderPresentation)
+    return this.viewModel.loading && !this.viewModel.list?.length
+      ? Array(3).fill(this.emptyOrderPresentation)
+      : this.viewModel.list
   }
   
   openOrder(orderId: string) {
     if (orderId) {
-      console.log('open order', orderId)
       this.#openOrder(orderId)
     }
   }
   
+  refresh() {
+    this.#updateOrderList({ refresh: true })
+  }
+  
+  loadMore() {
+    this.#updateOrderList()
+  }
+  
+  deleteOrder(event: any, orderId: string) {
+    event.stopPropagation()
+    this.#removeOrderFromList(orderId)
+  }
+
   #renderOrderList = RenderOrderList({
     presentation: this.#presentation,
     updateOrderList: UpdateOrderList({
@@ -64,6 +75,17 @@ export class OrderListPageComponent {
   #openOrder = OpenOrder({
     presentation: this.#presentation,
     navigator: this.#navigator,
+  })
+  
+  #updateOrderList = UpdateOrderList({
+    dataStore,
+    notifier,
+    presentation: this.#presentation,
+  })
+
+  #removeOrderFromList = RemoveOrderFromList({
+    dataStore, notifier,
+    presentation: this.#presentation,
   })
   
   #unsubscribeFromPresentation: any

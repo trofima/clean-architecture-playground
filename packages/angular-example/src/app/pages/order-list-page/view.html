@@ -1,7 +1,7 @@
 <div class="order-page">
   <div class="order-page-header">
     <h1>Orders List</h1>
-    <button id="refresh" class="add-order-button">Refresh order list</button>
+    <button id="refresh" class="add-order-button" (click)="refresh()">Refresh order list</button>
   </div>
   
   <ul class="order-list">
@@ -43,10 +43,22 @@
             <p>{{order.fulfillmentStatus}}</p>
         </div>
         <div class="delete-button">
-          <button *ngIf="order?.id" class="delete-order-button" data-order-id="order.id">
+          <button
+            *ngIf="order?.id"
+            class="delete-order-button"
+            (click)="deleteOrder($event, order.id)"
+          >
             <img src = "../../static/delete.svg" alt="Delete order button"/>
           </button>
         </div>
       </li>
   </ul>
+  <button 
+    *ngIf="viewModel.total > viewModel.list.length"
+    class="add-order-button" 
+    (click)="loadMore()"
+  >
+    <p *ngIf="viewModel.loading">...</p>
+    <p *ngIf="!viewModel.loading">Load More</p>
+  </button>
 </div>
