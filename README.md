@@ -84,3 +84,6 @@ User should be able to change an order fulfillment status.
 #### Change Shipping Address
 User should be able to load next page to the the rest of the orders
 <br>(It might be infinite scroll or pagination, decision has not been made yet)
+
+#### Save Order
+User should be able to save changed order.
