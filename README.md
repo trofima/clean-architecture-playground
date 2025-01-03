@@ -26,7 +26,6 @@ The project contains core module and it's integration to the different ui framew
 <br>
 
 >[!CAUTION]
-><br>
 >Not all examples are already integrated. Why? Because you didn't pay me for that.
 
 <br>
