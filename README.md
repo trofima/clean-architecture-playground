@@ -22,8 +22,8 @@ The intent is make it conceivable to everyone.
 
 <br>
 
-The project contains [core](https://github.com/trofima/clean-architecture-playground/tree/main/packages/core) module and it's integration to the different ui frameworks, like [react](https://github.com/trofima/clean-architecture-playground/tree/main/packages/react-example), [angular](https://github.com/trofima/clean-architecture-playground/tree/main/packages/angular-example), vue etc. There is also pure native example.
-<br><b>It showcases how you can split business logic not only from view, but also from framework(!) and even platform</b> (yes there is [react-native](https://github.com/trofima/clean-architecture-playground/tree/main/packages/react-native-example) integration).
+The project contains [core](/tree/main/packages/core) module and it's integration to the different ui frameworks, like [react](/tree/main/packages/react-example), [angular](/tree/main/packages/angular-example), [vue](/tree/main/packages/vue-example) etc. There is also pure [native](/tree/main/packages/native-example) example.
+<br><b>It showcases how you can split business logic not only from view, but also from framework(!) and even platform</b> (yes there is [react-native](/tree/main/packages/react-native-example) integration).
 <br>
 <br>
 
