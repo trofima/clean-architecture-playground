@@ -7,7 +7,7 @@ import {User} from '../../user/entities/user.js'
 import {Order} from '../entities/order.js'
 
 suite('Render order', () => {
-  test('present order loading', async () => {
+  test('initialize order presentation', async () => {
     const {renderOrder, presentation} = setup()
 
     const rendering = renderOrder('id')
@@ -24,8 +24,18 @@ suite('Render order', () => {
         fulfillmentStatus: '',
         shippingAddress: '',
       },
-      updates: {},
+      originalData: {
+        id: '',
+        createdDate: '',
+        updatedDate: '',
+        user: {id: '', name: '', billingAddress: ''},
+        sum: 0,
+        paymentStatus: '',
+        fulfillmentStatus: '',
+        shippingAddress: '',
+      },
       error: undefined,
+      hasChanges: false,
     })
     await rendering
   })
@@ -57,6 +67,16 @@ suite('Render order', () => {
       fulfillmentStatus: 'pending',
       shippingAddress: 'address',
     })
+    assert.deepEqual(presentation.get().originalData, {
+      id: 'id',
+      createdDate: '2023-11-12T08:12:01.010Z',
+      updatedDate: '2024-12-24T17:57:03.444Z',
+      user: {id: 'userId', name: 'name', billingAddress: 'billing address'},
+      sum: 0.5,
+      paymentStatus: 'unpaid',
+      fulfillmentStatus: 'pending',
+      shippingAddress: 'address',
+    })
   })
 
   test('present another order data', async () => {
@@ -77,6 +97,16 @@ suite('Render order', () => {
     await renderOrder('anotherId')
 
     assert.deepEqual(presentation.get().data, {
+      id: 'anotherId',
+      createdDate: '2024-07-10T11:85:20.390Z',
+      updatedDate: '2024-10-30T24:48:15.555Z',
+      user: {id: 'anotherUserId', name: 'another name', billingAddress: 'another billing address'},
+      sum: 5.6,
+      paymentStatus: 'paid',
+      fulfillmentStatus: 'fulfilled',
+      shippingAddress: 'another shipping address',
+    })
+    assert.deepEqual(presentation.get().originalData, {
       id: 'anotherId',
       createdDate: '2024-07-10T11:85:20.390Z',
       updatedDate: '2024-10-30T24:48:15.555Z',

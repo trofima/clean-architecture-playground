@@ -7,7 +7,7 @@ import {OrderPresentation} from '../entities/order-presentation.js'
 suite('Close order', () => {
   test('close order form', async () => {
     const {closeOrder, presentation, navigator} = setup()
-    presentation.update(() => OrderPresentation.make({updates: {}}))
+    presentation.update(() => OrderPresentation.make({data: {}}))
 
     await closeOrder()
 
@@ -17,8 +17,8 @@ suite('Close order', () => {
   test('do not close, when has changes and closing is not confirmed', async () => {
     const {closeOrder, presentation, notifier, navigator} = setup()
     presentation.update(() => OrderPresentation.make({
-      data: {paymentStatus: 'unpaid'}, 
-      updates: {paymentStatus: 'paid'},
+      originalData: {paymentStatus: 'unpaid'},
+      data: {paymentStatus: 'paid'},
     }))
     notifier.confirm
       .for('Changes will be lost. Are you sure you want to close this order?', {type: 'warning'})
@@ -32,8 +32,8 @@ suite('Close order', () => {
   test('close, when has changes and closing is confirmed', async () => {
     const {closeOrder, presentation, notifier, navigator} = setup()
     presentation.update(() => OrderPresentation.make({
-      data: {paymentStatus: 'unpaid'},
-      updates: {paymentStatus: 'paid'},
+      originalData: {paymentStatus: 'unpaid'},
+      data: {paymentStatus: 'paid'},
     }))
     notifier.confirm
       .for('Changes will be lost. Are you sure you want to close this order?', {type: 'warning'})

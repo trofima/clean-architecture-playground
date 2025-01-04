@@ -4,65 +4,64 @@ import {ChangeOrderField} from './change-order-field.js'
 import {OrderPresentation} from '../entities/order-presentation.js'
 
 suite('change order field', () => {
-  test('add changed field to order updates', () => {
+  test('update field value', () => {
     const {changeOrderField, presentation} = setup()
 
     presentation.update(() => OrderPresentation.make({
       data: {paymentStatus: 'unpaid'},
-      updates: {},
     }))
     changeOrderField('paymentStatus', 'paid')
-    assert.deepEqual(presentation.get().updates, {paymentStatus: 'paid'})
+    assert.deepEqual(presentation.get().data, {paymentStatus: 'paid'})
 
     presentation.update(() => OrderPresentation.make({
       data: {paymentStatus: 'paid'},
-      updates: {},
     }))
     changeOrderField('paymentStatus', 'unpaid')
-    assert.deepEqual(presentation.get().updates, {paymentStatus: 'unpaid'})
+    assert.deepEqual(presentation.get().data, {paymentStatus: 'unpaid'})
 
     presentation.update(() => OrderPresentation.make({
       data: {fulfillmentStatus: 'pending'},
-      updates: {},
     }))
     changeOrderField('fulfillmentStatus', 'fulfilled')
-    assert.deepEqual(presentation.get().updates, {fulfillmentStatus: 'fulfilled'})
+    assert.deepEqual(presentation.get().data, {fulfillmentStatus: 'fulfilled'})
 
     presentation.update(() => OrderPresentation.make({
       data: {fulfillmentStatus: 'fulfilled'},
-      updates: {},
     }))
     changeOrderField('fulfillmentStatus', 'pending')
-    assert.deepEqual(presentation.get().updates, {fulfillmentStatus: 'pending'})
-  })
+    assert.deepEqual(presentation.get().data, {fulfillmentStatus: 'pending'})
 
-  test('keep previously changed field', () => {
-    const {changeOrderField, presentation} = setup()
     presentation.update(() => OrderPresentation.make({
       data: {paymentStatus: 'unpaid', fulfillmentStatus: 'pending'},
-      updates: {},
     }))
 
     changeOrderField('paymentStatus', 'paid')
     changeOrderField('fulfillmentStatus', 'fulfilled')
 
-    assert.deepEqual(presentation.get().updates, {
+    assert.deepEqual(presentation.get().data, {
       paymentStatus: 'paid',
       fulfillmentStatus: 'fulfilled',
     })
   })
 
-  test('remove unchanged field from updates', () => {
+  test('determine if order has changes', () => {
     const {changeOrderField, presentation} = setup()
+
     presentation.update(() => OrderPresentation.make({
       data: {paymentStatus: 'unpaid'},
-      updates: {},
     }))
-
     changeOrderField('paymentStatus', 'paid')
+    assert.equal(presentation.get().hasChanges, true)
     changeOrderField('paymentStatus', 'unpaid')
+    assert.equal(presentation.get().hasChanges, false)
 
-    assert.deepEqual(presentation.get().updates, {})
+    presentation.update(() => OrderPresentation.make({
+      data: {paymentStatus: 'unpaid', fulfillmentStatus: 'pending'},
+    }))
+    changeOrderField('paymentStatus', 'paid')
+    changeOrderField('fulfillmentStatus', 'fulfilled')
+    changeOrderField('paymentStatus', 'unpaid')
+    assert.equal(presentation.get().hasChanges, true)
   })
 })
 

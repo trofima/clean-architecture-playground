@@ -12,24 +12,27 @@ export const OrderPresentation = {
       fulfillmentStatus: '',
       shippingAddress: '',
     },
-    updates = {},
+    originalData = {...data},
     loading = false,
     error = undefined,
-  } = {}) => ({data, updates, loading, error}),
+  } = {}) => ({data, loading, error, originalData, hasChanges: hasChanges(data, originalData)}),
 
-  setData: (order, data) => ({...order, data, loading: false}),
+  setData: (order, data) => ({...order, data, originalData: {...data}, loading: false}),
 
   setFailed: (order, {message, code}) => ({...order, error: {message, code}, loading: false}),
 
-  hasChanges: (order) => Object.keys(order.updates).length > 0,
-
-  updateField: ({updates, ...rest}, {name, value}) => ({
-    ...rest,
-    updates: rest.data[name] !== value ? {...updates, [name]: value} : omit(updates, name)
-  }),
+  updateField: ({data, ...rest}, {name, value}) => {
+    const updatedData = {...data, [name]: value}
+    return ({
+      ...rest,
+      data: updatedData,
+      hasChanges: hasChanges(updatedData, rest.originalData)
+    })
+  },
 }
 
-const omit = (obj, key) => {
-  const {[key]: _, ...rest} = obj
-  return rest
+const hasChanges = (data, originalData) => {
+  for (const [key, value] of Object.entries(data))
+    if (value !== originalData[key]) return true
+  return false
 }
