@@ -14,26 +14,8 @@ suite('Render order', () => {
 
     assert.deepEqual(presentation.get(), {
       loading: true,
-      data: {
-        id: '',
-        createdDate: '',
-        updatedDate: '',
-        user: {id: '', name: '', billingAddress: ''},
-        sum: 0,
-        paymentStatus: '',
-        fulfillmentStatus: '',
-        shippingAddress: '',
-      },
-      originalData: {
-        id: '',
-        createdDate: '',
-        updatedDate: '',
-        user: {id: '', name: '', billingAddress: ''},
-        sum: 0,
-        paymentStatus: '',
-        fulfillmentStatus: '',
-        shippingAddress: '',
-      },
+      data: {},
+      originalData: {},
       error: undefined,
       hasChanges: false,
     })
