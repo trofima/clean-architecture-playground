@@ -22,4 +22,14 @@ export const OrderPresentation = {
   setFailed: (order, {message, code}) => ({...order, error: {message, code}, loading: false}),
 
   hasChanges: (order) => Object.keys(order.updates).length > 0,
+
+  updateField: ({updates, ...rest}, {name, value}) => ({
+    ...rest,
+    updates: rest.data[name] !== value ? {...updates, [name]: value} : omit(updates, name)
+  }),
+}
+
+const omit = (obj, key) => {
+  const {[key]: _, ...rest} = obj
+  return rest
 }
