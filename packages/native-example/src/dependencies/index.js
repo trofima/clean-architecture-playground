@@ -14,10 +14,19 @@ class AppNavigator {
     const appContainer = window.document.body.querySelector('#app-container')
 
     window.history.pushState({}, '', path)
+    this.#history.push(path)
     appContainer.innerHTML = `
       <${componentName} ${componentAttributes}></${componentName}>
     `
   }
+
+  close() {
+    if (this.#history.length > 1)
+      window.history.back()
+    else this.open('/')
+  }
+
+  #history = []
 }
 
 const pathToComponent = {

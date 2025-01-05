@@ -25,7 +25,7 @@ export const renderOrderDataView = ({
         <select id="payment-status" editable data-bind-to="paymentStatus">
           <option value="unpaid" ${paymentStatus === 'unpaid' ? 'selected' : ''}>Unpaid</option>
           <option value="paid" ${paymentStatus === 'paid' ? 'selected' : ''}>Paid</option>
-        <select>
+        </select>
       </label>
     </div>
     <div>
@@ -33,7 +33,7 @@ export const renderOrderDataView = ({
         <select id="fulfillment-status" editable data-bind-to="fulfillmentStatus">
           <option value="pending" ${fulfillmentStatus === 'pending' ? 'selected' : ''}>Pending</option>
           <option value="fulfilled" ${fulfillmentStatus === 'fulfilled' ? 'selected' : ''}>Fulfilled</option>
-        <select>
+        </select>
       </label> 
     </div>
     <div>
