@@ -5,16 +5,16 @@ import {User} from '../user/entities/user.js'
 
 suite('present order', () => {
   test('build view model', () => {
-    const viewModel = presentOrder({
-      order: OrderPresentation.make({
+    const viewModel = presentOrder(OrderPresentation.make({
+      data: OrderPresentation.makeData({
         id: 'id',
         user: User.make({name: 'A Name', billingAddress: 'billing address'}),
         paymentStatus: 'unpaid',
         fulfillmentStatus: 'pending',
         shippingAddress: 'shipping address',
       }),
-    })
-    assert.deepInclude(viewModel.order, {
+    }))
+    assert.deepInclude(viewModel.data, {
       id: 'id',
       user: 'A Name',
       paymentStatus: 'unpaid',
@@ -23,16 +23,16 @@ suite('present order', () => {
       billingAddress: 'billing address',
     })
 
-    const anotherViewModel = presentOrder({
-      order: OrderPresentation.make({
+    const anotherViewModel = presentOrder(OrderPresentation.make({
+      data: OrderPresentation.makeData({
         id: 'anotherId',
         user: User.make({name: 'Another Name', billingAddress: 'another billing address'}),
         paymentStatus: 'paid',
         fulfillmentStatus: 'fulfilled',
         shippingAddress: 'another shipping address',
       }),
-    })
-    assert.deepInclude(anotherViewModel.order, {
+    }))
+    assert.deepInclude(anotherViewModel.data, {
       id: 'anotherId',
       user: 'Another Name',
       paymentStatus: 'paid',
@@ -43,53 +43,53 @@ suite('present order', () => {
   })
 
   test('format created date', () => {
-    const {order: {createdDate: emptyCreatedDate}} = presentOrder({
-      order: OrderPresentation.make({createdDate: ''}),
-    })
+    const {data: {createdDate: emptyCreatedDate}} = presentOrder(OrderPresentation.make({
+      data: OrderPresentation.makeData({createdDate: ''}),
+    }))
     assert.equal(emptyCreatedDate, '')
 
-    const {order: {createdDate}} = presentOrder({
-      order: OrderPresentation.make({createdDate: '2023-11-12T08:12:01.010Z'}),
-    })
+    const {data: {createdDate}} = presentOrder(OrderPresentation.make({
+      data: OrderPresentation.makeData({createdDate: '2023-11-12T08:12:01.010Z'}),
+    }))
     assert.equal(createdDate, '2023-11-12, 08:12')
 
-    const {order: {createdDate: anotherCreatedDate}} = presentOrder({
-      order: OrderPresentation.make({createdDate: '2024-12-24T17:57:03.444Z'}),
-    })
+    const {data: {createdDate: anotherCreatedDate}} = presentOrder(OrderPresentation.make({
+      data: OrderPresentation.makeData({createdDate: '2024-12-24T17:57:03.444Z'}),
+    }))
     assert.equal(anotherCreatedDate, '2024-12-24, 17:57')
   })
 
   test('format updated date', () => {
-    const {order: {updatedDate: emptyUpdatedDate}} = presentOrder({
-      order: OrderPresentation.make({updatedDate: ''}),
-    })
+    const {data: {updatedDate: emptyUpdatedDate}} = presentOrder(OrderPresentation.make({
+      data: OrderPresentation.makeData({updatedDate: ''}),
+    }))
     assert.equal(emptyUpdatedDate, '')
 
-    const {order: {updatedDate}} = presentOrder({
-      order: OrderPresentation.make({updatedDate: '2023-11-12T08:12:01.010Z'}),
-    })
+    const {data: {updatedDate}} = presentOrder(OrderPresentation.make({
+      data: OrderPresentation.makeData({updatedDate: '2023-11-12T08:12:01.010Z'}),
+    }))
     assert.equal(updatedDate, '2023-11-12, 08:12')
 
-    const {order: {updatedDate: anotherUpdatedDate}} = presentOrder({
-      order: OrderPresentation.make({updatedDate: '2024-12-24T17:57:03.444Z'}),
-    })
+    const {data: {updatedDate: anotherUpdatedDate}} = presentOrder(OrderPresentation.make({
+      data: OrderPresentation.makeData({updatedDate: '2024-12-24T17:57:03.444Z'}),
+    }))
     assert.equal(anotherUpdatedDate, '2024-12-24, 17:57')
   })
 
   test('format sum', () => {
-    const {order: {sum: zeroSum}} = presentOrder({
-      order: OrderPresentation.make({sum: '0'}),
-    })
+    const {data: {sum: zeroSum}} = presentOrder(OrderPresentation.make({
+      data: OrderPresentation.makeData({sum: '0'}),
+    }))
     assert.equal(zeroSum, '0.00')
 
-    const {order: {sum}} = presentOrder({
-      order: OrderPresentation.make({sum: '1.123'}),
-    })
+    const {data: {sum}} = presentOrder(OrderPresentation.make({
+      data: OrderPresentation.makeData({sum: '1.123'}),
+    }))
     assert.equal(sum, '1.12')
 
-    const {order: {sum: roundedSum}} = presentOrder({
-      order: OrderPresentation.make({sum: '1.125'}),
-    })
+    const {data: {sum: roundedSum}} = presentOrder(OrderPresentation.make({
+      data: OrderPresentation.makeData({sum: '1.125'}),
+    }))
     assert.equal(roundedSum, '1.13')
   })
 })

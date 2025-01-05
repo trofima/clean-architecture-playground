@@ -1,8 +1,8 @@
 export const presentOrder = (presentation) => {
-  const {createdDate, updatedDate, sum, user, ...rest} = presentation.order
+  const {createdDate, updatedDate, sum, user, ...rest} = presentation.data
   return ({
     ...presentation,
-    order: {
+    data: {
       ...rest,
       user: user.name,
       billingAddress: user.billingAddress,
