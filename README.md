@@ -25,6 +25,15 @@ The intent is make it conceivable to everyone.
 The project contains [core](./packages/core) module and it's integration to the different ui frameworks, like [react](./packages/react-example), [angular](./packages/angular-example), [vue](./packages/vue-example) etc. There is also pure [native](./packages/native-example) example.
 <br><b>It showcases how you can split business logic not only from view, but also from framework(!) and even platform</b> (yes there is [react-native](./packages/react-native-example) integration).
 
+>[!NOTE]
+>For holding state the [Atom](https://github.com/trofima/borshch/blob/main/packages/utilities/src/atom.js) is used.
+><br>
+>It really doesn't matter what you are using under the hood.
+><br>
+>You just need some util to rerender your view when presentation changes by a UseCase.
+><br>
+>It can be existing tool or you can implement yours, the bestest and perfect one.
+
 <br>
 <br>
 
@@ -75,11 +84,11 @@ User should be able to refresh order list in order to see current order data
 #### Render Order Details ✔️
 User see all order details.
 
-#### Change Order Field
+#### Change Order Field ✔️
 User should be able to change allowed fields.
 <br>For now those are: payment status, fulfillments status, shipping address.
 
-#### Save Order
+#### Save Order ✔️
 User should be able to save changed order.
 
 #### Close Order ✔️
