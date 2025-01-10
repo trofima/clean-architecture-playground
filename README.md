@@ -32,7 +32,7 @@ The project contains [core](./packages/core) module and it's integration to the 
 ><br>
 >It really doesn't matter what you are using under the hood.
 ><br>
->You just need some util to rerender your view when presentation changes by a UseCase.
+>You just need some util to rerender view when presentation changes by a UseCase.
 ><br>
 >It can be existing tool or you can implement yours, the bestest and perfect one.
 
