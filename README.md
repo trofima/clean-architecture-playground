@@ -25,6 +25,8 @@ The intent is make it conceivable to everyone.
 The project contains [core](./packages/core) module and it's integration to the different ui frameworks, like [react](./packages/react-example), [angular](./packages/angular-example), [vue](./packages/vue-example) etc. There is also pure [native](./packages/native-example) example.
 <br><b>It showcases how you can split business logic not only from view, but also from framework(!) and even platform</b> (yes there is [react-native](./packages/react-native-example) integration).
 
+<br>
+
 >[!NOTE]
 >For holding state the [Atom](https://github.com/trofima/borshch/blob/main/packages/utilities/src/atom.js) is used.
 ><br>
@@ -34,7 +36,6 @@ The project contains [core](./packages/core) module and it's integration to the 
 ><br>
 >It can be existing tool or you can implement yours, the bestest and perfect one.
 
-<br>
 <br>
 
 >[!CAUTION]
