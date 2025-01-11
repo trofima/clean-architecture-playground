@@ -1,5 +1,10 @@
 /**
- * This is UpdateOrderList usecase OOP example
+ * Here you can find more classical example with all common CA abstractions,
+ * like UseCase, Entity, Presenter, Controller
+ */
+
+/**
+ * UseCase OOP example
  * It implements pattern Command.
  */
 export class UpdateOrderList {
@@ -41,7 +46,7 @@ export class UpdateOrderList {
 }
 
 /**
- * related entities OOP examples
+ * Entities OOP example
  */
 class OrderListPresentation {
   constructor({loading = false, error = undefined, list = [], offset = 0, limit = 0, total = 0} = {}) {
@@ -123,4 +128,68 @@ class OrderPresentation {
 
   #orderData
   #userData
+}
+
+/**
+ * Presenter
+ */
+class Presenter {
+  constructor(viewModel) {
+    this.#viewModel = viewModel
+  }
+
+  orderListLoadingStarted() {
+    this.#viewModel.update((model) => ({...model, loading: true}))
+  }
+
+  orderListLoadingSucceeded({list, limit, offset, total}) {
+    this.#viewModel.update((model) => ({
+      ...model,
+      list, total,
+      pageCount: Math.ceil(total / limit),
+      currentPage: offset ? Math.ceil(offset / limit) : 1
+    }))
+  }
+
+  orderListLoadingFailed({message, code}) {
+    if (!this.#viewModel.get().list.length) {
+      this.#viewModel.update((model) => ({
+        ...model,
+        error: {message, code},
+      }))
+    }
+  }
+
+  #viewModel
+}
+
+/**
+ * Controller
+ */
+class Controller {
+  constructor({state, presenter, dataStore, notifier}) {
+    this.#state = state
+    this.#presenter = presenter
+    this.#dataStore = dataStore
+    this.#notifier = notifier
+  }
+
+  updateOrderList(refresh) {
+    const updateOrderList = new UpdateOrderList({
+      params: {refresh},
+      state: this.#state,
+      presenter: this.#presenter,
+      dataStore: this.#dataStore,
+      notifier: this.#notifier,
+    })
+
+    this.#history.push(updateOrderList)
+    updateOrderList.execute()
+  }
+
+  #state
+  #presenter
+  #dataStore
+  #notifier
+  #history = []
 }
