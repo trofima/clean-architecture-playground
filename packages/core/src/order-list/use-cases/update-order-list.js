@@ -1,13 +1,14 @@
 import {OrderListPresentation} from '../entities/order-list-presentation.js'
+import {OrderList} from '../entities/order-list.js'
 
 export const UpdateOrderList = ({presentation, dataStore, notifier}) => async ({refresh = false} = {}) => {
-  presentation.update(OrderListPresentation.setLoading, true)
-  const presentationModel = presentation.get()
+  const presentationModel = presentation.update(OrderListPresentation.setLoading, true)
   try {
     const readOptions = OrderListPresentation.getReadOptions(presentationModel, {refresh})
-    const {list, total} = await dataStore.get('orders', readOptions)
-    const uniqueUserIds = new Set(list.map(({user}) => user))
-    const users = list.length ? await dataStore.get('users', Array.from(uniqueUserIds)) : []
+    const orderList = await dataStore.get('orders', readOptions)
+    const uniqueUserIds = OrderList.getUniqueUserIds(orderList)
+    const {list, total} = orderList
+    const users = list.length ? await dataStore.get('users', uniqueUserIds) : []
 
     presentation.update(OrderListPresentation.update, {
       refresh, total,

@@ -3,7 +3,7 @@ import {OrderListPresentation} from '../entities/order-list-presentation.js'
 
 /**
  * fp example.
- * dependency function should be curried.
+ * dependency functions expected to be curried.
  *
  * UseCase
  */
