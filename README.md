@@ -51,8 +51,10 @@ npm i
 ```
 npm start
 ```
+See instructions in terminal.
 
 <br>
+
 UI example (no, I'm not going to waste time on styles; only structure and use cases matter. but your are welcome to PR better styles)
 <img width="997" alt="image" src="https://github.com/user-attachments/assets/0f7e7efb-a07c-4183-9005-45343eb3b6a3" />
 
