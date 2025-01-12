@@ -23,7 +23,7 @@
     "test"
   ],
   "dependencies": {
-    "@borshch/utilities": "^2.2.0",
+    "@borshch/utilities": "^2.3.0",
     "@clean-architecture-playground/core": "file:../core"
   },
   "devDependencies": {
