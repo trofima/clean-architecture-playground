@@ -43,10 +43,11 @@
     ]
   },
   "dependencies": {
+    "@borshch/utilities": "^2.3.0",
+    "@clean-architecture-playground/core": "file:../core",
     "cra-template": "1.2.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-scripts": "5.0.1",
-    "@clean-architecture-playground/core": "file:../core"
+    "react-scripts": "5.0.1"
   }
 }
