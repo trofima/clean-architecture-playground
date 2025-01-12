@@ -9,7 +9,7 @@ import {DataStoreError} from '../../dependencies/index.js'
 suite('Remove order from list', () => {
   test('ask for removal confirmation', async () => {
     const {removeOrderFromList, presentation, notifier} = setup()
-    presentation.update(() => (OrderListPresentation.make({list: [OrderListPresentation.makeOrder({id: '1'})]})))
+    presentation.init((OrderListPresentation.make({list: [OrderListPresentation.makeOrder({id: '1'})]})))
 
     await removeOrderFromList('1')
 
@@ -18,7 +18,7 @@ suite('Remove order from list', () => {
 
   test('mark order as updating', async () => {
     const {removeOrderFromList, presentation, notifier, dataStore} = setup()
-    presentation.update(() => (OrderListPresentation.make({list: [
+    presentation.init((OrderListPresentation.make({list: [
       OrderListPresentation.makeOrder({id: '1', updating: false}),
       OrderListPresentation.makeOrder({id: '2', updating: false}),
     ]})))
@@ -41,7 +41,7 @@ suite('Remove order from list', () => {
     const {removeOrderFromList, presentation, dataStore, notifier} = setup()
     const order1 = OrderListPresentation.makeOrder({id: '1'})
     const order2 = OrderListPresentation.makeOrder({id: '2'})
-    presentation.update(() => (OrderListPresentation.make({offset: 2, total: 3, list: [order1, order2]})))
+    presentation.init((OrderListPresentation.make({offset: 2, total: 3, list: [order1, order2]})))
     notifier.confirm.returns(true)
 
     await removeOrderFromList('1')
@@ -67,7 +67,7 @@ suite('Remove order from list', () => {
     const {removeOrderFromList, presentation, dataStore, notifier} = setup()
     notifier.confirm.returns(false)
     const order = OrderListPresentation.makeOrder({id: '1'})
-    presentation.update(() => (OrderListPresentation.make({offset: 1, total: 2, list: [order]})))
+    presentation.init((OrderListPresentation.make({offset: 1, total: 2, list: [order]})))
 
     await removeOrderFromList('1')
 
@@ -82,7 +82,7 @@ suite('Remove order from list', () => {
   test('do not remove order, when data store operation failed', async () => {
     const {removeOrderFromList, presentation, dataStore} = setup()
     const order = OrderListPresentation.makeOrder({id: '1', updating: false})
-    presentation.update(() => (OrderListPresentation.make({offset: 1, list: [order]})))
+    presentation.init((OrderListPresentation.make({offset: 1, list: [order]})))
     dataStore.remove.fails(new DataStoreError('Oj vej', {code: '001'}))
 
     await removeOrderFromList('1')
@@ -96,7 +96,7 @@ suite('Remove order from list', () => {
   test('show notification, when data store operation failed', async () => {
     const {removeOrderFromList, presentation, dataStore, notifier} = setup()
     const order = OrderListPresentation.makeOrder({id: '1', updating: false})
-    presentation.update(() => (OrderListPresentation.make({offset: 1, list: [order]})))
+    presentation.init((OrderListPresentation.make({offset: 1, list: [order]})))
     notifier.confirm.returns(true)
 
     dataStore.remove.fails(new DataStoreError('Oj vej', {code: '001'}))
@@ -110,7 +110,7 @@ suite('Remove order from list', () => {
 })
 
 const setup = () => {
-  const presentation = Atom.of({})
+  const presentation = new Atom()
   const dataStore = new DataStoreMock()
   const notifier = new NotifierMock()
 

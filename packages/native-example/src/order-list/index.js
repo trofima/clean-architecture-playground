@@ -18,7 +18,7 @@ export class OrderList extends HTMLElement {
     this.#presentation.unsubscribe(this.#renderHtml)
   }
 
-  #presentation = Atom.of({})
+  #presentation = new Atom()
 
   #updateOrderList = UpdateOrderList({
     dataStore, notifier,

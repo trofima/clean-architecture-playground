@@ -12,7 +12,7 @@ suite('update order list', () => {
   test('present empty list', async () => {
     const {updateOrderList, presentation, dataStore} = setup()
     dataStore.get.defer()
-    presentation.update(() => OrderListPresentation.make({offset: 0, limit: 20}))
+    presentation.init(OrderListPresentation.make({offset: 0, limit: 20}))
 
     const listing = updateOrderList()
     assert.deepEqual(presentation.get(), {loading: true, list: [], error: undefined, offset: 0, limit: 20, total: 0})
@@ -25,7 +25,7 @@ suite('update order list', () => {
 
   test('present error, when data getting failed and list is empty', async () => {
     const {updateOrderList, presentation, dataStore} = setup()
-    presentation.update(() => OrderListPresentation.make())
+    presentation.init(OrderListPresentation.make())
 
     dataStore.get.fails(new DataStoreError('Oj vej', {code: '001'}))
     await updateOrderList()
@@ -50,7 +50,7 @@ suite('update order list', () => {
 
   test('show error notification, when data getting failed and list is not empty', async () => {
     const {updateOrderList, presentation, dataStore, notifier} = setup()
-    presentation.update(() => OrderListPresentation.make({list: [OrderListPresentation.makeOrder()]}))
+    presentation.init(OrderListPresentation.make({list: [OrderListPresentation.makeOrder()]}))
 
     dataStore.get.fails(new DataStoreError('Oj vej', {code: '001'}))
     await updateOrderList()
@@ -65,7 +65,7 @@ suite('update order list', () => {
 
   test('update an order list meta data', async () => {
     const {updateOrderList, presentation, dataStore} = setup()
-    presentation.update(() => OrderListPresentation.make({offset: 0, limit: 1}))
+    presentation.init(OrderListPresentation.make({offset: 0, limit: 1}))
     dataStore.get
       .for('orders', {offset: 0, limit: 1})
       .returns(OrderList.make({list: makeDummyOrders(1), total: 1}))
@@ -77,7 +77,7 @@ suite('update order list', () => {
 
   test('update another order list meta data', async () => {
     const {updateOrderList, presentation, dataStore} = setup()
-    presentation.update(() => OrderListPresentation.make({offset: 1, limit: 2}))
+    presentation.init(OrderListPresentation.make({offset: 1, limit: 2}))
     dataStore.get
       .for('orders', {offset: 1, limit: 2})
       .returns(OrderList.make({list: makeDummyOrders(2), total: 3}))
@@ -89,7 +89,7 @@ suite('update order list', () => {
 
   test('present an order data', async () => {
     const {updateOrderList, presentation, dataStore} = setup()
-    presentation.update(() => OrderListPresentation.make({offset: 0, limit: 1}))
+    presentation.init(OrderListPresentation.make({offset: 0, limit: 1}))
 
     dataStore.get.for('orders', {offset: 0, limit: 1}).returns(OrderList.make({
       list: [Order.make({
@@ -118,7 +118,7 @@ suite('update order list', () => {
 
   test('present another order data', async () => {
     const {updateOrderList, presentation, dataStore} = setup()
-    presentation.update(() => OrderListPresentation.make({offset: 0, limit: 1}))
+    presentation.init(OrderListPresentation.make({offset: 0, limit: 1}))
 
     dataStore.get.for('orders', {offset: 0, limit: 1}).returns(OrderList.make({
       list: [Order.make({
@@ -147,7 +147,7 @@ suite('update order list', () => {
 
   test('present all orders data', async () => {
     const {updateOrderList, presentation, dataStore} = setup()
-    presentation.update(() => OrderListPresentation.make({offset: 0, limit: 1}))
+    presentation.init(OrderListPresentation.make({offset: 0, limit: 1}))
 
     dataStore.get.for('orders', {offset: 0, limit: 1}).returns(OrderList.make({
       list: [Order.make({
@@ -193,7 +193,7 @@ suite('update order list', () => {
 
   test('present orders of the same user', async () => {
     const {updateOrderList, presentation, dataStore} = setup()
-    presentation.update(() => OrderListPresentation.make({offset: 0, limit: 1}))
+    presentation.init(OrderListPresentation.make({offset: 0, limit: 1}))
 
     dataStore.get
       .for('orders', {offset: 0, limit: 1})
@@ -212,7 +212,7 @@ suite('update order list', () => {
 
   test('update order list by default', async () => {
     const {updateOrderList, presentation, dataStore} = setup()
-    presentation.update(() => OrderListPresentation.make({offset: 0, limit: 1}))
+    presentation.init(OrderListPresentation.make({offset: 0, limit: 1}))
 
     dataStore.get.for('orders', {offset: 0, limit: 1}).returns(OrderList.make({
       list: [Order.make({id: 'id'})]
@@ -276,7 +276,7 @@ suite('update order list', () => {
 })
 
 const setup = () => {
-  const presentation = Atom.of({})
+  const presentation = new Atom()
   const dataStore = new DataStoreMock()
   const notifier = new NotifierMock()
   dataStore.get.forArg(0, 'users').returns([])

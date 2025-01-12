@@ -66,7 +66,7 @@ suite('change order field', () => {
 })
 
 const setup = () => {
-  const presentation = Atom.of({})
+  const presentation = new Atom()
   return {
     presentation,
     changeOrderField: ChangeOrderField({presentation})

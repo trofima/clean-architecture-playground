@@ -22,7 +22,7 @@ suite('Render order list', () => {
 })
 
 const setup = () => {
-  const presentation = Atom.of({})
+  const presentation = new Atom()
   const updateOrderList = new AsyncFunctionSpy()
   return {
     presentation, updateOrderList,

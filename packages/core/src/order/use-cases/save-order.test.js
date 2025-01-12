@@ -1,4 +1,4 @@
-import {assert, use} from 'chai'
+import {assert} from 'chai'
 import {Atom} from '@borshch/utilities'
 import {SaveOrder} from './save-order.js'
 import {DataStoreMock, NavigatorMock, NotifierMock} from '../../dependencies/test-utilities.js'
@@ -55,7 +55,7 @@ suite('Save order', () => {
 })
 
 const setup = () => {
-  const presentation = Atom.of({})
+  const presentation = new Atom()
   const dataStore = new DataStoreMock()
   const navigator = new NavigatorMock()
   const notifier = new NotifierMock()

@@ -8,7 +8,7 @@ import {OrderListPresentation} from '../entities/order-list-presentation.js'
 suite('open order', () => {
   test('navigate to order', async () => {
     const {openOrder, navigator, presentation} = setup()
-    presentation.update(() => OrderListPresentation.make({list: [
+    presentation.init(OrderListPresentation.make({list: [
       OrderListPresentation.makeOrder({id: 'id'}),
       OrderListPresentation.makeOrder({id: 'anotherId'}),
     ]}))
@@ -22,7 +22,7 @@ suite('open order', () => {
 
   test('do not navigate to updating order', async () => {
     const {openOrder, navigator, presentation} = setup()
-    presentation.update(() => OrderListPresentation.make({list: [
+    presentation.init(OrderListPresentation.make({list: [
       OrderListPresentation.makeOrder({id: 'id', updating: true}),
       OrderListPresentation.makeOrder({id: 'anotherId', updating: true}),
     ]}))
@@ -36,7 +36,7 @@ suite('open order', () => {
 
   test('present error when navigation failed', async () => {
     const {openOrder, navigator, presentation, notifier} = setup()
-    presentation.update(() => OrderListPresentation.make({list: [OrderListPresentation.makeOrder({id: 'id'})]}))
+    presentation.init(OrderListPresentation.make({list: [OrderListPresentation.makeOrder({id: 'id'})]}))
 
     navigator.open.fails(new NavigatorError('Oj vej', {code: '001'}))
     await openOrder('id')
@@ -49,7 +49,7 @@ suite('open order', () => {
 })
 
 const setup = () => {
-  const presentation = Atom.of({})
+  const presentation = new Atom()
   const navigator = new NavigatorMock()
   const notifier = new NotifierMock()
   return {

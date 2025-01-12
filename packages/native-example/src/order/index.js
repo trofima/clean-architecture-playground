@@ -18,7 +18,7 @@ export class Order extends HTMLElement {
     this.#presentation.unsubscribe(this.#renderHtml)
   }
 
-  #presentation = Atom.of({})
+  #presentation = new Atom()
 
   #controller = {
     renderOrder: RenderOrder({

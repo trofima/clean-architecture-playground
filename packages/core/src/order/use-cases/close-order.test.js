@@ -7,7 +7,7 @@ import {OrderPresentation} from '../entities/order-presentation.js'
 suite('Close order', () => {
   test('close order form', async () => {
     const {closeOrder, presentation, navigator} = setup()
-    presentation.update(() => OrderPresentation.make({data: {}}))
+    presentation.init(OrderPresentation.make({data: {}}))
 
     await closeOrder()
 
@@ -16,7 +16,7 @@ suite('Close order', () => {
 
   test('do not close, when has changes and closing is not confirmed', async () => {
     const {closeOrder, presentation, notifier, navigator} = setup()
-    presentation.update(() => OrderPresentation.make({
+    presentation.init(OrderPresentation.make({
       originalData: {paymentStatus: 'unpaid'},
       data: {paymentStatus: 'paid'},
     }))
@@ -31,7 +31,7 @@ suite('Close order', () => {
 
   test('close, when has changes and closing is confirmed', async () => {
     const {closeOrder, presentation, notifier, navigator} = setup()
-    presentation.update(() => OrderPresentation.make({
+    presentation.init(OrderPresentation.make({
       originalData: {paymentStatus: 'unpaid'},
       data: {paymentStatus: 'paid'},
     }))
@@ -46,7 +46,7 @@ suite('Close order', () => {
 })
 
 const setup = () => {
-  const presentation = Atom.of({})
+  const presentation = new Atom()
   const navigator = new NavigatorMock()
   const notifier = new NotifierMock()
   return {

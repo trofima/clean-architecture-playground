@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
 })
 export class OrderListPageComponent {
   
-  #presentation = Atom.of({})
+  #presentation = new Atom()
   viewModel = {} as any
   #navigator = {
     open: (path: string) => {

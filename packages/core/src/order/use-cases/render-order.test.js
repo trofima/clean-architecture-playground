@@ -134,7 +134,7 @@ suite('Render order', () => {
 })
 
 const setup = () => {
-  const presentation = Atom.of({})
+  const presentation = new Atom()
   const dataStore = new DataStoreMock()
   dataStore.get.returns(Order.make())
   dataStore.get.forArg(0, 'order').returns(Order.make())
