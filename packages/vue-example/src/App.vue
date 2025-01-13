@@ -1,15 +1,14 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Clean Architecture App"/>
+  <RouterView></RouterView>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import OrderList from './components/OrderList.vue'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    OrderList
   }
 }
 </script>
