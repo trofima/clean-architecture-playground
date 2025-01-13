@@ -1,51 +1,21 @@
 {
   "name": "vue-example",
-  "version": "0.0.1",
-  "description": "Clean Architecture Playground integration for Vue",
+  "version": "0.0.0",
+  "private": true,
   "type": "module",
-  "exports": "./index.js",
-  "author": "trofima",
-  "license": "ISC",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com:trofima/clean-architecture-playground.git"
-  },
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "start": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "test": "mocha -u tdd --timeout 10000 --colors './src/**/*.test.js'",
-    "lint": "vue-cli-service lint",
-    "lint-staged": "lint-staged"
+    "start": "vite",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
   },
-  "pre-commit": [
-    "lint"
-  ],
-  "pre-push": [
-    "test"
-  ],
   "dependencies": {
-    "@clean-architecture-playground/core": "file:../core",
-    "core-js": "^3.8.3",
-    "vue": "^3.2.13",
+    "vue": "^3.5.13",
     "vue-router": "^4.5.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.16",
-    "@babel/eslint-parser": "^7.12.16",
-    "@vue/cli": "^5.0.8",
-    "@vue/cli-plugin-babel": "~5.0.0",
-    "@vue/cli-plugin-eslint": "~5.0.0",
-    "@vue/cli-service": "~5.0.0",
-    "eslint": "^7.32.0",
-    "eslint-plugin-vue": "^8.0.3"
-  },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions",
-    "not dead",
-    "not ie 11"
-  ],
-  "_id": "@",
-  "readme": "ERROR: No README data found!"
+    "@vitejs/plugin-vue": "^5.2.1",
+    "vite": "^6.0.5",
+    "vite-plugin-vue-devtools": "^7.6.8"
+  }
 }
