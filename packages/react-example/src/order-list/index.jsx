@@ -3,17 +3,17 @@ import {OpenOrder, RenderOrderList, RemoveOrderFromList, UpdateOrderList, presen
 import {dataStore, notifier} from '@clean-architecture-playground/core/dummy-dependencies'
 import {appNavigator} from '../dependencies/router.jsx'
 import {OrderListView} from './view.jsx'
-import {useCleanArchitecture} from '../common/hooks.js';
+import {useIntegration} from '../common/hooks.js';
 
 // TODO: extend presenters
 
 export const OrderList = () => {
-  const {controller, viewModel} = useCleanArchitecture(makeOrderListIntegrator())
+  const {controller, viewModel} = useIntegration(makeOrderListIntegration)
   
   return <OrderListView viewModel={viewModel} controller={controller} />
 }
 
-const makeOrderListIntegrator = () => () => {
+const makeOrderListIntegration = () => {
   const presentation = new Atom()
   const updateOrderList = UpdateOrderList({presentation, dataStore, notifier})
   const renderOrderList = RenderOrderList({presentation, updateOrderList})

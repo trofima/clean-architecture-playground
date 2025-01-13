@@ -1,15 +1,14 @@
 import {useEffect, useRef, useState} from 'react'
 
-export const useCleanArchitecture = (integrate) => {
+export const useIntegration = (makeIntegration, ...options) => {
   const [viewModel, setViewModel] = useState({})
   const controllerRef = useRef({})
 
   useEffect(() => {
-    const {controller, present, presentation} = integrate()
-    controllerRef.current = controller
-
+    const {controller, present, presentation} = makeIntegration(...options)
     const unsubscribe = presentation.subscribe((model) => setViewModel(present(model)))
-    controllerRef.current.initialize()
+    controllerRef.current = controller
+    controller.initialize()
 
     return () => unsubscribe()
   }, [])
