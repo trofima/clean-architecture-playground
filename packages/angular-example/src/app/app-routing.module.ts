@@ -6,7 +6,7 @@ import { OrderPageComponent } from './pages/order-page';
 
 export const routes: Routes = [
   { path: '', component: OrderListPageComponent },
-  { path: 'order/:id', component: OrderPageComponent },
+  { path: 'order', component: OrderPageComponent },
 ];
 
 @NgModule({
