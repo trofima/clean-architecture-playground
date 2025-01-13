@@ -33,7 +33,7 @@ export const OrderListView = ({viewModel: {total, list, error, loading}, control
         {error
           ? <p>Error: ${error.message}; Code: ${error.code}</p>
           : loading && !list.length 
-            ? Array(3).fill(renderEmptyOrderItem()).map(OrderItemView(controller))
+            ? Array(3).fill(undefined).map(EmptyOrderItemView).map(OrderItemView(controller))
             : list?.map(OrderItemView(controller))
         }
       </div>
@@ -42,33 +42,32 @@ export const OrderListView = ({viewModel: {total, list, error, loading}, control
   </div>
 )
 
-const OrderItemView = (controller) => ({id, createdDate, user, sum, paymentStatus, fulfillmentStatus, updating}, index) => (
-  <li key={index} className={`order-item ${updating ? 'updating' : ''}`} onClick={() => controller.open(id)}>
+const OrderItemView = (controller) => ({id, createdDate, user, sum, paymentStatus, fulfillmentStatus, updating}) => (
+  <li key={id} className={`order-item ${updating ? 'updating' : ''}`} onClick={() => controller.open(id)}>
     <div>
-        <p>{user}</p>
+      <p>{user}</p>
     </div>
     <div>
-        <p>{createdDate}</p>
+      <p>{createdDate}</p>
     </div>
     <div>
-        <p>{sum}</p>
+      <p>{sum}</p>
     </div>
     <div>
-        <p>{paymentStatus}</p>
+      <p>{paymentStatus}</p>
     </div>
     <div>
-        <p>{fulfillmentStatus}</p>
+      <p>{fulfillmentStatus}</p>
     </div>
     <div className="delete-button">
-    {id && 
-      <button disabled={updating} onClick={(event) => controller.remove(event, id)}>
-        <img src={deleteIcon} alt="Delete order button"/>
-      </button>
-    }
+      {id &&
+        <button disabled={updating} onClick={(event) => controller.remove(event, id)}>
+          <img src={deleteIcon} alt="Delete order button" />
+        </button>}
     </div>
   </li>
 )
 
-const renderEmptyOrderItem = () => ({
-  createdDate: '...', user: '...', sum: '...', paymentStatus: '...', fulfillmentStatus: '...',
+const EmptyOrderItemView = (_, index) => ({
+  id: `placeholder${index}`, createdDate: '...', user: '...', sum: '...', paymentStatus: '...', fulfillmentStatus: '...',
 })
