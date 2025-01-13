@@ -31,7 +31,7 @@ export const OrderListView = ({viewModel: {total, list, error, loading}, control
     <ul className="order-list">
       <div className="list">
         {error
-          ? <p>Error: ${error.message}; Code: ${error.code}</p>
+          ? <p>Error: {error.message}; Code: {error.code}</p>
           : loading && !list.length 
             ? Array(3).fill(undefined).map(EmptyOrderItemView).map(OrderItemView(controller))
             : list?.map(OrderItemView(controller))
