@@ -38,7 +38,7 @@ export const OrderListView = ({viewModel: {total, list, error, loading}, control
         }
       </div>
     </ul>
-    <button className="add-order-button" onClick={controller.loadMore} disabled={loading}>Load More</button>
+    <button className="add-order-button" onClick={controller.loadMore} disabled={loading}>{loading ? '...' : 'Load More'}</button>
   </div>
 )
 

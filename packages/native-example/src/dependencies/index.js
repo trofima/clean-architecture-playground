@@ -21,8 +21,7 @@ class AppNavigator {
   }
 
   close() {
-    if (this.#history.length > 1)
-      window.history.back()
+    if (this.#history.length > 1) window.history.back()
     else this.open('/')
   }
 

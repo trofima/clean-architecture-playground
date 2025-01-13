@@ -5,6 +5,9 @@ import {dataStore, notifier} from '@clean-architecture-playground/core/dummy-dep
 import {appNavigator} from '../dependencies/router.jsx'
 import {OrderListView} from './view.jsx'
 
+// TODO: make super cool integration hook
+// TODO: extend presenters
+
 export const OrderList = () => {
   const {controller, viewModel} = useCleanArchitecture()
   
