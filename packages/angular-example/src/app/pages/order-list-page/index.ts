@@ -3,6 +3,7 @@ import { Component, ElementRef, Input, SimpleChanges } from '@angular/core';
 import { RenderOrderList, UpdateOrderList, presentOrderList, OpenOrder, RemoveOrderFromList } from '@clean-architecture-playground/core';
 import { dataStore, notifier } from '@clean-architecture-playground/core/dummy-dependencies';
 import { Router } from '@angular/router';
+import { appNavigator, AppNavigator } from '../../dependencies/navigator';
 
 @Component({
   selector: 'app-order-list-page',
@@ -17,11 +18,20 @@ export class OrderListPageComponent {
   viewModel = {} as any
   #navigator = {
     open: (path: string) => {
-      return this.router.navigate([path]);
+      return this.router.navigateByUrl(path);
+    },
+    
+    close: () => {
+      this.router.navigateByUrl('')
     }
+    
   }
   
-  constructor(private router: Router) {}
+  #history = []
+  #router: any
+  
+  constructor(private router: Router) {
+  }
   
   ngOnInit(): void {
     this.#presentation.subscribe((model: any) => {
@@ -75,6 +85,7 @@ export class OrderListPageComponent {
   #openOrder = OpenOrder({
     presentation: this.#presentation,
     navigator: this.#navigator,
+    notifier,
   })
   
   #updateOrderList = UpdateOrderList({
