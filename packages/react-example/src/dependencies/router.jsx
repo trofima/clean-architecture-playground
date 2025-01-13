@@ -22,14 +22,12 @@ export class AppNavigator {
   }
 
   open(path) {
-    const urlParams = new URLSearchParams(path.split('?').at(1))
-    const params = Object.fromEntries(urlParams.entries())
-    this.#router.navigate(path, {state: params})
+    this.#router.navigate(path)
     this.#history.push(path)
   }
 
   close() {
-    if (this.#history.length > 1) this.#router(-1)
+    if (this.#history.length > 1) this.#router.navigate(-1)
     else this.open('/')
   }
 
