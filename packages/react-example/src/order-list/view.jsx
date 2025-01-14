@@ -1,7 +1,7 @@
 import './view.css'
 import deleteIcon from '../static/delete.svg'
 
-export const OrderListView = ({viewModel: {total, list, error, loading}, controller}) => (
+export const OrderListView = ({viewModel: {total, list, error, loading, firstLoading}, controller}) => (
   <div className="order-list-page">
     <div className="order-page-header">
       <h1>Order List</h1>
@@ -32,9 +32,7 @@ export const OrderListView = ({viewModel: {total, list, error, loading}, control
       <div className="list">
         {error
           ? <p>Error: {error.message}; Code: {error.code}</p>
-          : loading && !list.length 
-            ? Array(3).fill(undefined).map(EmptyOrderItemView).map(OrderItemView(controller))
-            : list?.map(OrderItemView(controller))
+          : list?.map(OrderItemView(controller, firstLoading))
         }
       </div>
     </ul>
@@ -42,8 +40,8 @@ export const OrderListView = ({viewModel: {total, list, error, loading}, control
   </div>
 )
 
-const OrderItemView = (controller) => ({id, createdDate, user, sum, paymentStatus, fulfillmentStatus, updating}) => (
-  <li key={id} className={`order-item ${updating ? 'updating' : ''}`} onClick={() => controller.open(id)}>
+const OrderItemView = (controller, firstLoading) => ({id, createdDate, user, sum, paymentStatus, fulfillmentStatus, updating}) => (
+  <li key={id} className={`order-item ${updating ? 'updating' : ''}`} onClick={firstLoading ? () => controller.open(id) : undefined}>
     <div>
       <p>{user}</p>
     </div>
@@ -61,13 +59,9 @@ const OrderItemView = (controller) => ({id, createdDate, user, sum, paymentStatu
     </div>
     <div className="delete-button">
       {id &&
-        <button disabled={updating} onClick={(event) => controller.remove(event, id)}>
+        <button disabled={updating} onClick={firstLoading ? (event) => controller.remove(event, id) : undefined}>
           <img src={deleteIcon} alt="Delete order button" />
         </button>}
     </div>
   </li>
 )
-
-const EmptyOrderItemView = (_, index) => ({
-  id: `placeholder${index}`, createdDate: '...', user: '...', sum: '...', paymentStatus: '...', fulfillmentStatus: '...',
-})
