@@ -9,7 +9,7 @@ import {presentOrderList} from './presenter.js';
 export const OrderList = () => {
   const {controller, viewModel} = useIntegration(makeOrderListIntegration)
   
-  return <OrderListView viewModel={viewModel} controller={controller} />
+  return viewModel && <OrderListView viewModel={viewModel} controller={controller} />
 }
 
 const makeOrderListIntegration = () => {
