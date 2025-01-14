@@ -2,7 +2,7 @@ import {Atom} from '@borshch/utilities'
 import {dataStore, notifier} from '@clean-architecture-playground/core/dummy-dependencies'
 import {ChangeOrderField, CloseOrder, presentOrder, RenderOrder, SaveOrder} from '@clean-architecture-playground/core'
 import {renderOrderDataView, renderOrderLoadingErrorView, renderOrderLoadingView, renderOrderView} from './view.js'
-import {appNavigator} from '../dependencies/index.js'
+import {appNavigator} from '../dependencies/navigator.js'
 
 export class Order extends HTMLElement {
   connectedCallback() {

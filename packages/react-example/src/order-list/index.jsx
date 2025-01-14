@@ -1,20 +1,18 @@
-import {useEffect, useState, useRef} from 'react'
 import {Atom} from '@borshch/utilities';
-import {OpenOrder, RenderOrderList, RemoveOrderFromList, UpdateOrderList, presentOrderList} from '@clean-architecture-playground/core'
+import {OpenOrder, RenderOrderList, RemoveOrderFromList, UpdateOrderList} from '@clean-architecture-playground/core'
 import {dataStore, notifier} from '@clean-architecture-playground/core/dummy-dependencies'
-import {appNavigator} from '../dependencies/router.jsx'
+import {appNavigator} from '../dependencies/navigator.jsx'
 import {OrderListView} from './view.jsx'
-
-// TODO: make super cool integration hook
-// TODO: extend presenters
+import {useIntegration} from '../common/hooks.js';
+import {presentOrderList} from './presenter.js';
 
 export const OrderList = () => {
-  const {controller, viewModel} = useCleanArchitecture()
+  const {controller, viewModel} = useIntegration(makeOrderListIntegration)
   
   return <OrderListView viewModel={viewModel} controller={controller} />
 }
 
-const useCleanArchitecture = () => {
+const makeOrderListIntegration = () => {
   const presentation = new Atom()
   const updateOrderList = UpdateOrderList({presentation, dataStore, notifier})
   const renderOrderList = RenderOrderList({presentation, updateOrderList})
@@ -24,11 +22,10 @@ const useCleanArchitecture = () => {
     navigator: appNavigator,
   })
 
-  const [viewModel, setViewModel] = useState({});
-  const controller = useRef({})
-
-  useEffect(() => {
-    controller.current = {
+  return {
+    presentation,
+    present: presentOrderList,
+    controller: {
       initialize: () => renderOrderList(),
       refresh: () => updateOrderList({refresh: true}),
       remove: (event, id) => {
@@ -37,16 +34,6 @@ const useCleanArchitecture = () => {
       },
       loadMore: () => updateOrderList(),
       open: (id) => openOrder(id)
-    }
-
-    const unsubscribe = presentation.subscribe((model) => setViewModel(presentOrderList(model)))
-    controller.current.initialize()
-  	
-    return () => unsubscribe();
-  }, []);
-
-  return {
-    viewModel,
-    controller: controller.current,
+    },
   }
 }
