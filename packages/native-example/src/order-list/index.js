@@ -2,7 +2,7 @@ import {Atom} from '@borshch/utilities'
 import {OpenOrder, RenderOrderList, RemoveOrderFromList, UpdateOrderList, presentOrderList} from '@clean-architecture-playground/core'
 import {renderEmptyOrderItem, renderErrorView, renderOrderItem, renderOrderListView} from './view.js'
 import {dataStore, notifier} from '@clean-architecture-playground/core/dummy-dependencies'
-import {appNavigator} from '../dependencies/index.js'
+import {appNavigator} from '../dependencies/navigator.js'
 
 export class OrderList extends HTMLElement {
   connectedCallback() {
@@ -44,24 +44,27 @@ export class OrderList extends HTMLElement {
 
   #renderHtml = (presentationModel) => {
     const viewModel = presentOrderList(presentationModel)
+    const firstLoading = viewModel.loading && !viewModel.list.length
     const listContent = viewModel.error
       ? renderErrorView(viewModel.error)
-      : this.#getOrderList(viewModel).map(renderOrderItem).join('')
+      : this.#getOrderList(firstLoading, viewModel.list).map(renderOrderItem).join('')
 
     this.#setContent('#total-count', viewModel.total)
     this.#setContent('#list', listContent)
     this.#updateLoadMoreButton(presentationModel)
 
-    this.#bindAll('click', '.order-item', ({currentTarget}) =>
+    if (!firstLoading) {
+      this.#bindAll('click', '.order-item', ({currentTarget}) =>
       this.#controller.openOrder(currentTarget.dataset.orderId))
 
-    this.#bindAll('click', '.order-item > .delete-button > button', (event) => {
-      event.stopPropagation()
-      this.#controller.removeOrderFromList(event.currentTarget.dataset.orderId)
-    })
+      this.#bindAll('click', '.order-item > .delete-button > button', (event) => {
+        event.stopPropagation()
+        this.#controller.removeOrderFromList(event.currentTarget.dataset.orderId)
+      })
+    }
   }
 
-  #getOrderList = ({loading, list}) => loading && !list.length
+  #getOrderList = (firstLoading, list) => firstLoading
     ? Array(3).fill(renderEmptyOrderItem())
     : list
 
