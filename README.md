@@ -25,9 +25,10 @@ The intent is make it conceivable to everyone.
 The project contains [core](./packages/core) module and it's integration to the different ui frameworks, like [react](./packages/react-example), [angular](./packages/angular-example), [vue](./packages/vue-example) etc. There is also pure [native](./packages/native-example) example.
 <br><b>It showcases how you can split business logic not only from view, but also from framework(!) and even platform</b> (yes there is [react-native](./packages/react-native-example) integration).
 
-* UseCases and Entities can be found in [core (order, order-list)](./packages/core/src). There are also simple presenters examples.
+* Usecases and Entities can be found in [core (order, order-list)](./packages/core/src). There are also simple presenters examples.
 * Simple inverted dependency examples are in [core/src/dummy-dependencies](./packages/core/src/dummy-dependencies/index.js).
 * More complex presenter example is [here](./packages/react-example/src/order/presenter.js).
+* Usecases and entities are written in procedural style. On UpdateOrderList usecase example you can see alternative [FP](./packages/core/src/alternatives/update-order-list.fp.js) or [OOP](./packages/core/src/alternatives/update-order-list.oop.js) style. Style doesn't really matter.
 
 <br>
 
