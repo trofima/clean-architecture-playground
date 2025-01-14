@@ -5,6 +5,7 @@ You will see UseCases, Entities, Presenters, Controllers, inverted dependencies 
 And TESTS of course - simple, fast Developer tests (as Kent Beck commanded).
 <br>
 (experiment: copy pasted tests just to make plenty of them and ran)
+<br>
 <img width="172" alt="image" src="https://github.com/user-attachments/assets/18c5a9ba-507f-4445-83b0-0fa4a57ca69a" />
 <br>
 Used `mocha/chai` for testing (you prefer `jest` - you are my enemy).
