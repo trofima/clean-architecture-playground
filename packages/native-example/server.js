@@ -46,4 +46,4 @@ app.use(async (request, __, next) => {
 
 app.route('*').get((_, response) => response.render('index'))
 
-app.listen(3000, () => console.info(chalk.blue('Native Example app started on http://localhost:3000')))
+app.listen(3001, () => console.info(chalk.blue('Native Example app started on http://localhost:3001')))

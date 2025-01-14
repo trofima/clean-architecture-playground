@@ -1,30 +1,21 @@
 import './view.css'
 
-export const OrderView = ({viewModel: {loading, data, hasChanges, error}, controller}) => (
+export const OrderView = ({viewModel: {data, backButton, saveButton}, controller}) => (
   <div className="order-page">
     <header>
-      <button id="back" disabled={loading} onClick={controller.close}>Back</button>
-      <button id="save" disabled={!hasChanges} onClick={controller.save}>Save</button>
+      <button id="back" disabled={backButton.disabled} onClick={controller.close}>{backButton.label}</button>
+      <button id="save" disabled={saveButton.disabled} onClick={controller.save}>{saveButton.label}</button>
     </header>
 
-    <div id="order-data">
-      {!data || Object.keys(data).length === 0
-        ? loading 
-          ? <OrderLoadingView/> 
-          : error && <OrderLoadingErrorView {...error}/> 
-        : <OrderDataView controller={controller} data={data}/>
-      }
-    </div>
+    <div id="order-data">{dataViewByState[data.state](data, controller)}</div>
   </div>
 )
 
 const OrderDataView = ({
-  data: {
     id, createdDate, updatedDate, user, sum, paymentStatus, fulfillmentStatus, shippingAddress, 
     billingAddress,
-  },
-  controller,
-}) => (
+  }, controller,
+) => (
   <>
     <div className="title">Order No <span id="order-id">{id}</span></div>
     <div className="order-parameters">
@@ -74,3 +65,9 @@ const OrderLoadingErrorView = ({message, code}) => (
     <p>{message} ({code})</p>
   </div>
 )
+
+const dataViewByState = {
+  loading: OrderLoadingView,
+  error: OrderLoadingErrorView,
+  content: OrderDataView,
+}

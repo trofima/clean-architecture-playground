@@ -17,7 +17,7 @@ export const OrderPresentation = {
     paymentStatus = '',
     fulfillmentStatus = '',
     shippingAddress = '',
-  }) => ({id, createdDate, updatedDate, user, sum, paymentStatus, fulfillmentStatus, shippingAddress}),
+  } = {}) => ({id, createdDate, updatedDate, user, sum, paymentStatus, fulfillmentStatus, shippingAddress}),
 
   setData: (order, data) => ({...order, data, originalData: {...data}, loading: false}),
 
@@ -37,6 +37,7 @@ export const OrderPresentation = {
 
 const hasChanges = (data, originalData) => {
   for (const [key, value] of Object.entries(data))
-    if (value !== originalData[key]) return true
+    if (typeof value === 'object') hasChanges(value, originalData[key])
+    else if (value !== originalData[key]) return true
   return false
 }

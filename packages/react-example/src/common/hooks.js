@@ -1,7 +1,7 @@
 import {useEffect, useRef, useState} from 'react'
 
 export const useIntegration = (makeIntegration, ...options) => {
-  const [viewModel, setViewModel] = useState({})
+  const [viewModel, setViewModel] = useState()
   const controllerRef = useRef({})
 
   useEffect(() => {
