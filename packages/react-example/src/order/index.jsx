@@ -2,15 +2,16 @@ import {useSearchParams} from 'react-router';
 import {Atom} from '@borshch/utilities';
 import {dataStore, notifier} from '@clean-architecture-playground/core/dummy-dependencies'
 import {appNavigator} from '../dependencies/navigator.jsx';
-import {ChangeOrderField, CloseOrder, presentOrder, RenderOrder, SaveOrder} from '@clean-architecture-playground/core';
+import {ChangeOrderField, CloseOrder, RenderOrder, SaveOrder} from '@clean-architecture-playground/core';
 import {OrderView} from './view.jsx';
 import {useIntegration} from '../common/hooks.js';
+import {presentOrder} from './presenter.js';
 
 export const Order = () => {
   const [urlSearchParams] = useSearchParams()
   const {controller, viewModel} = useIntegration(makeOrderIntegration, urlSearchParams.get('id'))
 
-  return <OrderView viewModel={viewModel} controller={controller} />
+  return viewModel && <OrderView viewModel={viewModel} controller={controller} />
 }
 
 const makeOrderIntegration = (id) => {
@@ -28,7 +29,7 @@ const makeOrderIntegration = (id) => {
 
   return {
     presentation,
-    present: (model) => Object.keys(model.data).length ? presentOrder(model) : model,
+    present: presentOrder,
     controller: {
       initialize: () => renderOrder(id),
       change: ({target: {name, value}}) => changeOrderField(name, value),
