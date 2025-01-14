@@ -1,16 +1,51 @@
 <template>
-  <div class="item">
-    <i>
-      <slot name="icon"></slot>
-    </i>
-    <div class="details">
-      <h3>
-        <slot name="heading"></slot>
-      </h3>
-      <slot></slot>
+  <li :className="['order-item', updating ? 'updating' : '']" @click=open(itemData.id)>
+    <div>
+      <p>{{ itemData.user }}</p>
     </div>
-  </div>
+    <div>
+      <p>{{ itemData.createdDate }}</p>
+    </div>
+    <div>
+      <p>{{ itemData.sum }}</p>
+    </div>
+    <div>
+      <p>{{ itemData.paymentStatus }}</p>
+    </div>
+    <div>
+      <p>{{ itemData.fulfillmentStatus }}</p>
+    </div>
+    <div className="delete-button">
+      <button :disabled="updating" @click.stop=remove(id)>
+        <img src="../assets/delete.svg" alt="Delete order button" />
+      </button>
+    </div>
+  </li>
 </template>
+<script>
+export default {
+  name: 'OrderItem',
+  props: {
+    itemData: {
+      required: true,
+      type: Object
+    }
+  },
+  data() {
+    return {
+      updating: false,
+    }
+  },
+  methods: {
+    open(id) {
+      console.log(`open Something ${id}`)
+    },
+    remove(event, id) {
+      console.log(`remove Something ${id}`)
+    },
+  }
+}
+</script>
 
 <style scoped>
 .item {
