@@ -5,8 +5,6 @@ import {appNavigator} from '../dependencies/navigator.jsx'
 import {OrderListView} from './view.jsx'
 import {useIntegration} from '../common/hooks.js';
 
-// TODO: extend presenters
-
 export const OrderList = () => {
   const {controller, viewModel} = useIntegration(makeOrderListIntegration)
   
