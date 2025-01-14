@@ -1,7 +1,7 @@
 import {useSearchParams} from 'react-router';
 import {Atom} from '@borshch/utilities';
 import {dataStore, notifier} from '@clean-architecture-playground/core/dummy-dependencies'
-import {appNavigator} from '../dependencies/router.jsx';
+import {appNavigator} from '../dependencies/navigator.jsx';
 import {ChangeOrderField, CloseOrder, presentOrder, RenderOrder, SaveOrder} from '@clean-architecture-playground/core';
 import {OrderView} from './view.jsx';
 import {useIntegration} from '../common/hooks.js';
