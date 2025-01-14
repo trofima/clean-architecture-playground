@@ -12,7 +12,7 @@
   },
   "scripts": {
     "start": "node server.js",
-    "test": "mocha -u tdd --timeout 10000 --colors './src/**/*.test.js'",
+    "test": ":",
     "lint": "eslint --fix",
     "lint-staged": "lint-staged"
   },

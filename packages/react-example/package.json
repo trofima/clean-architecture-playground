@@ -13,7 +13,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "mocha -u tdd --timeout 10000 --colors './src/**/*.test.js'",
     "eject": "react-scripts eject",
     "lint": "eslint --fix",
     "lint-staged": "lint-staged"
@@ -50,5 +50,9 @@
     "react-dom": "^19.0.0",
     "react-router": "^7.1.1",
     "react-scripts": "5.0.1"
+  },
+  "devDependencies": {
+    "chai": "^5.1.2",
+    "mocha": "^11.0.1"
   }
 }
