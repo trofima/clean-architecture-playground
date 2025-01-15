@@ -1,8 +1,12 @@
 # Clean Architecture Playground
 Opinionated example of how you can apply SOLID principles and CA to UI Web development. Based on Uncle Bob Martin Clean Architecture and Functional Design books.
-You will see UseCases, Entities, Presenters, Controllers, inverted dependencies etc.
+You will see **UseCases**, **Entities**, **Presenters**, **Controllers**, inverted dependencies etc.
 <br>
-And TESTS of course - simple, fast Developer tests (as Kent Beck commanded).
+And **TESTS** of course - simple, fast Developer tests (as Kent Beck commanded).
+<br>
+(experiment: copy pasted tests just to make plenty of them and ran)
+<br>
+<img width="172" alt="image" src="https://github.com/user-attachments/assets/18c5a9ba-507f-4445-83b0-0fa4a57ca69a" />
 <br>
 Used `mocha/chai` for testing (you prefer `jest` - you are my enemy).
 <br>
