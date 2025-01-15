@@ -28,12 +28,12 @@ const makeOrderListIntegration = () => {
     controller: {
       initialize: () => renderOrderList(),
       refresh: () => updateOrderList({refresh: true}),
+      loadMore: () => updateOrderList(),
       remove: (event, id) => {
         event.stopPropagation()
         return removeOrderFromList(id);
       },
-      loadMore: () => updateOrderList(),
-      open: (id) => openOrder(id)
+      open: openOrder,
     },
   }
 }
