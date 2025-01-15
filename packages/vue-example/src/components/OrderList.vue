@@ -2,9 +2,9 @@
   <div class="order-list-page">
     <div class="order-page-header">
       <h1>Order List</h1>
-      <button class="add-order-button" onClick={controller.refresh}>Refresh order list</button>
+      <button class="add-order-button" @click="controller.refresh">Refresh order list</button>
     </div>
-    <p>Total order count: <span>{total}</span></p>
+    <p>Total order count: <span>{{viewModel.total}}</span></p>
 
     <div class="head-of-list">
       <div>
@@ -28,68 +28,81 @@
       <template v-if="viewModel.error">
         <p>Error: {{ viewModel.error.message }}; Code: {{ viewModel.error.code }}</p>
       </template>
-      <template v-else-if="viewModel.loading && !viewModel.list.length">
-        <OrderItem v-for="(order, index) in placeholderItems" :key="order.id" :itemIndex="index" :itemData="order">
-        </OrderItem>
-      </template>
       <template v-else>
-        <OrderItem v-for="(order, index) in viewModel.list" :key="order.id" :itemIndex="index" :itemData="order">
-        </OrderItem>
+        <order-list-item v-for="(order, index) in viewModel.list" :key="order.id" :itemIndex="index" :itemData="order"></order-list-item>
       </template>
     </ul>
-    <button class="add-order-button" onClick={controller.loadMore} disabled={loading}>{loading ? '...' : 'Load
-      More'}</button>
+    <button class="add-order-button" @click="controller.loadMore" :disabled="viewModel.loading">
+      {{viewModel.loading ? '...' : 'LoadMore'}}
+    </button>
   </div>
 </template>
 
 <script>
-import OrderItem from '@/components/OrderListItem.vue'
-export default {
-  name: 'OrderList',
-  components: {
-    OrderItem
-  },
-  props: {
-    // viewModel: {
-    //   required: true,
-    //   type: Object
-    // },
-    // controller: {
-    //   required: true,
-    //   type: Object
-    // }
-  },
-  data() {
-    return {
-      viewModel: {
-        list: [
-          {
-            id: '...',
-            createdDate: '...',
-            user: '...',
-            sum: '...',
-            paymentStatus: '...',
-            fulfillmentStatus: '...',
-          }
-        ],
-        loading: false,
-        error: undefined,
-        total: 1,
-      },
-      controller: {
-        refresh: () => { },
-        loadMore: () => { },
-        open: () => { },
-        remove: () => { },
-      },
-      placeholderItems: Array(3).fill(undefined).map((_, index) => ({
+import {ref, onBeforeMount, onBeforeUnmount} from 'vue'
+import OrderListItem from '@/components/OrderListItem.vue'
+import {Atom} from '@borshch/utilities';
+import {OpenOrder, RenderOrderList, RemoveOrderFromList, UpdateOrderList, presentOrderList} from '@clean-architecture-playground/core'
+import {dataStore, notifier} from '@clean-architecture-playground/core/dummy-dependencies'
+
+const present = (model) => {
+  return model.loading && !model.list.length 
+    ? {
+      ...model,
+      list: Array(3).fill(undefined).map((_, index) => ({
         id: `placeholder${index}`,
         createdDate: '...',
         user: '...',
         sum: '...',
         paymentStatus: '...',
         fulfillmentStatus: '...',
-      }))
+      })),
+    } 
+    : model
+} 
+
+export default {
+  name: 'OrderList',
+  components: {
+    OrderListItem
+  },
+  setup() {
+    let unsubscribeFromPresentation
+    const controller = ref({})
+    const viewModel = ref({})
+
+    onBeforeMount(() => {
+      const presentation = new Atom()
+      const updateOrderList = UpdateOrderList({presentation, dataStore, notifier})
+      const renderOrderList = RenderOrderList({presentation, updateOrderList})
+      const removeOrderFromList = RemoveOrderFromList({dataStore, notifier, presentation})
+      const openOrder = OpenOrder({
+        notifier, presentation,
+        navigator: {open: () => {console.log('Vue Navigator is not implemented yet')}},
+      })
+
+      controller.value = {
+        initialize: () => renderOrderList(),
+        refresh: () => updateOrderList({refresh: true}),
+        loadMore: () => updateOrderList(),
+        remove: removeOrderFromList,
+        open: openOrder,
+      }
+
+      unsubscribeFromPresentation = presentation.subscribe((model) => {
+        viewModel.value = present(model)
+      })
+
+      controller.value.initialize()
+    })
+
+    onBeforeUnmount(() => {
+      unsubscribeFromPresentation()
+    })
+
+    return {
+      viewModel,
+      controller,
     }
   }
 }
