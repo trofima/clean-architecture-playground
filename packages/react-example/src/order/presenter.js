@@ -1,4 +1,5 @@
-export const presentOrder = ({loading, error, data, hasChanges}) => ({
+// TODO: add some dependency aka moment?
+export const PresentOrder = (formatters) => ({loading, error, data, hasChanges}) => ({
   backButton: {
     label: 'Back',
     disabled: loading,
@@ -13,7 +14,7 @@ export const presentOrder = ({loading, error, data, hasChanges}) => ({
       : loading
         ? presentLoader()
         : presentError({message: 'Order is empty', code: 'should never happen, fire your server devs'})
-    : presentContent(data)
+    : presentContent(data, formatters)
 })
 
 const presentLoader = () => ({
@@ -27,23 +28,14 @@ const presentError = (error) => ({
   description: `${error.message} (${error.code})`,
 })
 
-const presentContent = ({createdDate, updatedDate, sum, user, ...rest}) => ({
+const presentContent = ({createdDate, updatedDate, sum, user, ...rest}, {formatTime, formatNumber}) => ({
   ...rest,
   state: 'content',
   user: user?.name,
   billingAddress: user?.billingAddress,
-  createdDate: formatDate(createdDate),
-  updatedDate: formatDate(updatedDate),
-  sum: formatSum(sum),
+  createdDate: createdDate ? formatTime(createdDate) : '',
+  updatedDate: updatedDate ? formatTime(updatedDate) : '',
+  sum: formatNumber(sum),
 })
-
-const formatDate = (isoDate) => {
-  if (!isoDate) return ''
-  const [date, time] = isoDate.split('T')
-  const [hours, minutes] = time.split(':')
-  return `${date}, ${hours}:${minutes}`
-}
-
-const formatSum = (sum) => Number(sum).toFixed(2).toString()
 
 const isEmpty = (data) => !Object.keys(data).length

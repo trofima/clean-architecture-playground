@@ -5,7 +5,8 @@ import {appNavigator} from '../dependencies/navigator.jsx';
 import {ChangeOrderField, CloseOrder, RenderOrder, SaveOrder} from '@clean-architecture-playground/core';
 import {OrderView} from './view.jsx';
 import {useIntegration} from '../common/hooks.js';
-import {presentOrder} from './presenter.js';
+import {PresentOrder} from './presenter.js';
+import {formatNumber, formatTime} from '../common/formatters.js';
 
 export const Order = () => {
   const [urlSearchParams] = useSearchParams()
@@ -29,7 +30,7 @@ const makeOrderIntegration = (id) => {
 
   return {
     presentation,
-    present: presentOrder,
+    present: PresentOrder({formatTime, formatNumber}),
     controller: {
       initialize: () => renderOrder(id),
       change: ({target: {name, value}}) => changeOrderField(name, value),
