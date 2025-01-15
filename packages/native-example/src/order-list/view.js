@@ -30,7 +30,7 @@ export const renderOrderListView = () => `
     <ul class="order-list">
       <div id="list" class="list"></div>
     </ul>
-    <button id="load-more" class="add-order-button">Load More</button>
+    <button id="load-more" class="add-order-button" disabled>Load More</button>
   </div>
 `
 
