@@ -1,7 +1,7 @@
 import {Atom} from '@borshch/utilities';
 import {OpenOrder, RenderOrderList, RemoveOrderFromList, UpdateOrderList} from '@clean-architecture-playground/core'
 import {dataStore, notifier} from '@clean-architecture-playground/core/dummy-dependencies'
-import {appNavigator} from '../dependencies/navigator.jsx'
+import {appNavigator} from '../dependencies/navigator.js'
 import {OrderListView} from './view.jsx'
 import {useIntegration} from '../common/hooks.js';
 import {presentOrderList} from './presenter.js';
