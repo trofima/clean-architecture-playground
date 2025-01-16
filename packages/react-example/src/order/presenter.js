@@ -1,4 +1,3 @@
-// TODO: add some dependency aka moment?
 export const PresentOrder = (formatters) => ({loading, error, data, hasChanges}) => ({
   backButton: {
     label: 'Back',
