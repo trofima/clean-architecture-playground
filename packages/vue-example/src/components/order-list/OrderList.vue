@@ -53,7 +53,7 @@ export default {
       }
 
       unsubscribeFromPresentation = presentation.subscribe((model) => {
-        viewModel.value = present(model)
+        viewModel.value = present(presentOrderList(model))
       })
 
       controller.value.initialize()
