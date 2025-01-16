@@ -7,6 +7,7 @@ import OrderListItem from '@/components/order-list/OrderListItem.vue'
 import {Atom} from '@borshch/utilities';
 import {OpenOrder, RenderOrderList, RemoveOrderFromList, UpdateOrderList, presentOrderList} from '@clean-architecture-playground/core'
 import {dataStore, notifier} from '@clean-architecture-playground/core/dummy-dependencies'
+// import {appNavigator} from '../../dependencies/navigator.js';
 
 const present = (model) => {
   return model.loading && !model.list.length
@@ -41,14 +42,16 @@ export default {
       const removeOrderFromList = RemoveOrderFromList({dataStore, notifier, presentation})
       const openOrder = OpenOrder({
         notifier, presentation,
-        navigator: {open: () => {console.log('Vue Navigator is not implemented yet')}},
+        navigator: {
+          open: (id) => {console.log('should open order', id)}
+        },
       })
 
       controller.value = {
         initialize: () => renderOrderList(),
         refresh: () => updateOrderList({refresh: true}),
         loadMore: () => updateOrderList(),
-        remove: () => removeOrderFromList(),
+        remove: removeOrderFromList,
         open: openOrder,
       }
 

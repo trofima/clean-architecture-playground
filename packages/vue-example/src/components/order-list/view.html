@@ -33,8 +33,7 @@
         :key="order.id" 
         :itemIndex="index" 
         :itemData="order"
-        @remove-order="controller.remove"
-        @open-order="controller.open"
+        :controller="controller"
       ></order-list-item>
     </template>
   </ul>

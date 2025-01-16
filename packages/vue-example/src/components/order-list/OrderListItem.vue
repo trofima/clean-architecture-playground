@@ -1,5 +1,5 @@
 <template>
-  <li :class="{'order-item grid-line': true, updating: itemData.updating}" @click=open(itemData.id)>
+  <li :class="{'order-item grid-line': true, updating: itemData.updating}" @click=controller.open(itemData.id)>
     <div>
       <p>{{ itemData.user }}</p>
     </div>
@@ -16,7 +16,7 @@
       <p>{{ itemData.fulfillmentStatus }}</p>
     </div>
     <div className="delete-button">
-      <button :disabled="updating" @click.stop=remove(itemData.id)>
+      <button :disabled="itemData.updating" @click.stop=controller.remove(itemData.id)>
         <img src="../../assets/delete.svg" alt="Delete order button" />
       </button>
     </div>
@@ -24,36 +24,19 @@
 </template>
 
 <script>
-import { defineComponent, ref } from 'vue';
-export default defineComponent({
+export default {
   name: 'OrderListItem',
   props: {
     itemData: {
       required: true,
       type: Object
+    },
+    controller: {
+      required: true,
+      type: Object,
     }
   },
-  setup(props, { emit }) {
-    const updating = ref(false);
-
-    const open = (id) => {
-      emit('open-order', id);
-      console.log(`Open Something ${id}`);
-    };
-
-    const remove = (id) => {
-      emit('remove-order', id);
-    };
-
-    return {
-      updating,
-      open,
-      remove
-    };
-  }
-});
+};
 </script>
 
-<style scoped>
-
-</style>
+<style></style>
