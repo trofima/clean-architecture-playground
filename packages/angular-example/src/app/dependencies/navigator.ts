@@ -1,35 +1,20 @@
-import { Router, RouterModule } from "@angular/router";
+import { inject, Injectable } from "@angular/core"
+import { Router, RouterModule } from "@angular/router"
+import { Location } from '@angular/common'
 
 export class AppNavigator {
-  // router = new AppRoutingModule
   
-  constructor(private router: Router) {
-    this.#router = router
-    // console.log('this.#router', this.#router)
-    // console.log('this.#router.routerState', this.#router.routerState)
-    // console.log('this.#router.routerState', this.#router.routerState)
-    // this.#history.push(this.#router.routerState.snapshot)
-  }
+  router = inject(Router)
+  location = inject(Location)
   
-  open = (path: string) => {
-    return this.#router.navigate([path]);
+  open(path: string) {
+    return this.router.navigateByUrl(path)
   }
 
-  // open(path) {
-  //   this.#router.navigate(path)
-  //   this.#history.push(path)
-  // }
-
-  close = () => {
-    return this.#router.navigate(['']);
+  close() {
+    if (this.location.path().length)
+      return this.location.back()
+    else
+      return this.open('')
   }
-  // close() {
-  //   if (this.#history.length > 1) this.#router.navigate(-1)
-  //   else this.open('/')
-  // }
-
-  #history: any
-  #router
 }
-
-export const appNavigator = new AppNavigator(new Router())

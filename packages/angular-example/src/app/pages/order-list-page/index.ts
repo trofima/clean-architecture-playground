@@ -3,7 +3,7 @@ import { Component, ElementRef, Input, SimpleChanges } from '@angular/core';
 import { RenderOrderList, UpdateOrderList, presentOrderList, OpenOrder, RemoveOrderFromList } from '@clean-architecture-playground/core';
 import { dataStore, notifier } from '@clean-architecture-playground/core/dummy-dependencies';
 import { Router } from '@angular/router';
-import { appNavigator, AppNavigator } from '../../dependencies/navigator';
+import { AppNavigator } from '../../dependencies/navigator';
 
 @Component({
   selector: 'app-order-list-page',
@@ -16,19 +16,7 @@ export class OrderListPageComponent {
   
   #presentation = new Atom()
   viewModel = {} as any
-  #navigator = {
-    open: (path: string) => {
-      return this.router.navigateByUrl(path);
-    },
-    
-    close: () => {
-      this.router.navigateByUrl('')
-    }
-    
-  }
-  
-  #history = []
-  #router: any
+  #navigator = new AppNavigator()
   
   constructor(private router: Router) {
   }

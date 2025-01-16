@@ -1,1 +1,100 @@
-<p>Order {{id}} works!</p>
+<div class="order-page">
+  <header>
+    <button id="back" disabled (click)="closeOrder()">
+      Back
+    </button>
+    <button id="save" disabled (click)="saveOrder()">
+      Save
+    </button>
+  </header>
+
+  <div id="order-data">
+    <div class="title">
+      Order No 
+      <span id="order-id">{{id}}</span>
+    </div>
+    <div class="order-parameters">
+      <div>
+        <label>
+          Created Date: 
+          <input id="created-date" value="createdDate" disabled>
+        </label>
+      </div>
+      <div>
+        <label>
+          Updated Date: 
+          <input id="updated-date" value="updatedDate" disabled>
+        </label>
+      </div>
+      <div>
+        <label>
+          User Name: 
+          <input id="user-name" value="user" disabled>
+        </label>
+      </div>
+      <div>
+        <label>Sum: 
+          <input id="sum" value="sum" disabled>
+        </label>
+      </div>
+      <div>
+        <label>
+          Payment Status:
+          <select
+            id="payment-status"
+            [(ngModel)]="paymentStatus"
+            (change)="changePaymentStatus($event)"
+          >
+            <option value="unpaid">Unpaid</option>
+            <option value="paid">Paid</option>
+          </select>
+        </label>
+      </div>
+      <div>
+        <label>
+          Fulfillment Status:
+          <select
+            id="fulfillment-status"
+            [(ngModel)]="fulfillmentStatus"
+            (change)="changeFulfillmentStatus($event)"
+          >
+            <option value="pending">Pending</option>
+            <option value="fulfilled">Fulfilled</option>
+          </select>
+        </label> 
+      </div>
+      <div>
+        <label>
+          Shipping Address: 
+          <input
+            id="shipping-address"
+            type="text"
+            value="shippingAddress"
+            editable
+            shippingAddress
+          >
+        </label>
+      </div>
+      <div>
+        <label>
+          Billing Address: 
+          <input
+            id="billing-address"
+            type="text"
+            value="billingAddress"
+            disabled
+          >
+        </label>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="loading-state">
+  <p>Loading...</p>
+</div>
+
+<div class="error-state">
+  <p>Order loading failed with error</p>
+  <p>{{message}} ({{code}})</p>
+</div>
