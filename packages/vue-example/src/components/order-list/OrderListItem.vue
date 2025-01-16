@@ -16,14 +16,16 @@
       <p>{{ itemData.fulfillmentStatus }}</p>
     </div>
     <div className="delete-button">
-      <button :disabled="updating" @click.stop=remove(id)>
+      <button :disabled="updating" @click.stop=remove(itemData.id)>
         <img src="../../assets/delete.svg" alt="Delete order button" />
       </button>
     </div>
   </li>
 </template>
+
 <script>
-export default {
+import { defineComponent, ref } from 'vue';
+export default defineComponent({
   name: 'OrderListItem',
   props: {
     itemData: {
@@ -31,20 +33,25 @@ export default {
       type: Object
     }
   },
-  data() {
+  setup(props, { emit }) {
+    const updating = ref(false);
+
+    const open = (id) => {
+      emit('open-order', id);
+      console.log(`Open Something ${id}`);
+    };
+
+    const remove = (id) => {
+      emit('remove-order', id);
+    };
+
     return {
-      updating: false,
-    }
-  },
-  methods: {
-    open(id) {
-      console.log(`open Something ${id}`)
-    },
-    remove(event, id) {
-      console.log(`remove Something ${id}`)
-    },
+      updating,
+      open,
+      remove
+    };
   }
-}
+});
 </script>
 
 <style scoped>

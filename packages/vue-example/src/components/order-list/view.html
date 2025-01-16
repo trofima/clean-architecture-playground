@@ -28,7 +28,14 @@
       <p>Error: {{ viewModel.error.message }}; Code: {{ viewModel.error.code }}</p>
     </template>
     <template v-else>
-      <order-list-item v-for="(order, index) in viewModel.list" :key="order.id" :itemIndex="index" :itemData="order"></order-list-item>
+      <order-list-item  
+        v-for="(order, index) in viewModel.list" 
+        :key="order.id" 
+        :itemIndex="index" 
+        :itemData="order"
+        @remove-order="controller.remove"
+        @open-order="controller.open"
+      ></order-list-item>
     </template>
   </ul>
   <button class="add-order-button" @click="controller.loadMore" :disabled="viewModel.loading">

@@ -9,7 +9,7 @@ import {OpenOrder, RenderOrderList, RemoveOrderFromList, UpdateOrderList, presen
 import {dataStore, notifier} from '@clean-architecture-playground/core/dummy-dependencies'
 
 const present = (model) => {
-  return model.loading && !model.list.length 
+  return model.loading && !model.list.length
     ? {
       ...model,
       list: Array(3).fill(undefined).map((_, index) => ({
@@ -20,9 +20,9 @@ const present = (model) => {
         paymentStatus: '...',
         fulfillmentStatus: '...',
       })),
-    } 
+    }
     : model
-} 
+}
 
 export default {
   name: 'OrderList',
@@ -48,7 +48,7 @@ export default {
         initialize: () => renderOrderList(),
         refresh: () => updateOrderList({refresh: true}),
         loadMore: () => updateOrderList(),
-        remove: removeOrderFromList,
+        remove: () => removeOrderFromList(),
         open: openOrder,
       }
 
