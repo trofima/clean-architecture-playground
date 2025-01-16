@@ -7,7 +7,7 @@ import OrderListItem from '@/components/order-list/OrderListItem.vue'
 import {Atom} from '@borshch/utilities';
 import {OpenOrder, RenderOrderList, RemoveOrderFromList, UpdateOrderList, presentOrderList} from '@clean-architecture-playground/core'
 import {dataStore, notifier} from '@clean-architecture-playground/core/dummy-dependencies'
-// import {appNavigator} from '../../dependencies/navigator.js';
+import {appNavigator} from '../../dependencies/navigator.js';
 
 const present = (model) => {
   return model.loading && !model.list.length
@@ -42,9 +42,7 @@ export default {
       const removeOrderFromList = RemoveOrderFromList({dataStore, notifier, presentation})
       const openOrder = OpenOrder({
         notifier, presentation,
-        navigator: {
-          open: (id) => {console.log('should open order', id)}
-        },
+        navigator: appNavigator,
       })
 
       controller.value = {
