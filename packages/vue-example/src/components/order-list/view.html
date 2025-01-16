@@ -37,7 +37,11 @@
       ></order-list-item>
     </template>
   </ul>
-  <button class="add-order-button" @click="controller.loadMore" :disabled="viewModel.loading">
+  <button v-if="viewModel.list.length < viewModel.total" 
+    class="add-order-button" 
+    :disabled="viewModel.loading"
+    @click="controller.loadMore" 
+  >
     {{viewModel.loading ? '...' : 'LoadMore'}}
   </button>
 </div>
