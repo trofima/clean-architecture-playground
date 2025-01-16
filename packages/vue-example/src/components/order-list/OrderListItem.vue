@@ -17,7 +17,7 @@
     </div>
     <div className="delete-button">
       <button :disabled="updating" @click.stop=remove(id)>
-        <img src="../assets/delete.svg" alt="Delete order button" />
+        <img src="../../assets/delete.svg" alt="Delete order button" />
       </button>
     </div>
   </li>

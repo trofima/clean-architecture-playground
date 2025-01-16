@@ -1,0 +1,37 @@
+<div class="order-list-page">
+  <div class="order-page-header">
+    <h1>Order List</h1>
+    <button class="add-order-button" @click="controller.refresh">Refresh order list</button>
+  </div>
+  <p>Total order count: <span>{{viewModel.total}}</span></p>
+
+  <div class="head-of-list">
+    <div>
+      <p>User Name</p>
+    </div>
+    <div class="create-date">
+      <p>Create Date</p>
+    </div>
+    <div class="sum">
+      <p>Sum</p>
+    </div>
+    <div class="payment-status">
+      <p>Payment Status</p>
+    </div>
+    <div class="fulfillment-status">
+      <p>Fulfillment Status</p>
+    </div>
+  </div>
+
+  <ul class="order-list">
+    <template v-if="viewModel.error">
+      <p>Error: {{ viewModel.error.message }}; Code: {{ viewModel.error.code }}</p>
+    </template>
+    <template v-else>
+      <order-list-item v-for="(order, index) in viewModel.list" :key="order.id" :itemIndex="index" :itemData="order"></order-list-item>
+    </template>
+  </ul>
+  <button class="add-order-button" @click="controller.loadMore" :disabled="viewModel.loading">
+    {{viewModel.loading ? '...' : 'LoadMore'}}
+  </button>
+</div>
