@@ -1,5 +1,5 @@
 <template>
-  <li :class="{'order-item': true, updating: itemData.updating}" @click=open(itemData.id)>
+  <li :class="{'order-item grid-line': true, updating: itemData.updating}" @click=open(itemData.id)>
     <div>
       <p>{{ itemData.user }}</p>
     </div>
