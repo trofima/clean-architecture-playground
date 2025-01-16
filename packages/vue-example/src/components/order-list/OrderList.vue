@@ -2,17 +2,18 @@
 <style src="./view.css"></style>
 
 <script>
-import {ref, onBeforeMount, onBeforeUnmount} from 'vue'
 import OrderListItem from '@/components/order-list/OrderListItem.vue'
 import {Atom} from '@borshch/utilities';
 import {OpenOrder, RenderOrderList, RemoveOrderFromList, UpdateOrderList, presentOrderList} from '@clean-architecture-playground/core'
 import {dataStore, notifier} from '@clean-architecture-playground/core/dummy-dependencies'
 import {appNavigator} from '../../dependencies/navigator.js';
+import {useIntegration} from '../../common/integration.js';
 
 const present = (model) => {
-  return model.loading && !model.list.length
+  const viewModel = presentOrderList(model)
+  return viewModel.loading && !viewModel.list.length
     ? {
-      ...model,
+      ...viewModel,
       list: Array(3).fill(undefined).map((_, index) => ({
         id: `placeholder${index}`,
         createdDate: '...',
@@ -22,7 +23,28 @@ const present = (model) => {
         fulfillmentStatus: '...',
       })),
     }
-    : model
+    : viewModel
+}
+
+const makeOrderListIntegration = () => {
+  const presentation = new Atom()
+  const updateOrderList = UpdateOrderList({presentation, dataStore, notifier})
+  const renderOrderList = RenderOrderList({presentation, updateOrderList})
+  const removeOrderFromList = RemoveOrderFromList({dataStore, notifier, presentation})
+  const openOrder = OpenOrder({
+    notifier, presentation,
+    navigator: appNavigator,
+  })
+
+  const controller = {
+    initialize: () => renderOrderList(),
+    refresh: () => updateOrderList({refresh: true}),
+    loadMore: () => updateOrderList(),
+    remove: removeOrderFromList,
+    open: openOrder,
+  }
+
+  return {controller, present, presentation}
 }
 
 export default {
@@ -31,43 +53,7 @@ export default {
     OrderListItem
   },
   setup() {
-    let unsubscribeFromPresentation
-    const controller = ref({})
-    const viewModel = ref({})
-
-    onBeforeMount(() => {
-      const presentation = new Atom()
-      const updateOrderList = UpdateOrderList({presentation, dataStore, notifier})
-      const renderOrderList = RenderOrderList({presentation, updateOrderList})
-      const removeOrderFromList = RemoveOrderFromList({dataStore, notifier, presentation})
-      const openOrder = OpenOrder({
-        notifier, presentation,
-        navigator: appNavigator,
-      })
-
-      controller.value = {
-        initialize: () => renderOrderList(),
-        refresh: () => updateOrderList({refresh: true}),
-        loadMore: () => updateOrderList(),
-        remove: removeOrderFromList,
-        open: openOrder,
-      }
-
-      unsubscribeFromPresentation = presentation.subscribe((model) => {
-        viewModel.value = present(presentOrderList(model))
-      })
-
-      controller.value.initialize()
-    })
-
-    onBeforeUnmount(() => {
-      unsubscribeFromPresentation()
-    })
-
-    return {
-      viewModel,
-      controller,
-    }
+    return useIntegration(makeOrderListIntegration)
   }
 }
 
