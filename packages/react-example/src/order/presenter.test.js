@@ -1,9 +1,12 @@
 import {assert} from 'chai'
-import {presentOrder} from './presenter.js'
+import {PresentOrder} from './presenter.js'
 import {OrderPresentation, User} from '@clean-architecture-playground/core'
+import {FunctionSpy} from '@borshch/utilities'
 
 suite('present order', () => {
   test('render back button', () => {
+    const {presentOrder} = setup()
+
     const {backButton: disabledBackButton} = presentOrder(OrderPresentation.make({loading: true}))
     assert.deepEqual(disabledBackButton, {
       label: 'Back',
@@ -18,6 +21,8 @@ suite('present order', () => {
   })
 
   test('render save button', () => {
+    const {presentOrder} = setup()
+
     const {saveButton: emptyDataSaveButton} = presentOrder(OrderPresentation.make({
       data: {},
     }))
@@ -46,6 +51,8 @@ suite('present order', () => {
   })
 
   test('render loader, when there is no data and it is loading', () => {
+    const {presentOrder} = setup()
+
     const viewModel = presentOrder(OrderPresentation.make({
       loading: true,
       data: {},
@@ -57,6 +64,8 @@ suite('present order', () => {
   })
 
   test('render error, when there is no data and its loading failed', () => {
+    const {presentOrder} = setup()
+
     const viewModel = presentOrder(OrderPresentation.make({
       loading: false,
       data: {},
@@ -81,6 +90,8 @@ suite('present order', () => {
   })
 
   test('render content, when there it is loaded', () => {
+    const {presentOrder} = setup()
+
     const viewModel = presentOrder(OrderPresentation.make({
       loading: false,
       data: OrderPresentation.makeData(),
@@ -89,6 +100,8 @@ suite('present order', () => {
   })
 
   test('do not render error, when data updating failed (keep rendered content)', () => {
+    const {presentOrder} = setup()
+
     const viewModel = presentOrder(OrderPresentation.make({
       error: {message: 'error message', code: 'error code'},
       data: OrderPresentation.makeData(),
@@ -97,6 +110,8 @@ suite('present order', () => {
   })
 
   test('do not render loader, when data is updating (keep rendered content)', () => {
+    const {presentOrder} = setup()
+
     const viewModel = presentOrder(OrderPresentation.make({
       loading: true,
       data: OrderPresentation.makeData(),
@@ -105,6 +120,8 @@ suite('present order', () => {
   })
 
   test('present empty error state, when empty order is loaded', () => {
+    const {presentOrder} = setup()
+
     const viewModel = presentOrder(OrderPresentation.make({
       loading: false,
       data: {},
@@ -118,6 +135,8 @@ suite('present order', () => {
   })
 
   test('build data view model', () => {
+    const {presentOrder} = setup()
+
     const viewModel = presentOrder(OrderPresentation.make({
       data: OrderPresentation.makeData({
         id: 'id',
@@ -156,53 +175,69 @@ suite('present order', () => {
   })
 
   test('format created date', () => {
+    const {presentOrder, formatTime} = setup()
+
     const {data: {createdDate: emptyCreatedDate}} = presentOrder(OrderPresentation.make({
       data: OrderPresentation.makeData({createdDate: ''}),
     }))
     assert.equal(emptyCreatedDate, '')
 
+    formatTime.for('2023-11-12T08:12:01.010Z').returns('formatted 2023-11-12T08:12:01.010Z')
     const {data: {createdDate}} = presentOrder(OrderPresentation.make({
       data: OrderPresentation.makeData({createdDate: '2023-11-12T08:12:01.010Z'}),
     }))
-    assert.equal(createdDate, '2023-11-12, 08:12')
+    assert.equal(createdDate, 'formatted 2023-11-12T08:12:01.010Z')
 
+    formatTime.for('2024-12-24T17:57:03.444Z').returns('formatted 2024-12-24T17:57:03.444Z')
     const {data: {createdDate: anotherCreatedDate}} = presentOrder(OrderPresentation.make({
       data: OrderPresentation.makeData({createdDate: '2024-12-24T17:57:03.444Z'}),
     }))
-    assert.equal(anotherCreatedDate, '2024-12-24, 17:57')
+    assert.equal(anotherCreatedDate, 'formatted 2024-12-24T17:57:03.444Z')
   })
 
   test('format updated date', () => {
+    const {presentOrder, formatTime} = setup()
+
     const {data: {updatedDate: emptyUpdatedDate}} = presentOrder(OrderPresentation.make({
       data: OrderPresentation.makeData({updatedDate: ''}),
     }))
     assert.equal(emptyUpdatedDate, '')
 
+    formatTime.for('2023-11-12T08:12:01.010Z').returns('formatted 2023-11-12T08:12:01.010Z')
     const {data: {updatedDate}} = presentOrder(OrderPresentation.make({
       data: OrderPresentation.makeData({updatedDate: '2023-11-12T08:12:01.010Z'}),
     }))
-    assert.equal(updatedDate, '2023-11-12, 08:12')
+    assert.equal(updatedDate, 'formatted 2023-11-12T08:12:01.010Z')
 
+    formatTime.for('2024-12-24T17:57:03.444Z').returns('formatted 2024-12-24T17:57:03.444Z')
     const {data: {updatedDate: anotherUpdatedDate}} = presentOrder(OrderPresentation.make({
       data: OrderPresentation.makeData({updatedDate: '2024-12-24T17:57:03.444Z'}),
     }))
-    assert.equal(anotherUpdatedDate, '2024-12-24, 17:57')
+    assert.equal(anotherUpdatedDate, 'formatted 2024-12-24T17:57:03.444Z')
   })
 
   test('format sum', () => {
+    const {presentOrder, formatNumber} = setup()
+
+    formatNumber.for('0').returns('formatted 0')
     const {data: {sum: zeroSum}} = presentOrder(OrderPresentation.make({
       data: OrderPresentation.makeData({sum: '0'}),
     }))
-    assert.equal(zeroSum, '0.00')
+    assert.equal(zeroSum, 'formatted 0')
 
+    formatNumber.for('1.123').returns('formatted 1.123')
     const {data: {sum}} = presentOrder(OrderPresentation.make({
       data: OrderPresentation.makeData({sum: '1.123'}),
     }))
-    assert.equal(sum, '1.12')
-
-    const {data: {sum: roundedSum}} = presentOrder(OrderPresentation.make({
-      data: OrderPresentation.makeData({sum: '1.125'}),
-    }))
-    assert.equal(roundedSum, '1.13')
+    assert.equal(sum, 'formatted 1.123')
   })
 })
+
+const setup = () => {
+  const formatTime = new FunctionSpy()
+  const formatNumber = new FunctionSpy()
+  return {
+    formatTime, formatNumber,
+    presentOrder: PresentOrder({formatTime, formatNumber}),
+  }
+}
