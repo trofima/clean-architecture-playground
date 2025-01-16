@@ -1,9 +1,14 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client';
+import ReactDOM from 'react-dom/client'
 import {RouterProvider} from 'react-router'
-import {router} from './dependencies/navigator.jsx';
+import { createBrowserRouter } from 'react-router'
+import {routes} from './routes.js'
+import {appNavigator} from './dependencies/navigator.jsx'
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const router = createBrowserRouter(routes);
+const root = ReactDOM.createRoot(document.getElementById('root'))
+
+appNavigator.use(router)
 root.render(
   <RouterProvider router={router} />
 );
