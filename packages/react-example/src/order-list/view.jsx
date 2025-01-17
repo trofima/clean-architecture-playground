@@ -45,7 +45,7 @@ export const OrderListView = ({viewModel: {total, list, error, loading, firstLoa
 )
 
 const OrderItemView = (controller, firstLoading) => ({id, createdDate, user, sum, paymentStatus, fulfillmentStatus, updating}) => (
-  <li key={id} className={`order-item ${updating ? 'updating' : ''}`} onClick={!firstLoading ? () => controller.open(id) : undefined}>
+  <li key={id} data-id={id} className={`order-item ${updating ? 'updating' : ''}`} onClick={!firstLoading ? controller.open : undefined}>
     <div>
       <p>{user}</p>
     </div>
@@ -63,7 +63,7 @@ const OrderItemView = (controller, firstLoading) => ({id, createdDate, user, sum
     </div>
     <div className="delete-button">
       {id &&
-        <button disabled={updating} onClick={!firstLoading ? (event) => controller.remove(event, id) : undefined}>
+        <button disabled={updating} data-id={id} onClick={!firstLoading ? controller.remove : undefined}>
           <img src={deleteIcon} alt="Delete order button" />
         </button>}
     </div>
