@@ -13,8 +13,8 @@ const dummyData = {
     shippingAddress: 'Ukraine, Sevastopol, Kvitucha St, 48',
   }, {
     id: '2',
-    createdDate: '2024-07-10T11:85:20.390Z',
-    updatedDate: '2024-10-30T24:48:15.555Z',
+    createdDate: '2024-07-10T11:55:20.390Z',
+    updatedDate: '2024-10-30T23:48:15.555Z',
     user: '2',
     sum: 5.6,
     paymentStatus: 'paid',
@@ -58,8 +58,8 @@ const dummyData = {
     shippingAddress: 'Ukraine, Sevastopol, Kvitucha St, 48',
   }, {
     id: '7',
-    createdDate: '2024-07-10T11:85:20.390Z',
-    updatedDate: '2024-10-30T24:48:15.555Z',
+    createdDate: '2024-07-10T11:55:20.390Z',
+    updatedDate: '2024-10-30T23:48:15.555Z',
     user: '2',
     sum: 8.7,
     paymentStatus: 'unpaid',
@@ -103,8 +103,8 @@ const dummyData = {
     shippingAddress: 'Ukraine, Sevastopol, Kvitucha St, 48',
   }, {
     id: '12',
-    createdDate: '2024-07-10T11:85:20.390Z',
-    updatedDate: '2024-10-30T24:48:15.555Z',
+    createdDate: '2024-07-10T11:55:20.390Z',
+    updatedDate: '2024-10-30T23:48:15.555Z',
     user: '2',
     sum: 50.6,
     paymentStatus: 'unpaid',
