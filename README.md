@@ -73,7 +73,8 @@ See instructions in terminal.
 <img width="1408" alt="image" src="https://github.com/user-attachments/assets/5802f3ae-eab6-4e95-b165-e31a67007836" />
 
 **Workflow diagram of the abstraction interactions:**
-<img width="1356" alt="image" src="https://github.com/user-attachments/assets/1fd4beb5-f884-4686-807b-209117705642" />
+![image](https://github.com/user-attachments/assets/4411dc3c-597a-4db5-a4db-3cfd32034f17)
+
 * **[abstractionName]?** means abstraction can be omitted for some reason.
 e.g. controller can be so simple and degenerate that it would be unreasonable to abstract it from framework.
 * **"framework controller"** means a file where you usually bind view to the data and handlers.
