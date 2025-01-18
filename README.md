@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/eb55cb0a-472b-497d-a14b-5ed65cfa60e4)# Clean Architecture Playground
+# Clean Architecture Playground
 Opinionated example of how you can apply SOLID principles and CA to UI Web development. Based on Uncle Bob Martin Clean Architecture and Functional Design books.
 You will see **UseCases**, **Entities**, **Presenters**, **Controllers**, inverted dependencies etc.
 <br>
