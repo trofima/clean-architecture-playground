@@ -45,6 +45,11 @@ The project contains [core](./packages/core) module and it's integration to the 
 ><br>
 >It can be existing tool or you can implement yours, the bestest and perfect one.
 
+>[!NOTE]
+> UI is primitive, because I'm not going to waste time on styles; only structure and use cases matter.
+><br>
+> But your are welcome to PR better styles.
+
 <br>
 
 >[!CAUTION]
@@ -63,10 +68,9 @@ npm start
 See instructions in terminal.
 
 <br>
-
-UI example (no, I'm not going to waste time on styles; only structure and use cases matter. but your are welcome to PR better styles)
-<img width="997" alt="image" src="https://github.com/user-attachments/assets/0f7e7efb-a07c-4183-9005-45343eb3b6a3" />
-
+<br>
+Rough UML diagram of the project structure
+<img width="1408" alt="image" src="https://github.com/user-attachments/assets/5802f3ae-eab6-4e95-b165-e31a67007836" />
 
 ## User Stories
 In this example I implement part of backoffice for the online store. I do not intend to cover all edge cases and implement fully functional online store admin app. <b>I intend to implement practical example of several parts just as a showcase</b>. The following user stories will give you an idea of what is covered.
