@@ -74,6 +74,11 @@ See instructions in terminal.
 
 **Workflow diagram of the abstraction interactions:**
 <img width="1396" alt="image" src="https://github.com/user-attachments/assets/e002480d-e40b-4134-a4fd-75b8247a556e" />
+* **[abstractionName]?** means abstraction can be omitted for some reason.
+e.g. controller can be so simple and degenerate that it would be unreasonable to abstract it from framework.
+* **"framework controller"** means a file where you usually bind view to the data and handlers.
+e.g. **.jsx** file where you write functional component for React or **[name].component.ts** file for Angular.
+In this project, for consistency between frameworks, those files are placed to the **[component-name]** folder and called **index.[js|ts|jsx|vue]**
 
 ## User Stories
 In this example I implement part of backoffice for the online store. I do not intend to cover all edge cases and implement fully functional online store admin app. <b>I intend to implement practical example of several parts just as a showcase</b>. The following user stories will give you an idea of what is covered.
