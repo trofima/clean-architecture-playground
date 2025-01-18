@@ -29,11 +29,11 @@ const makeOrderListIntegration = () => {
       initialize: () => renderOrderList(),
       refresh: () => updateOrderList({refresh: true}),
       loadMore: () => updateOrderList(),
-      remove: (event, id) => {
+      remove: (event) => {
         event.stopPropagation()
-        return removeOrderFromList(id);
+        removeOrderFromList(event.currentTarget.dataset.id);
       },
-      open: openOrder,
+      open: (event) => openOrder(event.currentTarget.dataset.id),
     },
   }
 }

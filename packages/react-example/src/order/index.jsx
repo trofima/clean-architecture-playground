@@ -10,12 +10,12 @@ import {formatNumber, formatTime} from '../common/formatters.js';
 
 export const Order = () => {
   const [urlSearchParams] = useSearchParams()
-  const {controller, viewModel} = useIntegration(makeOrderIntegration, urlSearchParams.get('id'))
+  const {controller, viewModel} = useIntegration(makeOrderIntegration, [urlSearchParams])
 
   return viewModel && <OrderView viewModel={viewModel} controller={controller} />
 }
 
-const makeOrderIntegration = (id) => {
+const makeOrderIntegration = (urlSearchParams) => {
   const presentation = new Atom()
   const renderOrder = RenderOrder({dataStore, presentation})
   const changeOrderField = ChangeOrderField({presentation})
@@ -27,6 +27,7 @@ const makeOrderIntegration = (id) => {
     presentation, dataStore, notifier,
     navigator: appNavigator,
   })
+  const id = urlSearchParams.get('id')
 
   return {
     presentation,
@@ -34,8 +35,8 @@ const makeOrderIntegration = (id) => {
     controller: {
       initialize: () => renderOrder(id),
       change: ({target: {name, value}}) => changeOrderField(name, value),
-      close: () => closeOrder(),
-      save: () => saveOrder(),
+      close: closeOrder,
+      save: saveOrder,
     },
   }
 }
