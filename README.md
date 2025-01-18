@@ -70,7 +70,7 @@ See instructions in terminal.
 <br>
 
 **Rough UML diagram of the project structure:**
-<img width="1408" alt="image" src="https://github.com/user-attachments/assets/5802f3ae-eab6-4e95-b165-e31a67007836" />
+![image](https://github.com/user-attachments/assets/f4f9da3a-f52d-402b-8bd2-308200a98650)
 
 **Workflow diagram of the abstraction interactions:**
 ![image](https://github.com/user-attachments/assets/4411dc3c-597a-4db5-a4db-3cfd32034f17)
