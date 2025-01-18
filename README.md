@@ -1,4 +1,4 @@
-# Clean Architecture Playground
+![image](https://github.com/user-attachments/assets/eb55cb0a-472b-497d-a14b-5ed65cfa60e4)# Clean Architecture Playground
 Opinionated example of how you can apply SOLID principles and CA to UI Web development. Based on Uncle Bob Martin Clean Architecture and Functional Design books.
 You will see **UseCases**, **Entities**, **Presenters**, **Controllers**, inverted dependencies etc.
 <br>
@@ -71,6 +71,12 @@ See instructions in terminal.
 
 **Rough UML diagram of the project architecture:**
 ![image](https://github.com/user-attachments/assets/f4f9da3a-f52d-402b-8bd2-308200a98650)
+Note that all arrows cross the App boundary **inwards**. This means <ins>everything is dependent on business logic</ins>.
+<br>
+This is acheived by [Dependency Inversion](https://en.wikipedia.org/wiki/Dependency_inversion_principle).
+This allows easy testing, since any inverted dependency can be substituted by a test double.
+Also there is no need to render markup and simulate events for executing a UseCase. It can be simply called from the test suite.
+<br>
 
 **Workflow diagram of the abstraction interactions:**
 ![image](https://github.com/user-attachments/assets/8fcc3d01-35b1-427d-b65f-9b06cfb3e98b)
@@ -82,7 +88,10 @@ e.g. **.jsx** file where you write functional component for React or **[name].co
 In this project, for consistency between frameworks, those files are placed to the **[component-name]** folder and called **index.[js|ts|jsx|vue]**
 
 ## User Stories
-In this example I implement part of backoffice for the online store. I do not intend to cover all edge cases and implement fully functional online store admin app. <b>I intend to implement practical example of several parts just as a showcase</b>. The following user stories will give you an idea of what is covered.
+In this example I implement part of backoffice for the online store. 
+I do not intend to cover all edge cases and implement fully functional online store admin app. 
+<ins>I intend to implement practical example of several parts just as a showcase</ins>. 
+The following user stories will give you an idea of what is covered.
 
 ### Order List
 #### Render Order List :heavy_check_mark:
