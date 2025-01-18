@@ -68,6 +68,7 @@ npm start
 See instructions in terminal.
 
 <br>
+
 **Rough UML diagram of the project structure:**
 <img width="1408" alt="image" src="https://github.com/user-attachments/assets/5802f3ae-eab6-4e95-b165-e31a67007836" />
 
