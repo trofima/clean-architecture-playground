@@ -69,7 +69,7 @@ See instructions in terminal.
 
 <br>
 
-**Rough UML diagram of the project structure:**
+**Rough UML diagram of the project architecture:**
 ![image](https://github.com/user-attachments/assets/f4f9da3a-f52d-402b-8bd2-308200a98650)
 
 **Workflow diagram of the abstraction interactions:**
