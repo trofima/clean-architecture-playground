@@ -73,7 +73,7 @@ See instructions in terminal.
 ![image](https://github.com/user-attachments/assets/f4f9da3a-f52d-402b-8bd2-308200a98650)
 
 **Workflow diagram of the abstraction interactions:**
-![image](https://github.com/user-attachments/assets/4411dc3c-597a-4db5-a4db-3cfd32034f17)
+![image](https://github.com/user-attachments/assets/8fcc3d01-35b1-427d-b65f-9b06cfb3e98b)
 
 * **[abstractionName]?** means abstraction can be omitted for some reason.
 e.g. controller can be so simple and degenerate that it would be unreasonable to abstract it from framework.
