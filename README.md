@@ -82,10 +82,10 @@ Also there is no need to render markup and simulate events for executing a UseCa
 ![image](https://github.com/user-attachments/assets/8fcc3d01-35b1-427d-b65f-9b06cfb3e98b)
 
 * **[abstractionName]?** means abstraction can be omitted for some reason.
-e.g. controller can be so simple and degenerate that it would be unreasonable to abstract it from framework.
+e.g. controller can be so simple and degenerate that it would be unreasonable to abstract it from a framework.
 * **"framework controller"** means a file where you usually bind view to the data and handlers.
-e.g. **.jsx** file where you write functional component for React or **[name].component.ts** file for Angular.
-In this project, for consistency between frameworks, those files are placed to the **[component-name]** folder and called **index.[js|ts|jsx|vue]**
+e.g. `.jsx` file where you write functional component for React or `[name].component.ts` file for Angular.
+In this project for consistency between frameworks those files are placed to the `[component-name]` folder and called `index.[js|ts|jsx|vue]`
 
 ## User Stories
 In this example I implement part of backoffice for the online store. 
