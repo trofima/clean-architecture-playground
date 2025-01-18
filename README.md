@@ -72,6 +72,9 @@ See instructions in terminal.
 **Rough UML diagram of the project structure:**
 <img width="1408" alt="image" src="https://github.com/user-attachments/assets/5802f3ae-eab6-4e95-b165-e31a67007836" />
 
+**Workflow diagram of the abstraction interactions:**
+<img width="1396" alt="image" src="https://github.com/user-attachments/assets/e002480d-e40b-4134-a4fd-75b8247a556e" />
+
 ## User Stories
 In this example I implement part of backoffice for the online store. I do not intend to cover all edge cases and implement fully functional online store admin app. <b>I intend to implement practical example of several parts just as a showcase</b>. The following user stories will give you an idea of what is covered.
 
