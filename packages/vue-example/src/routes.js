@@ -10,5 +10,5 @@ export const routes = [{
   // route level code-splitting
   // this generates a separate chunk (OrderList.[hash].js) for this route
   // which is lazy-loaded when the route is visited.
-  component: () => import('./components/order/OrderItem.vue'),
+  component: () => import('./components/order/index.vue'),
 }]
