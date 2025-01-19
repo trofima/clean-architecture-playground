@@ -45,6 +45,11 @@ The project contains [core](./packages/core) module and it's integration to the 
 ><br>
 >It can be existing tool or you can implement yours, the bestest and perfect one.
 
+>[!NOTE]
+> UI is primitive, because I'm not going to waste time on styles; only structure and use cases matter.
+><br>
+> But your are welcome to PR better styles.
+
 <br>
 
 >[!CAUTION]
@@ -64,12 +69,29 @@ See instructions in terminal.
 
 <br>
 
-UI example (no, I'm not going to waste time on styles; only structure and use cases matter. but your are welcome to PR better styles)
-<img width="997" alt="image" src="https://github.com/user-attachments/assets/0f7e7efb-a07c-4183-9005-45343eb3b6a3" />
+**Rough UML diagram of the project architecture:**
+![image](https://github.com/user-attachments/assets/f4f9da3a-f52d-402b-8bd2-308200a98650)
+Note that all arrows cross the App boundary **inwards**. This means <ins>everything is dependent on business logic</ins>.
+<br>
+This is acheived by [Dependency Inversion](https://en.wikipedia.org/wiki/Dependency_inversion_principle).
+This allows easy testing, since any inverted dependency can be substituted by a test double.
+Also there is no need to render markup and simulate events for executing a UseCase. It can be simply called from the test suite.
+<br>
 
+**Workflow diagram of the abstraction interactions:**
+![image](https://github.com/user-attachments/assets/8fcc3d01-35b1-427d-b65f-9b06cfb3e98b)
+
+* **[abstractionName]?** means abstraction can be omitted for some reason.
+e.g. controller can be so simple and degenerate that it would be unreasonable to abstract it from a framework.
+* **"framework controller"** means a file where you usually bind view to the data and handlers.
+e.g. `.jsx` file where you write functional component for React or `[name].component.ts` file for Angular.
+In this project for consistency between frameworks those files are placed to the `[component-name]` folder and called `index.[js|ts|jsx|vue]`
 
 ## User Stories
-In this example I implement part of backoffice for the online store. I do not intend to cover all edge cases and implement fully functional online store admin app. <b>I intend to implement practical example of several parts just as a showcase</b>. The following user stories will give you an idea of what is covered.
+In this example I implement part of backoffice for the online store. 
+I do not intend to cover all edge cases and implement fully functional online store admin app. 
+<ins>I intend to implement practical example of several parts just as a showcase</ins>. 
+The following user stories will give you an idea of what is covered.
 
 ### Order List
 #### Render Order List :heavy_check_mark:
