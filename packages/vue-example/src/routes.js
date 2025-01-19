@@ -1,4 +1,4 @@
-import OrderList from './components/order-list/OrderList.vue'
+import OrderList from './components/order-list/index.vue'
 
 export const routes = [{
   path: '/',
