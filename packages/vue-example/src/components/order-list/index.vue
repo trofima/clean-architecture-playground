@@ -4,10 +4,11 @@
 <script>
 import OrderListItem from '@/components/order-list/OrderListItem.vue'
 import {Atom} from '@borshch/utilities';
-import {OpenOrder, RenderOrderList, RemoveOrderFromList, UpdateOrderList, presentOrderList} from '@clean-architecture-playground/core'
+import {OpenOrder, RenderOrderList, RemoveOrderFromList, UpdateOrderList} from '@clean-architecture-playground/core'
 import {dataStore, notifier} from '@clean-architecture-playground/core/dummy-dependencies'
 import {appNavigator} from '../../dependencies/navigator.js';
 import {useIntegration} from '../../common/integration.js';
+import {presentOrderList} from './presenter.js';
 
 const present = (model) => {
   const viewModel = presentOrderList(model)

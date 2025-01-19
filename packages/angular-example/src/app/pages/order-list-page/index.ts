@@ -1,9 +1,10 @@
 import { Atom } from '@borshch/utilities';
 import { Component, ElementRef, Input, SimpleChanges } from '@angular/core';
-import { RenderOrderList, UpdateOrderList, presentOrderList, OpenOrder, RemoveOrderFromList } from '@clean-architecture-playground/core';
+import { RenderOrderList, UpdateOrderList, OpenOrder, RemoveOrderFromList } from '@clean-architecture-playground/core';
 import { dataStore, notifier } from '@clean-architecture-playground/core/dummy-dependencies';
 import { Router } from '@angular/router';
 import { AppNavigator } from '../../dependencies/navigator';
+import {presentOrderList} from './presenter';
 
 @Component({
   selector: 'app-order-list-page',

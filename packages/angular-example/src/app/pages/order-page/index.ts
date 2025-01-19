@@ -2,8 +2,9 @@ import { Component, ElementRef, inject, Input } from '@angular/core'
 import { ActivatedRoute, provideRouter, Router } from '@angular/router'
 import { Atom } from '@borshch/utilities'
 import { dataStore, notifier } from '@clean-architecture-playground/core/dummy-dependencies'
-import { ChangeOrderField, CloseOrder, presentOrder, RenderOrder, SaveOrder } from '@clean-architecture-playground/core'
+import { ChangeOrderField, CloseOrder, RenderOrder, SaveOrder } from '@clean-architecture-playground/core'
 import { AppNavigator } from '../../dependencies/navigator'
+import {presentOrder} from './presenter'
 
 @Component({
   selector: 'app-order-page',
