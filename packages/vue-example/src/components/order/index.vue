@@ -2,7 +2,7 @@
 <style scoped src="./view.css"></style>
 
 <script>
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted } from 'vue';
 import { Atom } from '@borshch/utilities';
 import { useRoute } from 'vue-router';
 import { ChangeOrderField, CloseOrder, RenderOrder, SaveOrder } from '@clean-architecture-playground/core';
@@ -31,10 +31,10 @@ export default {
             },
         });
 
-        const renderOrder = RenderOrder({ dataStore, presentation });
+        const renderOrder = RenderOrder({ presentation, dataStore });
         const changeOrderField = ChangeOrderField({ presentation });
-        const closeOrder = CloseOrder({ presentation, notifier, navigator: appNavigator });
-        const saveOrder = SaveOrder({ presentation, dataStore, notifier, navigator: appNavigator });
+        const closeOrder = CloseOrder({ presentation, navigator: appNavigator, notifier });
+        const saveOrder = SaveOrder({ presentation, dataStore, navigator: appNavigator, notifier });
 
         const controller = {
             initialize: () => renderOrder(orderId.value), // Use `.value`
@@ -50,7 +50,6 @@ export default {
             } catch (error) {
                 console.error("Error fetching order:", error);
             }
-            console.log(orderId.value);
         });
 
         return {
