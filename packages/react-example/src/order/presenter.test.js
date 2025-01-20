@@ -89,7 +89,7 @@ suite('present order', () => {
     })
   })
 
-  test('render content, when there it is loaded', () => {
+  test('render content, when it is loaded', () => {
     const {presentOrder} = setup()
 
     const viewModel = presentOrder(OrderPresentation.make({

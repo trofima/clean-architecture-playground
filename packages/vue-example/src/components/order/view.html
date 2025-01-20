@@ -1,40 +1,36 @@
 <div class="order-page">
   <header>
-    <button id="back" :disabled="viewModel.loading" @click="controller.close">
-      Back
-    </button>
-    <button for="save-order" :disabled="viewModel.loading" @click="controller.save">
-      Save
-    </button>
+    <button :disabled="viewModel.controls.backDisabled" @click="controller.close">Back</button>
+    <button :disabled="viewModel.controls.saveDisabled" @click="controller.save">Save</button>
   </header>
  
-  <div id="order-data">
+  <div v-if="viewModel.state === 'content'">
     <div class="title">
       Order No 
-      <span id="order-id">{{viewModel.order.id}}</span>
+      <span id="order-id">{{viewModel.data.id}}</span>
     </div>
     <div class="order-parameters">
       <div>
         <label>
           Created Date: 
-          <input id="created-date" :value="viewModel.order.createdDate" disabled>
+          <input id="created-date" :value="viewModel.data.createdDate" disabled>
         </label>
       </div>
       <div>
         <label>
           Updated Date: 
-          <input id="updated-date" :value="viewModel.order.updatedDate" disabled>
+          <input id="updated-date" :value="viewModel.data.updatedDate" disabled>
         </label>
       </div>
       <div>
         <label>
           User Name: 
-          <input id="user-name" :value="viewModel.order.user" disabled>
+          <input id="user-name" :value="viewModel.data.user.name" disabled>
         </label>
       </div>
       <div>
         <label>Sum: 
-          <input id="sum" :value="viewModel.order.sum" disabled>
+          <input id="sum" :value="viewModel.data.sum" disabled>
         </label>
       </div>
       <div>
@@ -43,8 +39,8 @@
           <select
             id="payment-status"
             name="paymentStatus"
-            :value="viewModel.order.paymentStatus"
-            @change="controller.change('paymentStatus', $event)"
+            v-model="viewModel.data.paymentStatus"
+            @change="controller.change"
           >
             <option value="unpaid">Unpaid</option>
             <option value="paid">Paid</option>
@@ -57,8 +53,8 @@
           <select
             id="fulfillment-status"
             name="fulfillmentStatus"
-            :value="viewModel.order.fulfillmentStatus"
-            @change="controller.change('fulfillmentStatus', $event)"
+            v-model="viewModel.data.fulfillmentStatus"
+            @change="controller.change"
           >
             <option value="pending">Pending</option>
             <option value="fulfilled">Fulfilled</option>
@@ -72,8 +68,8 @@
             id="shipping-address"
             name="shippingAddress"
             type="text"
-            :value="viewModel.order.shippingAddress"
-            @change="controller.change('shippingAddress', $event)"
+            v-model="viewModel.data.shippingAddress"
+            @change="controller.change"
           >
         </label>
       </div>
@@ -83,20 +79,22 @@
           <input
             id="billing-address"
             type="text"
-            :value="viewModel.order.billingAddress"
+            :value="viewModel.data.billingAddress"
             disabled
           >
         </label>
       </div>
     </div>
   </div>
-</div>
 
-<!-- <div class="loading-state">
-  <p>Loading...</p>
-</div>
+  <div class="error-state" v-else-if="viewModel.state === 'error'">
+    <p>Order loading failed with error</p>
+    <p>{{message}} ({{code}})</p>
+  </div>
 
-<div class="error-state">
-  <p>Order loading failed with error</p>
-  <p>{{message}} ({{code}})</p>
-</div> -->
+  <div class="loading-state" v-else-if="viewModel.state === 'loading'">
+    <div class="loading-state">
+      <p>Loading...</p>
+    </div>
+  </div>
+</div>

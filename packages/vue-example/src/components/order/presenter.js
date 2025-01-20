@@ -1,17 +1,28 @@
-export const presentOrder = (presentation) => {
-  const {createdDate, updatedDate, sum, user, ...rest} = presentation.data
-  return ({
-    ...presentation,
-    data: {
-      ...rest,
-      user: user.name,
-      billingAddress: user.billingAddress,
-      createdDate: formatDate(createdDate),
-      updatedDate: formatDate(updatedDate),
-      sum: formatSum(sum),
+export const presentOrder = ({data, loading, error}) => {
+  const dataIsEmpty = !Object.keys(data).length
+
+  return {
+    state: !dataIsEmpty
+      ? 'content'
+      : error
+        ? 'error' 
+        : 'loading',
+    controls: {
+      backDisabled: loading,
+      saveDisabled: dataIsEmpty || loading,
     },
-  })
+    data: !dataIsEmpty ? formatData(data) : undefined,
+  }
 }
+
+const formatData = ({user, createdDate, updatedDate, sum, ...rest}) => ({
+  ...rest,
+  user: user.name,
+  billingAddress: user.billingAddress,
+  createdDate: formatDate(createdDate),
+  updatedDate: formatDate(updatedDate),
+  sum: formatSum(sum),
+})
 
 const formatDate = (isoDate) => {
   if (!isoDate) return ''

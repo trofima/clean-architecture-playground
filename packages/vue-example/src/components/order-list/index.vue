@@ -55,7 +55,7 @@ export default {
   },
   setup() {
     return useIntegration(makeOrderListIntegration)
-  }
+  },
 }
 
 </script>

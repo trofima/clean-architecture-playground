@@ -3,7 +3,42 @@ import {presentOrder} from './presenter.js'
 import {OrderPresentation, User} from '@clean-architecture-playground/core'
 
 suite('present order', () => {
-  test('build view model', () => {
+  test('render loading state, when there is no data and it is loading', () => {
+    const viewModel = presentOrder(OrderPresentation.make({
+      data: {},
+      loading: true,
+    }))
+    assert.equal(viewModel.state, 'loading')
+  })
+
+  test('render error state, when there is no data and loading failed', () => {
+    const viewModel = presentOrder(OrderPresentation.make({
+      data: {},
+      error: {message: 'oj-vej', code: '001'},
+      loading: false,
+    }))
+    assert.equal(viewModel.state, 'error')
+  })
+
+  test('render content, when it is loaded', () => {
+    const viewModel = presentOrder(OrderPresentation.make({
+      data: OrderPresentation.makeData(),
+      error: undefined,
+      loading: false,
+    }))
+    assert.equal(viewModel.state, 'content')
+  })
+
+  test('do not render error, when data is loaded', () => {
+    const viewModel = presentOrder(OrderPresentation.make({
+      data: OrderPresentation.makeData(),
+      error: {message: 'oj-vej', code: '001'},
+      loading: false,
+    }))
+    assert.equal(viewModel.state, 'content')
+  })
+
+  test('render content data', () => {
     const viewModel = presentOrder(OrderPresentation.make({
       data: OrderPresentation.makeData({
         id: 'id',
@@ -90,5 +125,71 @@ suite('present order', () => {
       data: OrderPresentation.makeData({sum: '1.125'}),
     }))
     assert.equal(roundedSum, '1.13')
+  })
+
+  test('render controls disabled, when data is loading', () => {
+    const viewModel = presentOrder(OrderPresentation.make({
+      data: {},
+      error: undefined,
+      loading: true,
+    }))
+
+    assert.equal(viewModel.controls.backDisabled, true)
+    assert.equal(viewModel.controls.saveDisabled, true)
+  })
+
+  test('render controls enabled, when data is loaded', () => {
+    const viewModel = presentOrder(OrderPresentation.make({
+      data: OrderPresentation.makeData(),
+      error: undefined,
+      loading: false,
+    }))
+
+    assert.equal(viewModel.controls.backDisabled, false)
+    assert.equal(viewModel.controls.saveDisabled, false)
+  })
+
+  test('render error state, when there is no data and loading failed', () => {
+    const viewModel = presentOrder(OrderPresentation.make({
+      data: {},
+      error: {message: 'oj-vej', code: '001'},
+      loading: false,
+    }))
+
+    assert.equal(viewModel.controls.backDisabled, false)
+    assert.equal(viewModel.controls.saveDisabled, true)
+  })
+
+  test('do not render error, when data is loaded', () => {
+    const viewModel = presentOrder(OrderPresentation.make({
+      data: OrderPresentation.makeData(),
+      error: {message: 'oj-vej', code: '001'},
+      loading: false,
+    }))
+
+    assert.equal(viewModel.controls.backDisabled, false)
+    assert.equal(viewModel.controls.saveDisabled, false)
+  })
+
+  test('render controls enabled, when data is loaded', () => {
+    const viewModel = presentOrder(OrderPresentation.make({
+      data: OrderPresentation.makeData(),
+      error: undefined,
+      loading: true,
+    }))
+
+    assert.equal(viewModel.controls.backDisabled, true)
+    assert.equal(viewModel.controls.saveDisabled, true)
+  })
+
+  test('render controls enabled, when data is loaded', () => {
+    const viewModel = presentOrder(OrderPresentation.make({
+      data: {},
+      error: undefined,
+      loading: false,
+    }))
+
+    assert.equal(viewModel.controls.backDisabled, false)
+    assert.equal(viewModel.controls.saveDisabled, true)
   })
 })
