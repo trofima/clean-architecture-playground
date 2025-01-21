@@ -1,4 +1,3 @@
-import {Deferred} from '@borshch/utilities'
 import {DataStoreError} from '../dependencies/index.js'
 
 const dummyData = {
@@ -147,19 +146,15 @@ class DataStore {
 
   #entityToStore = {
     orders: {
-      get: async ({offset, limit}) => {
-        const request = new Deferred()
+      get: ({offset, limit}) => new Promise((resolve) => {
         const orders = this.#get('orders')
         const orderSlice = orders.slice(offset, offset + limit)
-
         const orderList = {
           total: orders.length,
           list: orderSlice,
         }
-
-        setTimeout(() => request.resolve(orderList), 1000)
-        return request.promise
-      },
+        setTimeout(() => resolve(orderList), 1000)
+      }),
 
       set: async () => {
         throw new DataStoreError('Impossible to set order list. This is nonsense')
@@ -171,33 +166,28 @@ class DataStore {
     },
 
     order: {
-      get: ({id}) => {
-        const request = new Deferred()
+      get: ({id}) => new Promise((resolve) => {
         const orders = this.#get('orders')
         const order = orders.find(({id: orderId}) => orderId === id)
+        setTimeout(() => resolve(order), 1000)
+      }),
 
-        setTimeout(() => request.resolve(order), 2000)
-        return request.promise
-      },
-
-      set: (order) => {
+      set: (order) => new Promise((resolve) => {
         this.#update('orders', order)
-      },
+        setTimeout(() => resolve(order), 1000)
+      }),
 
-      remove: async (id) => {
-        const request = new Deferred()
+      remove: (id) => new Promise((resolve) => {
         this.#remove('orders', id)
-        setTimeout(() => request.resolve(), 1000)
-
-        return request.promise
-      },
+        setTimeout(() => resolve(id), 1000)
+      }),
     },
 
     users: {
-      get: async (ids) => {
+      get: (ids) => new Promise((resolve) => {
         const users = this.#get('users')
-        return ids ? users.filter(({id}) => ids.includes(id)) : users
-      },
+        setTimeout(() => resolve(ids ? users.filter(({id}) => ids.includes(id)) : users), 100)
+      }),
 
       set: async () => {
         throw new DataStoreError('Impossible to set user list. This is nonsense')
@@ -205,11 +195,11 @@ class DataStore {
     },
 
     user: {
-      get: (id) => {
+      get: (id) => new Promise((resolve) => {
         const users = this.#get('users')
         const user = users.find(({id: orderId}) => orderId === id)
-        return user
-      },
+        setTimeout(() => resolve(user), 100)
+      }),
     },
   }
 
