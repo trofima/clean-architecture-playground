@@ -3,7 +3,35 @@ import {presentOrderList} from './presenter.js'
 import {OrderListPresentation} from '@clean-architecture-playground/core'
 
 suite('present order list', () => {
-  test('build view model', () => {
+  test('render skeleton items when loading for the first time', () => {
+    const viewModel = presentOrderList(
+      OrderListPresentation.make({loading: true, list: []})
+    )
+    assert.deepEqual(viewModel.list, [{
+      id: `placeholder0`,
+      createdDate: '...',
+      user: '...',
+      sum: '...',
+      paymentStatus: '...',
+      fulfillmentStatus: '...',
+    }, {
+      id: `placeholder1`,
+      createdDate: '...',
+      user: '...',
+      sum: '...',
+      paymentStatus: '...',
+      fulfillmentStatus: '...',
+    }, {
+      id: `placeholder2`,
+      createdDate: '...',
+      user: '...',
+      sum: '...',
+      paymentStatus: '...',
+      fulfillmentStatus: '...',
+    }])
+  })
+
+  test('render order items, when list is loaded', () => {
     const viewModel = presentOrderList(
       OrderListPresentation.make({list: [
         OrderListPresentation.makeOrder({user: 'A Name', paymentStatus: 'unpaid', fulfillmentStatus: 'pending'}),
@@ -33,6 +61,17 @@ suite('present order list', () => {
     })
     assert.deepInclude(allViewModel.list.at(1), {
       user: 'Another Name', paymentStatus: 'paid', fulfillmentStatus: 'fulfilled',
+    })
+  })
+
+  test('do not render skeleton items, when list is updating', () => {
+    const viewModel = presentOrderList(
+      OrderListPresentation.make({loading: true, list: [
+        OrderListPresentation.makeOrder({user: 'A Name', paymentStatus: 'unpaid', fulfillmentStatus: 'pending'}),
+      ]})
+    )
+    assert.deepInclude(viewModel.list.at(0), {
+      user: 'A Name', paymentStatus: 'unpaid', fulfillmentStatus: 'pending',
     })
   })
 

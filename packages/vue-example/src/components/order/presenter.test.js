@@ -149,7 +149,7 @@ suite('present order', () => {
     assert.equal(viewModel.controls.saveDisabled, false)
   })
 
-  test('render error state, when there is no data and loading failed', () => {
+  test('render controls for error state', () => {
     const viewModel = presentOrder(OrderPresentation.make({
       data: {},
       error: {message: 'oj-vej', code: '001'},
@@ -160,7 +160,7 @@ suite('present order', () => {
     assert.equal(viewModel.controls.saveDisabled, true)
   })
 
-  test('do not render error, when data is loaded', () => {
+  test('render controls enabled, when data is already loaded and update error happened', () => {
     const viewModel = presentOrder(OrderPresentation.make({
       data: OrderPresentation.makeData(),
       error: {message: 'oj-vej', code: '001'},
@@ -171,7 +171,7 @@ suite('present order', () => {
     assert.equal(viewModel.controls.saveDisabled, false)
   })
 
-  test('render controls enabled, when data is loaded', () => {
+  test('render controls disabled, when data is updating', () => {
     const viewModel = presentOrder(OrderPresentation.make({
       data: OrderPresentation.makeData(),
       error: undefined,
@@ -182,7 +182,7 @@ suite('present order', () => {
     assert.equal(viewModel.controls.saveDisabled, true)
   })
 
-  test('render controls enabled, when data is loaded', () => {
+  test('render controls, when empty data was loaded (should never happen)', () => {
     const viewModel = presentOrder(OrderPresentation.make({
       data: {},
       error: undefined,

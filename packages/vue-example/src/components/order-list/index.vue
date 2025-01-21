@@ -10,23 +10,6 @@ import {appNavigator} from '../../dependencies/navigator.js';
 import {useIntegration} from '../../common/integration.js';
 import {presentOrderList} from './presenter.js';
 
-const present = (model) => {
-  const viewModel = presentOrderList(model)
-  return viewModel.loading && !viewModel.list.length
-    ? {
-      ...viewModel,
-      list: Array(3).fill(undefined).map((_, index) => ({
-        id: `placeholder${index}`,
-        createdDate: '...',
-        user: '...',
-        sum: '...',
-        paymentStatus: '...',
-        fulfillmentStatus: '...',
-      })),
-    }
-    : viewModel
-}
-
 const makeOrderListIntegration = () => {
   const presentation = new Atom()
   const updateOrderList = UpdateOrderList({presentation, dataStore, notifier})
@@ -45,7 +28,7 @@ const makeOrderListIntegration = () => {
     open: openOrder,
   }
 
-  return {controller, present, presentation}
+  return {controller, present: presentOrderList, presentation}
 }
 
 export default {

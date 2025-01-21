@@ -1,11 +1,22 @@
-export const presentOrderList = (presentation) => ({
-  ...presentation,
-  list: presentation.list.map(({createdDate, sum, ...rest}) => ({
-    ...rest,
-    createdDate: formatDate(createdDate),
-    sum: formatSum(sum),
-  })),
-})
+export const presentOrderList = (presentation) => {
+  return ({
+    ...presentation,
+    list: presentation.loading && !presentation.list.length ? renderSkeletonOrders() : presentation.list.map(({createdDate, sum, ...rest}) => ({
+      ...rest,
+      createdDate: formatDate(createdDate),
+      sum: formatSum(sum),
+    })),
+  })
+}
+
+const renderSkeletonOrders = () => Array(3).fill(undefined).map((_, index) => ({
+  id: `placeholder${index}`,
+  createdDate: '...',
+  user: '...',
+  sum: '...',
+  paymentStatus: '...',
+  fulfillmentStatus: '...',
+}))
 
 const formatDate = (isoDate) => {
   if (!isoDate) return ''
