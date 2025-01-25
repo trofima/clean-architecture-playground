@@ -8,21 +8,21 @@ suite('present order list', () => {
       OrderListPresentation.make({loading: true, list: []})
     )
     assert.deepEqual(viewModel.list, [{
-      id: `placeholder0`,
+      id: 'placeholder0',
       createdDate: '...',
       user: '...',
       sum: '...',
       paymentStatus: '...',
       fulfillmentStatus: '...',
     }, {
-      id: `placeholder1`,
+      id: 'placeholder1',
       createdDate: '...',
       user: '...',
       sum: '...',
       paymentStatus: '...',
       fulfillmentStatus: '...',
     }, {
-      id: `placeholder2`,
+      id: 'placeholder2',
       createdDate: '...',
       user: '...',
       sum: '...',

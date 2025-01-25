@@ -5,7 +5,7 @@ export const presentOrder = ({data, loading, error}) => {
     state: !dataIsEmpty
       ? 'content'
       : error
-        ? 'error' 
+        ? 'error'
         : 'loading',
     controls: {
       backDisabled: loading,
