@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /**
  * Here you can find more classical example with all common CA abstractions,
  * like UseCase, Entity, Presenter, Controller

@@ -231,7 +231,7 @@ class Notifier {
     window.alert(`${type}: ${message}`)
   }
 
-  async confirm(message, {type}) {
+  async confirm(message, {type: _}) {
     return window.confirm(message)
   }
 }

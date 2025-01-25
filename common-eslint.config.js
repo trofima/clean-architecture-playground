@@ -14,7 +14,10 @@ export const commonEslintConfig = [
       'quotes': ['warn', 'single'],
       'semi': ['warn', 'never'],
       'no-trailing-spaces': ['warn'],
-      'no-unused-vars': ['warn']
+      'no-unused-vars': ['warn', {
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_",
+      }],
     },
   }, {
     ignores: ['dist/*'],

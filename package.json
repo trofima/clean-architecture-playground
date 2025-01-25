@@ -9,6 +9,7 @@
   "version": "0.0.1",
   "scripts": {
     "test": "npm test --ws",
+    "lint": "npm lint --ws",
     "lint-staged": "npm run lint-staged --ws"
   },
   "devDependencies": {
