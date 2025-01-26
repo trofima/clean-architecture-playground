@@ -26,6 +26,6 @@ const setup = () => {
   const updateOrderList = new AsyncFunctionSpy()
   return {
     presentation, updateOrderList,
-    renderOrderList: RenderOrderList({presentation, updateOrderList})
+    renderOrderList: RenderOrderList({presentation, updateOrderList}),
   }
 }

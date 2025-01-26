@@ -30,7 +30,7 @@ export const OrderPresentation = {
     return ({
       ...rest,
       data: updatedData,
-      hasChanges: hasChanges(updatedData, rest.originalData)
+      hasChanges: hasChanges(updatedData, rest.originalData),
     })
   },
 }

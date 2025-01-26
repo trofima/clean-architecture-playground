@@ -69,6 +69,6 @@ const setup = () => {
   const presentation = new Atom()
   return {
     presentation,
-    changeOrderField: ChangeOrderField({presentation})
+    changeOrderField: ChangeOrderField({presentation}),
   }
 }

@@ -191,7 +191,7 @@ class DataStore {
 
       set: async () => {
         throw new DataStoreError('Impossible to set user list. This is nonsense')
-      }
+      },
     },
 
     user: {

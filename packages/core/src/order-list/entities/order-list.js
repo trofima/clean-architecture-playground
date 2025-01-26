@@ -4,5 +4,5 @@ export const OrderList = {
     const userIds = list.map(({user}) => user)
     const uniqueUserIds = new Set(userIds)
     return Array.from(uniqueUserIds)
-  }
+  },
 }

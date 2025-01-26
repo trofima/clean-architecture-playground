@@ -54,9 +54,8 @@ const getUsersAndMix = (getFromStore) => ({list, total}) => pipe(
  */
 
 const swap = (ref, update, ...updates) => {
-  if (ref instanceof Atom) {
-    return ref.update(update, ...updates)
-  } else throw new Error(`swap does not support ref of type '${ref.constructor.name}'`)
+  if (ref instanceof Atom) return ref.update(update, ...updates)
+  else throw new Error(`swap does not support ref of type '${ref.constructor.name}'`)
 }
 
 const unique = (items) => {
@@ -65,9 +64,8 @@ const unique = (items) => {
 }
 
 const map = (mappable, mapper) => {
-  if (mappable instanceof Array) {
-    return mappable.map(mapper)
-  } else throw new Error(`map does not support type '${mappable.constructor.name}'`)
+  if (mappable instanceof Array) return mappable.map(mapper)
+  else throw new Error(`map does not support type '${mappable.constructor.name}'`)
 }
 
 const pipe = (...fns) => x => fns.reduce((y, f) => f(y), x)

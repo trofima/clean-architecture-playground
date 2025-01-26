@@ -5,7 +5,7 @@ export const routes = [{
   name: 'OrderList',
   component: OrderList,
 }, {
-  path: '/order' ,
+  path: '/order',
   name: 'OrderItem',
   // route level code-splitting
   // this generates a separate chunk (OrderList.[hash].js) for this route

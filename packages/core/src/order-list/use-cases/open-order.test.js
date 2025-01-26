@@ -56,6 +56,6 @@ const setup = () => {
     presentation,
     navigator,
     notifier,
-    openOrder: OpenOrder({presentation, navigator, notifier})
+    openOrder: OpenOrder({presentation, navigator, notifier}),
   }
 }

@@ -148,17 +148,17 @@ class Presenter {
       ...model,
       list, total,
       pageCount: Math.ceil(total / limit),
-      currentPage: offset ? Math.ceil(offset / limit) : 1
+      currentPage: offset ? Math.ceil(offset / limit) : 1,
     }))
   }
 
   orderListLoadingFailed({message, code}) {
-    if (!this.#viewModel.get().list.length) {
+    if (!this.#viewModel.get().list.length)
       this.#viewModel.update((model) => ({
         ...model,
         error: {message, code},
       }))
-    }
+
   }
 
   #viewModel

@@ -61,6 +61,6 @@ const setup = () => {
   const notifier = new NotifierMock()
   return {
     presentation, dataStore, navigator, notifier,
-    saveOrder: SaveOrder({presentation, dataStore, navigator, notifier})
+    saveOrder: SaveOrder({presentation, dataStore, navigator, notifier}),
   }
 }

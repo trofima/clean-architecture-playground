@@ -141,6 +141,6 @@ const setup = () => {
   dataStore.get.forArg(0, 'user').returns(User.make())
   return {
     presentation, dataStore,
-    renderOrder: RenderOrder({presentation, dataStore})
+    renderOrder: RenderOrder({presentation, dataStore}),
   }
 }

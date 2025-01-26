@@ -56,7 +56,7 @@ export class OrderList extends HTMLElement {
 
     if (!firstLoading) {
       this.#bindAll('click', '.order-item', ({currentTarget}) =>
-      this.#controller.openOrder(currentTarget.dataset.orderId))
+        this.#controller.openOrder(currentTarget.dataset.orderId))
 
       this.#bindAll('click', '.order-item > .delete-button > button', (event) => {
         event.stopPropagation()

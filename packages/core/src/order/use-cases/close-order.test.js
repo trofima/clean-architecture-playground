@@ -51,6 +51,6 @@ const setup = () => {
   const notifier = new NotifierMock()
   return {
     presentation, navigator, notifier,
-    closeOrder: CloseOrder({presentation, navigator, notifier})
+    closeOrder: CloseOrder({presentation, navigator, notifier}),
   }
 }

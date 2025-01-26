@@ -53,12 +53,12 @@ export const renderOrderItem = ({id, createdDate, user, sum, paymentStatus, fulf
       </div>
       <div class="delete-button">
       ${id
-        ? `
+          ? `
           <button data-order-id="${id}" ${updating ? 'disabled' : ''}>
             <img src = "static/delete.svg" alt="Delete order button"/>
           </button>
         `
-        : ''
+          : ''
       }
       </div>
     </li>

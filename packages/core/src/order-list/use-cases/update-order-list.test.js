@@ -99,7 +99,7 @@ suite('update order list', () => {
         sum: 0.5,
         paymentStatus: 'unpaid',
         fulfillmentStatus: 'pending',
-      })]
+      })],
     }))
     dataStore.get.for('users', ['userId']).returns([User.make(({id: 'userId', name: 'user name'}))])
 
@@ -164,7 +164,7 @@ suite('update order list', () => {
         sum: 5.6,
         paymentStatus: 'paid',
         fulfillmentStatus: 'fulfilled',
-      })]
+      })],
     }))
     dataStore.get
       .for('users', ['userId', 'anotherUserId'])
@@ -198,7 +198,7 @@ suite('update order list', () => {
     dataStore.get
       .for('orders', {offset: 0, limit: 1})
       .returns(OrderList.make({
-        list: [Order.make({user: 'userId'}), Order.make({user: 'userId'})]
+        list: [Order.make({user: 'userId'}), Order.make({user: 'userId'})],
       }))
     dataStore.get.for('users', ['userId']).returns([User.make({id: 'userId', name: 'user name'})])
 
@@ -215,10 +215,10 @@ suite('update order list', () => {
     presentation.init(OrderListPresentation.make({offset: 0, limit: 1}))
 
     dataStore.get.for('orders', {offset: 0, limit: 1}).returns(OrderList.make({
-      list: [Order.make({id: 'id'})]
+      list: [Order.make({id: 'id'})],
     }))
     dataStore.get.for('orders', {offset: 1, limit: 1}).returns(OrderList.make({
-      list: [Order.make({id: 'anotherId'})]
+      list: [Order.make({id: 'anotherId'})],
     }))
 
     await updateOrderList()
@@ -238,7 +238,7 @@ suite('update order list', () => {
       list: [OrderListPresentation.makeOrder({id: 'id1'}), OrderListPresentation.makeOrder({id: 'id2'})],
     }))
     dataStore.get.for('orders', {offset: 0, limit: 2}).returns(OrderList.make({
-      list: [Order.make({id: 'refreshedId1'}), Order.make({id: 'refreshedId2'})]
+      list: [Order.make({id: 'refreshedId1'}), Order.make({id: 'refreshedId2'})],
     }))
 
     await updateOrderList({refresh: true})
@@ -283,6 +283,6 @@ const setup = () => {
   dataStore.get.forArg(0, 'orders').returns(OrderList.make())
   return {
     presentation, dataStore, notifier,
-    updateOrderList: UpdateOrderList({presentation, dataStore, notifier})
+    updateOrderList: UpdateOrderList({presentation, dataStore, notifier}),
   }
 }
