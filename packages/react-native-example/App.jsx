@@ -1,13 +1,13 @@
 import {PureComponent} from 'react';
 import { Button, View, Text } from 'react-native';
-import { createStaticNavigation, createNavigationContainerRef, useNavigation } from '@react-navigation/native';
+import { createStaticNavigation, useNavigation } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-const navigationRef = createNavigationContainerRef();
 class OrderList extends PureComponent {
   componentDidMount() {
     this.props.navigation.setOptions({title: `Orders`})
   }
+  
   render() {
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
@@ -75,5 +75,5 @@ const RootStack = createNativeStackNavigator({
 const Navigation = createStaticNavigation(RootStack);
 
 export default function App() {
-  return <Navigation ref={navigationRef} />;
+  return <Navigation />;
 }
