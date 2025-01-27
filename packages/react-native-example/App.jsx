@@ -1,112 +1,79 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
+import {PureComponent} from 'react';
+import { Button, View, Text } from 'react-native';
+import { createStaticNavigation, createNavigationContainerRef, useNavigation } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import React from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
-
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-
-function Section({children, title}) {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
+const navigationRef = createNavigationContainerRef();
+class OrderList extends PureComponent {
+  componentDidMount() {
+    this.props.navigation.setOptions({title: `Orders`})
+  }
+  render() {
+    return (
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        <Text>Order List</Text>
+        <Button title='open order' onPress={() => this.props.navigation.navigate('/order?id=someId')} />
+      </View>
+    );
+  }
 }
 
-function App() {
-  const isDarkMode = useColorScheme() === 'dark';
+class Order extends PureComponent {
+  componentDidMount() {
+    const {navigation, route: {params: {id}}} = this.props
+    navigation.setOptions({
+      title: `Order ${id}`, 
+      headerRight: () => (<Button title='Save' onPress={() => alert('Save Pressed')} />)})
+  }
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
-  return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Shalom Ivanko
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
+  render() {
+    const {navigation, route: {params: {id}}} = this.props
+    return (
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        <Text>Order {id}</Text>
+        <Button title='Go Back' onPress={() => navigation.goBack()} />
+      </View>
+    );
+  }
 }
 
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
+const parseQueryEntry = (rawEntry) => {
+  const [key, value] = rawEntry.split('=')
+  return {[decodeURIComponent(key)]: decodeURIComponent(value ?? '')}
+}
+
+const Navigate = (navigation) => (name, _params) => {
+  const [route, rawQueryParams] = name.split('?')
+  const rawQueryEntries = rawQueryParams.split('&')
+  const queryParams = rawQueryEntries.reduce((acc, rawEntry) => ({
+    ...acc,
+    ...parseQueryEntry(rawEntry),
+  }), {})
+  return navigation.navigate(route, queryParams)
+}
+
+const useInvertedNavigation = () => {
+  const navigation = useNavigation()
+  return {
+    ...navigation,
+    navigate: Navigate(navigation),
+  }
+}
+
+const withNavigation = (Component) => (props) => {
+  return (<Component {...props} navigation={useInvertedNavigation()} />);
+}
+
+const RootStack = createNativeStackNavigator({
+  initialRouteName: '/',
+  'screens': {
+    '/': withNavigation(OrderList),
+    '/order': withNavigation(Order),
   },
 });
 
-export default App;
+const Navigation = createStaticNavigation(RootStack);
+
+export default function App() {
+  return <Navigation ref={navigationRef} />;
+}
