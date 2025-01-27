@@ -7,7 +7,7 @@ class OrderList extends PureComponent {
   componentDidMount() {
     this.props.navigation.setOptions({title: `Orders`})
   }
-  
+
   render() {
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
@@ -42,22 +42,25 @@ const parseQueryEntry = (rawEntry) => {
   return {[decodeURIComponent(key)]: decodeURIComponent(value ?? '')}
 }
 
-const Navigate = (navigation) => (name, _params) => {
-  const [route, rawQueryParams] = name.split('?')
-  const rawQueryEntries = rawQueryParams.split('&')
-  const queryParams = rawQueryEntries.reduce((acc, rawEntry) => ({
-    ...acc,
-    ...parseQueryEntry(rawEntry),
-  }), {})
-  return navigation.navigate(route, queryParams)
+const ReactNativeNavigation = (navigation) => {
+  return {
+    ...navigation,
+    navigate: (name, _params) => {
+      const [route, rawQueryParams] = name.split('?')
+      const rawQueryEntries = rawQueryParams.split('&')
+      const queryParams = rawQueryEntries.reduce((acc, rawEntry) => ({
+        ...acc,
+        ...parseQueryEntry(rawEntry),
+      }), {})
+      
+      return navigation.navigate(route, queryParams)
+    }
+  }
 }
 
 const useInvertedNavigation = () => {
   const navigation = useNavigation()
-  return {
-    ...navigation,
-    navigate: Navigate(navigation),
-  }
+  return ReactNativeNavigation(navigation)
 }
 
 const withNavigation = (Component) => (props) => {
