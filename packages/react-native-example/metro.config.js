@@ -13,6 +13,7 @@ const config = {
   watchFolders: [workspaceRoot],
   resolver: {
     nodeModulesPaths: [path.resolve(workspaceRoot, 'node_modules')],
+    unstable_enablePackageExports: true,
   },
 };
 module.exports = mergeConfig(getDefaultConfig(projectRoot), config);

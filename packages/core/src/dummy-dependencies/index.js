@@ -127,11 +127,6 @@ export const dummyData = {
 }
 
 export class DataStore {
-  constructor() {
-    for (const [key, data] of Object.entries(dummyData))
-      localStorage.setItem(key, JSON.stringify(data))
-  }
-
   get(key, options) {
     return this.#entityToStore[key].get(options)
   }
@@ -227,6 +222,12 @@ export class DataStore {
 }
 
 export class LocalDataStore extends DataStore {
+  constructor() {
+    super()
+    for (const [key, data] of Object.entries(dummyData))
+      localStorage.setItem(key, JSON.stringify(data))
+  }
+
   getFromStorage(key) {
     const dataString = localStorage.getItem(key)
     const data = JSON.parse(dataString)

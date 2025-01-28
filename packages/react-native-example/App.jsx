@@ -2,34 +2,7 @@ import {PureComponent} from 'react';
 import { Button, View, Text } from 'react-native';
 import { createStaticNavigation, useNavigation } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import {dummyData} from '@clean-architecture-playground/core/dummy-dependencies'
-
-class InMemoryDataStore {
-  getFromStorage(key) {
-    return this.#data[key]
-  }
-
-  setToStorage(key, entities) {
-    this.#data[key] = entities
-  }
-
-  #data = {...dummyData}
-}
-
-class OrderList extends PureComponent {
-  componentDidMount() {
-    this.props.navigation.setOptions({title: `Orders`})
-  }
-
-  render() {
-    return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Text>Order List</Text>
-        <Button title='open order' onPress={() => this.props.navigation.navigate('/order?id=someId')} />
-      </View>
-    );
-  }
-}
+import {OrderList} from './src/order-list'
 
 class Order extends PureComponent {
   componentDidMount() {
@@ -55,10 +28,10 @@ const parseQueryEntry = (rawEntry) => {
   return {[decodeURIComponent(key)]: decodeURIComponent(value ?? '')}
 }
 
-const ReactNativeNavigation = (navigation) => {
+const ReactNativeNavigator = (navigation) => {
   return {
     ...navigation,
-    navigate: (name, _params) => {
+    open: (name, _params) => {
       const [route, rawQueryParams] = name.split('?')
       const rawQueryEntries = rawQueryParams.split('&')
       const queryParams = rawQueryEntries.reduce((acc, rawEntry) => ({
@@ -67,24 +40,28 @@ const ReactNativeNavigation = (navigation) => {
       }), {})
 
       return navigation.navigate(route, queryParams)
-    }
+    },
+    close: () => {
+      console.log(111, 'navigation.state.params.previous_screen', navigation.state.params.previous_screen)
+      return navigation.goBack()
+    },
   }
 }
 
 const useInvertedNavigation = () => {
   const navigation = useNavigation()
-  return ReactNativeNavigation(navigation)
+  return ReactNativeNavigator(navigation)
 }
 
-const withNavigation = (Component) => (props) => {
-  return (<Component {...props} navigation={useInvertedNavigation()} />);
+const withNavigator = (Component) => (props) => {
+  return (<Component {...props} navigator={useInvertedNavigation()} />);
 }
 
 const RootStack = createNativeStackNavigator({
   initialRouteName: '/',
   'screens': {
-    '/': withNavigation(OrderList),
-    '/order': withNavigation(Order),
+    '/': withNavigator(OrderList),
+    '/order': withNavigator(Order),
   },
 });
 
