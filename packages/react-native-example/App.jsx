@@ -2,6 +2,19 @@ import {PureComponent} from 'react';
 import { Button, View, Text } from 'react-native';
 import { createStaticNavigation, useNavigation } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import {dummyData} from '@clean-architecture-playground/core/dummy-dependencies'
+
+class InMemoryDataStore {
+  getFromStorage(key) {
+    return this.#data[key]
+  }
+
+  setToStorage(key, entities) {
+    this.#data[key] = entities
+  }
+
+  #data = {...dummyData}
+}
 
 class OrderList extends PureComponent {
   componentDidMount() {
@@ -52,7 +65,7 @@ const ReactNativeNavigation = (navigation) => {
         ...acc,
         ...parseQueryEntry(rawEntry),
       }), {})
-      
+
       return navigation.navigate(route, queryParams)
     }
   }
