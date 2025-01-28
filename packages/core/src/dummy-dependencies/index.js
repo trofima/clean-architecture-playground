@@ -1,6 +1,6 @@
 import {DataStoreError} from '../dependencies/index.js'
 
-const dummyData = {
+export const dummyData = {
   orders: [{
     id: '1',
     createdDate: '2023-11-12T08:12:01.010Z',
@@ -126,7 +126,7 @@ const dummyData = {
   ],
 }
 
-class DataStore {
+export class DataStore {
   constructor() {
     for (const [key, data] of Object.entries(dummyData))
       localStorage.setItem(key, JSON.stringify(data))
@@ -144,10 +144,18 @@ class DataStore {
     return this.#entityToStore[key].remove(data)
   }
 
+  getFromStorage(_key) {
+    throw new Error('DataStore: derived class have to implement this method')
+  }
+
+  setToStorage(_key, _entities) {
+    throw new Error('DataStore: derived class have to implement this method')
+  }
+
   #entityToStore = {
     orders: {
       get: ({offset, limit}) => new Promise((resolve) => {
-        const orders = this.#get('orders')
+        const orders = this.getFromStorage('orders')
         const orderSlice = orders.slice(offset, offset + limit)
         const orderList = {
           total: orders.length,
@@ -167,7 +175,7 @@ class DataStore {
 
     order: {
       get: ({id}) => new Promise((resolve) => {
-        const orders = this.#get('orders')
+        const orders = this.getFromStorage('orders')
         const order = orders.find(({id: orderId}) => orderId === id)
         setTimeout(() => resolve(order), 1000)
       }),
@@ -185,7 +193,7 @@ class DataStore {
 
     users: {
       get: (ids) => new Promise((resolve) => {
-        const users = this.#get('users')
+        const users = this.getFromStorage('users')
         setTimeout(() => resolve(ids ? users.filter(({id}) => ids.includes(id)) : users), 100)
       }),
 
@@ -196,37 +204,42 @@ class DataStore {
 
     user: {
       get: (id) => new Promise((resolve) => {
-        const users = this.#get('users')
+        const users = this.getFromStorage('users')
         const user = users.find(({id: orderId}) => orderId === id)
         setTimeout(() => resolve(user), 100)
       }),
     },
   }
 
-  #get(key) {
+  #update(key, updatedEntity) {
+    const entities = this.getFromStorage(key)
+    const updatedEntities = updatedEntity.id
+      ? entities.map((entity) => entity.id === updatedEntity.id ? updatedEntity : entity)
+      : [...entities, {...updatedEntity, id: (Number(entities.at(-1).id) + 1).toString()}]
+    this.setToStorage(key, updatedEntities)
+  }
+
+  #remove(key, id) {
+    const entities = this.getFromStorage(key)
+    const updatedEntities = entities.filter((entity) => entity.id !== id)
+    this.setToStorage(key, updatedEntities)
+  }
+}
+
+export class LocalDataStore extends DataStore {
+  getFromStorage(key) {
     const dataString = localStorage.getItem(key)
     const data = JSON.parse(dataString)
     return data
   }
 
-  #update(key, updatedEntity) {
-    const entities = this.#get(key)
-    const updatedEntities = updatedEntity.id
-      ? entities.map((entity) => entity.id === updatedEntity.id ? updatedEntity : entity)
-      : [...entities, {...updatedEntity, id: (Number(entities.id) + 1).toString()}]
-    const updatedEntitiesString = JSON.stringify(updatedEntities)
-    localStorage.setItem(key, updatedEntitiesString)
-  }
-
-  #remove(key, id) {
-    const entities = this.#get(key)
-    const updatedEntities = entities.filter((entity) => entity.id !== id)
-    const updatedEntitiesString = JSON.stringify(updatedEntities)
-    localStorage.setItem(key, updatedEntitiesString)
+  setToStorage(key, entities) {
+    const entityString = JSON.stringify(entities)
+    localStorage.setItem(key, entityString)
   }
 }
 
-class Notifier {
+export class Notifier {
   async showNotification({type, message}) {
     window.alert(`${type}: ${message}`)
   }
@@ -236,5 +249,5 @@ class Notifier {
   }
 }
 
-export const dataStore = new DataStore()
+export const dataStore = new LocalDataStore()
 export const notifier = new Notifier()
