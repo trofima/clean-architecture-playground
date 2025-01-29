@@ -221,23 +221,16 @@ export class DataStore {
   }
 }
 
-export class LocalDataStore extends DataStore {
-  // constructor() { // TODO: move out this dependency
-  //   super()
-  //   for (const [key, data] of Object.entries(dummyData))
-  //     localStorage.setItem(key, JSON.stringify(data))
-  // }
+export class InMemoryDataStore extends DataStore {
+  getFromStorage(key) {
+    return this.#data[key]
+  }
 
-  // getFromStorage(key) {
-  //   const dataString = localStorage.getItem(key)
-  //   const data = JSON.parse(dataString)
-  //   return data
-  // }
+  setToStorage(key, entities) {
+    this.#data[key] = entities
+  }
 
-  // setToStorage(key, entities) {
-  //   const entityString = JSON.stringify(entities)
-  //   localStorage.setItem(key, entityString)
-  // }
+  #data = {...dummyData}
 }
 
 export class Notifier {
@@ -250,5 +243,5 @@ export class Notifier {
   }
 }
 
-export const dataStore = new LocalDataStore()
+export const dataStore = new InMemoryDataStore()
 export const notifier = new Notifier()

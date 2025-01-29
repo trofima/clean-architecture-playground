@@ -1,5 +1,4 @@
 import {CommonScreen} from '../common/common-screen';
-import {InMemoryDataStore} from '../dependencies/data-store';
 import {OrderListView} from './view';
 import {OpenOrder, RenderOrderList, RemoveOrderFromList, UpdateOrderList} from '@clean-architecture-playground/core'
 
