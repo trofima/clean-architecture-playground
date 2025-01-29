@@ -2,7 +2,9 @@ import {PureComponent} from 'react'
 import {Atom} from '@borshch/utilities'
 
 export class CommonScreen extends PureComponent {
-  static options = {}
+  static getOptions() {
+    return {}
+  }
   
   View
   presentation = new Atom()
@@ -11,7 +13,8 @@ export class CommonScreen extends PureComponent {
 
   componentDidMount() {
     this.presentation.subscribe(this.#onPresentationChange);
-    this.props.navigator.setOptions(this.constructor.options)
+    this.controller.initialize?.()
+    this.props.navigator.setOptions(this.constructor.getOptions(this.props))
   }
 
   componentWillUnmount() {

@@ -4,11 +4,13 @@ import {OrderListView} from './view';
 import {OpenOrder, RenderOrderList, RemoveOrderFromList, UpdateOrderList} from '@clean-architecture-playground/core'
 
 const dataStore = new InMemoryDataStore() //TODO: put to context or make it singleton
-const notifier = {showNotification: alert}
+const notifier = {showNotification: ({message}) => alert(message)}
 
 export class OrderList extends CommonScreen {
-  static options = {
-    title: 'Orders'
+  static getOptions() {
+    return {
+      title: 'Orders'
+    }
   }
   
   View = OrderListView

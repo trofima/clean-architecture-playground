@@ -1,27 +1,7 @@
-import {PureComponent} from 'react';
-import { Button, View, Text } from 'react-native';
 import { createStaticNavigation, useNavigation } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {OrderList} from './src/order-list'
-
-class Order extends PureComponent {
-  componentDidMount() {
-    const {navigation, route: {params: {id}}} = this.props
-    navigation.setOptions({
-      title: `Order ${id}`, 
-      headerRight: () => (<Button title='Save' onPress={() => alert('Save Pressed')} />)})
-  }
-
-  render() {
-    const {navigation, route: {params: {id}}} = this.props
-    return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Text>Order {id}</Text>
-        <Button title='Go Back' onPress={() => navigation.goBack()} />
-      </View>
-    );
-  }
-}
+import {Order} from './src/order'
 
 const parseQueryEntry = (rawEntry) => {
   const [key, value] = rawEntry.split('=')
@@ -41,10 +21,8 @@ const ReactNativeNavigator = (navigation) => {
 
       return navigation.navigate(route, queryParams)
     },
-    close: () => {
-      console.log(111, 'navigation.state.params.previous_screen', navigation.state.params.previous_screen)
-      return navigation.goBack()
-    },
+
+    close: () => navigation.goBack(),
   }
 }
 
@@ -59,7 +37,7 @@ const withNavigator = (Component) => (props) => {
 
 const RootStack = createNativeStackNavigator({
   initialRouteName: '/',
-  'screens': {
+  screens: {
     '/': withNavigator(OrderList),
     '/order': withNavigator(Order),
   },
