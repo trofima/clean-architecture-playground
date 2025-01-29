@@ -15,7 +15,7 @@ export class OrderList extends CommonScreen {
     refresh: () => this.#useCases.updateOrderList({refresh: true}),
     loadMore: () => this.#useCases.updateOrderList(),
     remove: (id) => this.#useCases.removeOrderFromList(id),
-    openOrder: (id) => this.#useCases.openOrder(id),
+    open: (id) => this.#useCases.openOrder(id),
   }
 
   #updateOrderList = UpdateOrderList({

@@ -24,7 +24,7 @@ export class CommonScreen extends PureComponent {
 
   render() {
     if (!this.View) throw new TypeError('CommonScreen: View must be defined')
-    return (<this.View {...this.state} controller={this.controller} />)
+    return this.state && (<this.View {...this.state} controller={this.controller} />)
   }
 
   #onPresentationChange = (model) => this.setState(this.present(model));
