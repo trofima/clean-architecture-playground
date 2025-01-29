@@ -4,7 +4,6 @@ export const useIntegration = (makeIntegration, dependencies = []) => {
   const [viewModel, setViewModel] = useState()
   const controllerRef = useRef({})
   // this callback creates integration tools. this should happen only once during first render
-  // eslint-disable-next-line
   const cachedMakeIntegration = useCallback(makeIntegration, [])
 
   useEffect(() => {
@@ -15,7 +14,6 @@ export const useIntegration = (makeIntegration, dependencies = []) => {
 
     return () => unsubscribe()
     // this effect creates integration tools. this should happen only once during first render
-    // eslint-disable-next-line
   }, [])
 
   return {

@@ -222,22 +222,22 @@ export class DataStore {
 }
 
 export class LocalDataStore extends DataStore {
-  constructor() {
-    super()
-    for (const [key, data] of Object.entries(dummyData))
-      localStorage.setItem(key, JSON.stringify(data))
-  }
+  // constructor() { // TODO: move out this dependency
+  //   super()
+  //   for (const [key, data] of Object.entries(dummyData))
+  //     localStorage.setItem(key, JSON.stringify(data))
+  // }
 
-  getFromStorage(key) {
-    const dataString = localStorage.getItem(key)
-    const data = JSON.parse(dataString)
-    return data
-  }
+  // getFromStorage(key) {
+  //   const dataString = localStorage.getItem(key)
+  //   const data = JSON.parse(dataString)
+  //   return data
+  // }
 
-  setToStorage(key, entities) {
-    const entityString = JSON.stringify(entities)
-    localStorage.setItem(key, entityString)
-  }
+  // setToStorage(key, entities) {
+  //   const entityString = JSON.stringify(entities)
+  //   localStorage.setItem(key, entityString)
+  // }
 }
 
 export class Notifier {

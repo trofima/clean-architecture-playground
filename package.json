@@ -3,7 +3,7 @@
   "description": "A playground to learn and experiment with Clean Architecture",
   "private": true,
   "workspaces": ["packages/*"],
-  "nohoist": ["**/react", "**/react-dom"],
+  "nohoist": ["**/react", "**/react-dom", "**/react-refresh", "**/react-navigation"],
   "type": "module",
   "version": "0.0.1",
   "scripts": {
