@@ -1,5 +1,6 @@
 import {PureComponent} from 'react'
 import {Atom} from '@borshch/utilities'
+import {DependencyContext} from './context'
 
 export class CommonScreen extends PureComponent {
   static getOptions() {
@@ -28,3 +29,5 @@ export class CommonScreen extends PureComponent {
 
   #onPresentationChange = (model) => this.setState(this.present(model));
 }
+
+CommonScreen.contextType = DependencyContext

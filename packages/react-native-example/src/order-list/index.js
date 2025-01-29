@@ -3,9 +3,6 @@ import {InMemoryDataStore} from '../dependencies/data-store';
 import {OrderListView} from './view';
 import {OpenOrder, RenderOrderList, RemoveOrderFromList, UpdateOrderList} from '@clean-architecture-playground/core'
 
-const dataStore = new InMemoryDataStore() //TODO: put to context or make it singleton
-const notifier = {showNotification: ({message}) => alert(message)}
-
 export class OrderList extends CommonScreen {
   static getOptions() {
     return {
@@ -23,8 +20,9 @@ export class OrderList extends CommonScreen {
   }
 
   #updateOrderList = UpdateOrderList({
-    dataStore, notifier,
     presentation: this.presentation,
+    dataStore: this.context.dataStore,
+    notifier: this.context.notifier,
   })
 
   #useCases = {
@@ -34,12 +32,13 @@ export class OrderList extends CommonScreen {
       updateOrderList: this.#updateOrderList,
     }),
     removeOrderFromList: RemoveOrderFromList({
-      dataStore, notifier,
       presentation: this.presentation,
+      dataStore: this.context.dataStore,
+      notifier: this.context.notifier,
     }),
     openOrder: OpenOrder({
-      notifier,
       presentation: this.presentation,
+      notifier: this.context.notifier,
       navigator: this.props.navigator,
     })
   }

@@ -2,13 +2,18 @@ import { createStaticNavigation, useNavigation } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {OrderList} from './src/order-list'
 import {Order} from './src/order'
+import {InMemoryDataStore} from './src/dependencies/data-store';
+import {DependencyContext} from './src/common/context';
+
+const dataStore = new InMemoryDataStore() 
+const dependencies = {dataStore, notifier: {showNotification: ({message}) => alert(message)}} // TODO: notifier
 
 const parseQueryEntry = (rawEntry) => {
   const [key, value] = rawEntry.split('=')
   return {[decodeURIComponent(key)]: decodeURIComponent(value ?? '')}
 }
 
-const ReactNativeNavigator = (navigation) => {
+const ReactNativeNavigator = (navigation) => { // TODO: extract
   return {
     ...navigation,
     open: (name, _params) => {
@@ -46,5 +51,9 @@ const RootStack = createNativeStackNavigator({
 const Navigation = createStaticNavigation(RootStack);
 
 export default function App() {
-  return <Navigation />;
+  return (
+    <DependencyContext.Provider value={dependencies}>
+      <Navigation />
+    </DependencyContext.Provider>
+  );
 }

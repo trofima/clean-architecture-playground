@@ -1,10 +1,6 @@
 import {ChangeOrderField, CloseOrder, RenderOrder, SaveOrder} from '@clean-architecture-playground/core';
 import {CommonScreen} from '../common/common-screen';
 import {OrderView} from './view';
-import {InMemoryDataStore} from '../dependencies/data-store';
-
-const dataStore = new InMemoryDataStore() //TODO: put to context or make it singleton
-const notifier = {showNotification: ({message}) => alert(message)}
 
 export class Order extends CommonScreen {
   static getOptions({route: {params: {id}}}) {
@@ -24,19 +20,22 @@ export class Order extends CommonScreen {
 
    #useCases = {
     renderOrder: RenderOrder({
-      dataStore,
       presentation: this.presentation, 
+      dataStore: this.context.dataStore,
     }),
-    changeOrderField: ChangeOrderField({presentation: this.presentation,}),
-    saveOrder: SaveOrder({
-      dataStore, notifier,
+    changeOrderField: ChangeOrderField({
       presentation: this.presentation,
+    }),
+    saveOrder: SaveOrder({
+      presentation: this.presentation,
+      dataStore: this.context.dataStore,
       navigator: this.props.navigator,
+      notifier: this.context.notifier,
     }),
     closeOrder: CloseOrder({
-      notifier,
       presentation: this.presentation,
       navigator: this.props.navigator,
+      notifier: this.context.notifier,
     })
   }
 }
