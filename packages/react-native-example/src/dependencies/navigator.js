@@ -28,6 +28,5 @@ const useInvertedNavigation = () => {
   return ReactNativeNavigator(navigation)
 }
 
-export const withNavigator = (Component) => (props) => {
-  return (<Component {...props} navigator={useInvertedNavigation()} />);
-}
+export const withNavigator = (Component) => (props) => 
+  (<Component {...props} navigator={useInvertedNavigation()} />)
