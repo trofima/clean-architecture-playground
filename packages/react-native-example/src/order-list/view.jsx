@@ -3,8 +3,8 @@ import {ActivityIndicator, FlatList, StyleSheet} from 'react-native';
 import {Colors, Drawer, Text, ListItem, View, Spacings, Dividers, SkeletonView, Assets} from 'react-native-ui-lib'
 
 export const OrderListView = ({list, total, loading, controller}) => (
-  <View>
-    <ItemCounter total={total} amount={list.length} loading={loading}/>
+  <View useSafeArea>
+    <ItemCounter total={total} list={list} loading={loading}/>
     {loading && !list.length 
     ?  <SkeletonView
         times={10}
@@ -82,12 +82,12 @@ const OrderListItem = (controller) => ({item: {id, user, createdDate, sum, payme
   </Drawer>
 )
 
-const ItemCounter = memo(({total, amount, loading}) => (
+const ItemCounter = memo(({total, list, loading}) => (
   <View padding={Spacings.s2}>
     <Text text70BO>
-      Loaded: {!amount && loading
+      Loaded: {loading && !list.length
         ? '...'
-        : ` ${amount} of ${total}`}
+        : ` ${list.length} of ${total}`}
     </Text>
   </View>
 ));
