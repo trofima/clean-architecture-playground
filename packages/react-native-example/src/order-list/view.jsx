@@ -1,12 +1,22 @@
 import {memo} from 'react'
 import {ActivityIndicator, FlatList, StyleSheet} from 'react-native';
-import {Colors, Drawer, Text, ListItem, View, Spacings, Dividers, SkeletonView, Assets} from 'react-native-ui-lib'
+import {Colors, Drawer, Text, ListItem, View, Spacings, Dividers, SkeletonView, StateScreen} from 'react-native-ui-lib'
 
-export const OrderListView = ({list, total, loading, controller}) => (
-  <View useSafeArea>
+export const OrderListView = ({list, total, loading, error, controller}) => (
+  <View flex useSafeArea>
+    {error
+    ? <ErrorView error={error} controller={controller}/>
+    : !loading && total === 0
+    ? <EmptyView controller={controller}/>
+    : <OrderList list={list} total={total} loading={loading} controller={controller} />}
+  </View>
+)
+
+const OrderList = ({list, total, loading, controller}) => (
+  <>
     <ItemCounter total={total} list={list} loading={loading}/>
     {loading && !list.length 
-    ?  <SkeletonView
+    ? <SkeletonView
         times={10}
         template={SkeletonView.templates.LIST_ITEM}
         listProps={{size: SkeletonView.sizes.LARGE}}
@@ -20,9 +30,9 @@ export const OrderListView = ({list, total, loading, controller}) => (
         renderItem={OrderListItem(controller)}
         refreshing={loading}
         onRefresh={controller.refresh}
-        onEndReached={!loading && controller.loadMore}
+        onEndReached={!loading && total > list.length && controller.loadMore}
       />}
-  </View>
+  </>
 )
 
 const OrderListItem = (controller) => ({item: {id, user, createdDate, sum, paymentStatus, fulfillmentStatus, updating}, index}) => (
@@ -91,6 +101,24 @@ const ItemCounter = memo(({total, list, loading}) => (
     </Text>
   </View>
 ));
+
+const ErrorView = ({error, controller}) => (
+  <StateScreen
+    title={'Failed to load orders'}
+    subtitle={`${error.message} (${error.code})`}
+    ctaLabel={'Refresh'}
+    onCtaPress={() => controller.refresh()}
+  />
+)
+
+const EmptyView = ({controller}) => (
+  <StateScreen
+    title={'There are no orders'}
+    subtitle={'You can try to refresh'}
+    ctaLabel={'Refresh'}
+    onCtaPress={() => controller.refresh()}
+  />
+)
 
 const styles = StyleSheet.create({
   list: {

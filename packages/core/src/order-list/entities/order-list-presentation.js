@@ -8,7 +8,7 @@ export const OrderListPresentation = {
   getReadOptions: ({offset = 0, limit = 1}, {refresh = false} = {}) =>
     refresh ? {offset: 0, limit: offset} : {offset, limit},
 
-  setLoading: (orderList, loading) => ({...orderList, loading}),
+  setLoading: (orderList, loading) => ({...orderList, loading, error: undefined}),
 
   setError: (orderList, {message, code}) => ({
     ...orderList,

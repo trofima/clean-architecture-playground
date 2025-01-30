@@ -48,6 +48,32 @@ suite('update order list', () => {
     })
   })
 
+  test('hide error from previous loading', async () => {
+    const {updateOrderList, presentation, dataStore} = setup()
+    dataStore.get.defer()
+    presentation.init(OrderListPresentation.make())
+
+    const firstUpdating = updateOrderList()
+    await dataStore.get.reject(0, new DataStoreError('Oj vej', {code: '001'}))
+    await firstUpdating
+    assert.deepInclude(presentation.get(), {
+      loading: false,
+      error: {
+        message: 'Oj vej',
+        code: '001',
+      },
+    })
+
+    const secondUpdating = updateOrderList()
+    assert.deepInclude(presentation.get(), {
+      loading: true,
+      error: undefined,
+    })
+
+    await dataStore.get.resolve(1, OrderListPresentation.make())
+    await secondUpdating
+  })
+
   test('show error notification, when data getting failed and list is not empty', async () => {
     const {updateOrderList, presentation, dataStore, notifier} = setup()
     presentation.init(OrderListPresentation.make({list: [OrderListPresentation.makeOrder()]}))
