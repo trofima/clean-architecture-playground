@@ -1,26 +1,28 @@
 import {memo} from 'react'
 import {ActivityIndicator, FlatList, StyleSheet} from 'react-native';
-import {Button, Colors, Drawer, Text, ListItem, View, Spacings, Dividers, SkeletonView, Assets} from 'react-native-ui-lib'
+import {Colors, Drawer, Text, ListItem, View, Spacings, Dividers, SkeletonView, Assets} from 'react-native-ui-lib'
 
 export const OrderListView = ({list, total, loading, controller}) => (
-  loading && !list.length 
-  ?  <SkeletonView
-      times={10}
-      template={SkeletonView.templates.LIST_ITEM}
-      listProps={{size: SkeletonView.sizes.LARGE}}
-      style={{backgroundColor: Colors.white}}
-    />
-  : <FlatList
-      ListHeaderComponent={<ItemCounter total={total} amount={list.length}/>}
-      ItemSeparatorComponent={<View style={Dividers.d10}/>}
-      ListFooterComponent={list.length && loading && <ActivityIndicator/>}
-      style={styles.list}
-      data={list}
-      renderItem={OrderListItem(controller)}
-      refreshing={loading}
-      onRefresh={controller.refresh}
-      onEndReached={!loading && controller.loadMore}
-    />
+  <View>
+    <ItemCounter total={total} amount={list.length} loading={loading}/>
+    {loading && !list.length 
+    ?  <SkeletonView
+        times={10}
+        template={SkeletonView.templates.LIST_ITEM}
+        listProps={{size: SkeletonView.sizes.LARGE}}
+        style={{backgroundColor: Colors.white}}
+      />
+    : <FlatList
+        ItemSeparatorComponent={<View style={Dividers.d10}/>}
+        ListFooterComponent={list.length && loading && <ActivityIndicator/>}
+        style={styles.list}
+        data={list}
+        renderItem={OrderListItem(controller)}
+        refreshing={loading}
+        onRefresh={controller.refresh}
+        onEndReached={!loading && controller.loadMore}
+      />}
+  </View>
 )
 
 const OrderListItem = (controller) => ({item: {id, user, createdDate, sum, paymentStatus, fulfillmentStatus, updating}, index}) => (
@@ -80,9 +82,13 @@ const OrderListItem = (controller) => ({item: {id, user, createdDate, sum, payme
   </Drawer>
 )
 
-const ItemCounter = memo(({total, amount}) => (
-  <View padding={Spacings.s2} style={Dividers.d20}>
-    <Text text70BO>Loaded: {amount} of {total}</Text>
+const ItemCounter = memo(({total, amount, loading}) => (
+  <View padding={Spacings.s2}>
+    <Text text70BO>
+      Loaded: {!amount && loading
+        ? '...'
+        : ` ${amount} of ${total}`}
+    </Text>
   </View>
 ));
 
