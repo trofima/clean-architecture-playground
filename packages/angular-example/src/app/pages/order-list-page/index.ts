@@ -2,7 +2,7 @@ import { Atom } from '@borshch/utilities';
 import { Component } from '@angular/core';
 import { RenderOrderList, UpdateOrderList, OpenOrder, RemoveOrderFromList } from '@clean-architecture-playground/core';
 import { dataStore, notifier } from '@clean-architecture-playground/core/dummy-dependencies';
-import { AppNavigator } from '../../dependencies/navigator';
+import { AngularNavigator } from '../../dependencies/navigator';
 import {presentOrderList} from './presenter';
 
 @Component({
@@ -12,6 +12,37 @@ import {presentOrderList} from './presenter';
   styleUrl: './view.css'
 })
 export class OrderListPageComponent {
+  constructor(
+    navigator: AngularNavigator
+  ) {
+    this.#navigator = navigator
+    this.#useCases = {
+      renderOrderList: RenderOrderList({
+        presentation: this.#presentation,
+        updateOrderList: UpdateOrderList({
+          presentation: this.#presentation,
+          dataStore,
+          notifier,
+        }),
+      }),
+      updateOrderList: UpdateOrderList({
+        presentation: this.#presentation,
+        dataStore,
+        notifier,
+      }),
+      removeOrderFromList: RemoveOrderFromList({
+        presentation: this.#presentation,
+        dataStore,
+        notifier,
+      }),
+      openOrder: OpenOrder({
+        presentation: this.#presentation,
+        navigator: this.#navigator,
+        notifier,
+      }),
+    }
+  }
+
   ngOnInit(): void {
     this.#unsubscribeFromPresentation = this.#presentation.subscribe((model: any) => {
       this.viewModel = presentOrderList(model)
@@ -32,40 +63,16 @@ export class OrderListPageComponent {
   }
   
   #presentation = new Atom()
-  #navigator = new AppNavigator()
+  #navigator
 
-  #useCases = {
-    renderOrderList: RenderOrderList({
-      presentation: this.#presentation,
-      updateOrderList: UpdateOrderList({
-        presentation: this.#presentation,
-        dataStore,
-        notifier,
-      }),
-    }),
-    updateOrderList: UpdateOrderList({
-      presentation: this.#presentation,
-      dataStore,
-      notifier,
-    }),
-    removeOrderFromList: RemoveOrderFromList({
-      presentation: this.#presentation,
-      dataStore,
-      notifier,
-    }),
-    openOrder: OpenOrder({
-      presentation: this.#presentation,
-      navigator: this.#navigator,
-      notifier,
-    }),
-  }
+  #useCases
 
   controller = {
     initialize: () => this.#useCases.renderOrderList(),
-    openOrder: this.#useCases.openOrder,
+    openOrder: (id: string) => this.#useCases.openOrder(id),
     refresh: () => this.#useCases.updateOrderList({ refresh: true }),
     loadMore: () => this.#useCases.updateOrderList(),
-    deleteOrder: (event: any, orderId: string) => {
+    deleteOrder: (event: MouseEvent, orderId: string) => {
       event.stopPropagation()
       this.#useCases.removeOrderFromList(orderId)
     },

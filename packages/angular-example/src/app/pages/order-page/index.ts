@@ -3,13 +3,12 @@ import { ActivatedRoute, provideRouter, Router } from '@angular/router'
 import { Atom } from '@borshch/utilities'
 import { dataStore, notifier } from '@clean-architecture-playground/core/dummy-dependencies'
 import { ChangeOrderField, CloseOrder, RenderOrder, SaveOrder } from '@clean-architecture-playground/core'
-import { AppNavigator } from '../../dependencies/navigator'
+import { AngularNavigator } from '../../dependencies/navigator'
 import {presentOrder} from './presenter'
 
 @Component({
   selector: 'app-order-page',
   standalone: false,
-  
   templateUrl: './view.html',
   styleUrl: './view.css'
 })
@@ -30,10 +29,31 @@ export class OrderPageComponent {
 
   constructor(
     route: ActivatedRoute,
-    elementRef: ElementRef
+    elementRef: ElementRef,
+    navigator: AngularNavigator
   ) {
     this.#route = route
     this.#elementRef = elementRef
+    this.#navigator = navigator
+    this.#controller = {
+      renderOrder: RenderOrder({
+        dataStore,
+        presentation: this.#presentation,
+      }),
+      closeOrder: CloseOrder({
+        notifier,
+        navigator: this.#navigator,
+        presentation: this.#presentation,
+      }),
+      saveOrder: SaveOrder({
+        dataStore, notifier,
+        navigator: this.#navigator,
+        presentation: this.#presentation,
+      }),
+      changeOrderField: ChangeOrderField({
+        presentation: this.#presentation,
+      }),
+    }
   }
 
   ngOnInit(): void {
@@ -77,29 +97,11 @@ export class OrderPageComponent {
 
   #route: any
   #elementRef: any
+  #navigator
   
   #presentation = new Atom()
-  #navigator = new AppNavigator()
 
-  #controller = {
-    renderOrder: RenderOrder({
-      dataStore,
-      presentation: this.#presentation,
-    }),
-    closeOrder: CloseOrder({
-      notifier,
-      navigator: this.#navigator,
-      presentation: this.#presentation,
-    }),
-    saveOrder: SaveOrder({
-      dataStore, notifier,
-      navigator: this.#navigator,
-      presentation: this.#presentation,
-    }),
-    changeOrderField: ChangeOrderField({
-      presentation: this.#presentation,
-    }),
-  }
+  #controller = {} as any
 
   #isRenderingDataForTheFirstTime = true
 
