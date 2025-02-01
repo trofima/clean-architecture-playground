@@ -41,6 +41,13 @@ suite('present order', () => {
     })
   })
 
+  test('build view model with empty data', () => {
+    const viewModel = presentOrder(OrderPresentation.make({
+      data: undefined,
+    }))
+    assert.deepEqual(viewModel.data, {})
+  })
+
   test('format created date', () => {
     const {data: {createdDate: emptyCreatedDate}} = presentOrder(OrderPresentation.make({
       data: OrderPresentation.makeData({createdDate: ''}),

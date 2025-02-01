@@ -39,20 +39,7 @@ export class OrderPageComponent {
   viewModel: ViewModel = {
     loading: false,
     hasChanges: false,
-    data: {
-      id: '',
-      createdDate: '',
-      updatedDate: '',
-      user: {id: '', name: '', billingAddress: ''},
-      sum: 0,
-      paymentStatus: '',
-      fulfillmentStatus: '',
-      shippingAddress: '',
-    },
-    error:{
-      message: '',
-      code: '',
-    },
+    data: {} as OrderData,
   }
 
   controller = {
@@ -72,7 +59,6 @@ export class OrderPageComponent {
   }
 
   ngOnInit() {
-    console.log('OrderPageComponent ngOnInit')
     this.#unsubscribeFromPresentation = this.#presentation.subscribe((model: any) => {
       this.viewModel = presentOrder(model)
     })
@@ -84,8 +70,8 @@ export class OrderPageComponent {
     this.#queryParamsSubscriber.unsubscribe()
   }
 
-  get dataIsEmpty() {
-    return Boolean(Object.keys(this.viewModel.data).length)
+  get dataIsEmpty() { //TODO: ivanko - move to presenter
+    return Object.keys(this.viewModel.data).length === 0
   }
   
   #useCases
@@ -95,22 +81,22 @@ export class OrderPageComponent {
   #unsubscribeFromPresentation!: () => void
 }
 
-type User = {id: string; name: string; billingAddress: string;}
 type Error = {message: string; code: string;}
 type OrderData = {
   id: string
   createdDate: string
   updatedDate: string
-  user: User
+  user: string
   sum: number
   paymentStatus: string
   fulfillmentStatus: string
   shippingAddress: string
+  billingAddress: string
 }
 
 type ViewModel = {
   loading: boolean
-  error: Error
+  error?: Error
   data: OrderData
   hasChanges: boolean
 }
