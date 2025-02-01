@@ -1,4 +1,5 @@
 const {getDefaultConfig, mergeConfig} = require('@react-native/metro-config');
+const {wrapWithReanimatedMetroConfig} = require('react-native-reanimated/metro-config');
 const path = require('path');
 
 /**
@@ -16,4 +17,4 @@ const config = {
     unstable_enablePackageExports: true,
   },
 };
-module.exports = mergeConfig(getDefaultConfig(projectRoot), config);
+module.exports = wrapWithReanimatedMetroConfig(mergeConfig(getDefaultConfig(projectRoot), config));
