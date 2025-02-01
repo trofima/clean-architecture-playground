@@ -15,7 +15,7 @@ export const OrderListView = ({list, total, loading, error, controller}) => (
 const OrderList = ({list, total, loading, controller}) => (
   <>
     <ItemCounter total={total} list={list} loading={loading}/>
-    {loading && !list.length 
+    {loading && !list.length
     ? <SkeletonView
         times={10}
         template={SkeletonView.templates.LIST_ITEM}

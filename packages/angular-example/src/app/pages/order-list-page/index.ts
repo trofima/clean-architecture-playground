@@ -1,92 +1,77 @@
 import { Atom } from '@borshch/utilities';
-import { Component, ElementRef, Input, SimpleChanges } from '@angular/core';
+import { Component } from '@angular/core';
 import { RenderOrderList, UpdateOrderList, OpenOrder, RemoveOrderFromList } from '@clean-architecture-playground/core';
 import { dataStore, notifier } from '@clean-architecture-playground/core/dummy-dependencies';
-import { Router } from '@angular/router';
 import { AppNavigator } from '../../dependencies/navigator';
 import {presentOrderList} from './presenter';
 
 @Component({
   selector: 'app-order-list-page',
   standalone: false,
-  
   templateUrl: './view.html',
   styleUrl: './view.css'
 })
 export class OrderListPageComponent {
-  
-  #presentation = new Atom()
-  viewModel = {} as any
-  #navigator = new AppNavigator()
-  
-  constructor(private router: Router) {
-  }
-  
   ngOnInit(): void {
-    this.#presentation.subscribe((model: any) => {
+    this.#unsubscribeFromPresentation = this.#presentation.subscribe((model: any) => {
       this.viewModel = presentOrderList(model)
     })
-    this.#renderOrderList()
+    this.controller.initialize()
   }
 
   ngOnDestroy() {
-    this.#unsubscribeFromPresentation?.unsubscribe()
+    this.#unsubscribeFromPresentation()
   }
-  
-  get emptyOrderPresentation() {
-    return {createdDate: '...', user: '...', sum: '...', paymentStatus: '...', fulfillmentStatus: '...'}
-  }
-  
-  get orders() {
+
+  viewModel = {} as any
+
+  get orders() { // TODO: ivanko - move to presenter and test it
     return this.viewModel.loading && !this.viewModel.list?.length
-      ? Array(3).fill(this.emptyOrderPresentation)
+      ? Array(3).fill(emptyOrderPresentation)
       : this.viewModel.list
   }
   
-  openOrder(orderId: string) {
-    if (orderId) {
-      this.#openOrder(orderId)
-    }
-  }
-  
-  refresh() {
-    this.#updateOrderList({ refresh: true })
-  }
-  
-  loadMore() {
-    this.#updateOrderList()
-  }
-  
-  deleteOrder(event: any, orderId: string) {
-    event.stopPropagation()
-    this.#removeOrderFromList(orderId)
-  }
+  #presentation = new Atom()
+  #navigator = new AppNavigator()
 
-  #renderOrderList = RenderOrderList({
-    presentation: this.#presentation,
+  #useCases = {
+    renderOrderList: RenderOrderList({
+      presentation: this.#presentation,
+      updateOrderList: UpdateOrderList({
+        presentation: this.#presentation,
+        dataStore,
+        notifier,
+      }),
+    }),
     updateOrderList: UpdateOrderList({
       presentation: this.#presentation,
       dataStore,
       notifier,
     }),
-  })
-  
-  #openOrder = OpenOrder({
-    presentation: this.#presentation,
-    navigator: this.#navigator,
-    notifier,
-  })
-  
-  #updateOrderList = UpdateOrderList({
-    dataStore,
-    notifier,
-    presentation: this.#presentation,
-  })
+    removeOrderFromList: RemoveOrderFromList({
+      presentation: this.#presentation,
+      dataStore,
+      notifier,
+    }),
+    openOrder: OpenOrder({
+      presentation: this.#presentation,
+      navigator: this.#navigator,
+      notifier,
+    }),
+  }
 
-  #removeOrderFromList = RemoveOrderFromList({
-    dataStore, notifier,
-    presentation: this.#presentation,
-  })
+  controller = {
+    initialize: () => this.#useCases.renderOrderList(),
+    openOrder: this.#useCases.openOrder,
+    refresh: () => this.#useCases.updateOrderList({ refresh: true }),
+    loadMore: () => this.#useCases.updateOrderList(),
+    deleteOrder: (event: any, orderId: string) => {
+      event.stopPropagation()
+      this.#useCases.removeOrderFromList(orderId)
+    },
+  }
   
   #unsubscribeFromPresentation: any
 }
+
+const emptyOrderPresentation = {createdDate: '...', user: '...', sum: '...', paymentStatus: '...', fulfillmentStatus: '...'}
