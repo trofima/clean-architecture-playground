@@ -11,8 +11,8 @@ export class Notifier {
   confirm(message, {type}) {
     return new Promise((resolve) => {
       Alert.alert(message, '', [
-        {text: 'No', onPress: () => resolve(false), style: 'cancel'},
-        {text: 'Yes', style: type === 'danger' ? 'destructive' : 'default', onPress: () => resolve(true)},
+        {text: 'Cancel', onPress: () => resolve(false), style: 'cancel'},
+        {text: 'Yes', style: type === 'danger' && type === 'warning' ? 'destructive' : 'default', onPress: () => resolve(true)},
       ]);
     })
   }
