@@ -1,11 +1,12 @@
 export const presentOrder = (presentation: any) => {
+  console.log('presentation', presentation)
   const {createdDate, updatedDate, sum, user, ...rest} = presentation.data
   return ({
     ...presentation,
     data: {
       ...rest,
-      user: user.name,
-      billingAddress: user.billingAddress,
+      user: user?.name, //TODO: ivanko - test this edge case
+      billingAddress: user?.billingAddress, //TODO: ivanko - test this edge case
       createdDate: formatDate(createdDate),
       updatedDate: formatDate(updatedDate),
       sum: formatSum(sum),

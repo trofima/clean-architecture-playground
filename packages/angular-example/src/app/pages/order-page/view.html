@@ -1,50 +1,42 @@
 <div class="order-page">
   <header>
-    <button id="back" disabled (click)="closeOrder()">
-      Back
-    </button>
-    <button id="save" disabled (click)="saveOrder()">
-      Save
-    </button>
+    <button [disabled]="viewModel.loading" (click)="controller.close()">Back</button>
+    <button [disabled]="viewModel.loading || !viewModel.hasChanges" (click)="controller.save()">Save</button>
   </header>
 
-  <div id="order-data">
+  <div id="order-data" *ngIf="dataIsEmpty">
     <div class="title">
       Order No 
-      <span id="order-id">{{id}}</span>
+      <span>{{viewModel.data.id}}</span>
     </div>
     <div class="order-parameters">
       <div>
         <label>
           Created Date: 
-          <input id="created-date" value="createdDate" disabled>
+          <input value="viewModel.data.createdDate" readonly>
         </label>
       </div>
       <div>
         <label>
           Updated Date: 
-          <input id="updated-date" value="updatedDate" disabled>
+          <input value="viewModel.data.updatedDate" readonly>
         </label>
       </div>
       <div>
         <label>
           User Name: 
-          <input id="user-name" value="user" disabled>
+          <input value="viewModel.data.user.name" readonly>
         </label>
       </div>
       <div>
         <label>Sum: 
-          <input id="sum" value="sum" disabled>
+          <input value="viewModel.data.sum" readonly>
         </label>
       </div>
       <div>
         <label>
           Payment Status:
-          <select
-            id="payment-status"
-            [(ngModel)]="paymentStatus"
-            (change)="changePaymentStatus($event)"
-          >
+          <select name="paymentStatus" (change)="controller.change($event)">
             <option value="unpaid">Unpaid</option>
             <option value="paid">Paid</option>
           </select>
@@ -53,11 +45,7 @@
       <div>
         <label>
           Fulfillment Status:
-          <select
-            id="fulfillment-status"
-            [(ngModel)]="fulfillmentStatus"
-            (change)="changeFulfillmentStatus($event)"
-          >
+          <select name="fulfillmentStatus" (change)="controller.change($event)">
             <option value="pending">Pending</option>
             <option value="fulfilled">Fulfilled</option>
           </select>
@@ -67,34 +55,31 @@
         <label>
           Shipping Address: 
           <input
-            id="shipping-address"
             type="text"
-            value="shippingAddress"
-            editable
-            shippingAddress
+            value="viewModel.data.shippingAddress"
+            name="shippingAddress"
+            (input)="controller.change($event)"
           >
         </label>
       </div>
       <div>
         <label>
           Billing Address: 
-          <input
-            id="billing-address"
-            type="text"
-            value="billingAddress"
-            disabled
-          >
+          <input type="text" value="viewModel.data.billingAddress" readonly>
         </label>
       </div>
     </div>
   </div>
+
+  <div class="loading-state" *ngIf="viewModel.loading && !dataIsEmpty">
+    <p>Loading...</p>
+  </div>
+
+  <div class="error-state" *ngIf="viewModel.error && !dataIsEmpty">
+    <p>Order loading failed with error</p>
+    <p>{{viewModel.error.message}} ({{viewModel.error.code}})</p>
+  </div>
 </div>
 
-<div class="loading-state">
-  <p>Loading...</p>
-</div>
 
-<div class="error-state">
-  <p>Order loading failed with error</p>
-  <p>{{message}} ({{code}})</p>
-</div>
+

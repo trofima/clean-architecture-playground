@@ -43,7 +43,7 @@ export class OrderListPageComponent {
     }
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.#unsubscribeFromPresentation = this.#presentation.subscribe((model: any) => {
       this.viewModel = presentOrderList(model)
     })
