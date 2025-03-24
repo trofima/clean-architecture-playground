@@ -1,4 +1,3 @@
-import {BackHandler} from 'react-native';
 import {ChangeOrderField, CloseOrder, RenderOrder, SaveOrder} from '@clean-architecture-playground/core';
 import {CommonScreen} from '../common/common-screen';
 import {OrderView} from './view';

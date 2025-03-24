@@ -24,6 +24,12 @@ const ReactNativeNavigator = (navigation, preventedClosing) => {
   }
 }
 
+const forceDeactivateBackButton = (navigation) => {
+  // yes, it's a hack. complain to react-navigation
+  setTimeout(() => navigation.setOptions({headerBackVisible: true}), 0);
+  navigation.setOptions({headerBackVisible: false});
+}
+
 const useInvertedNavigation = () => {
   const navigation = useNavigation()
   const preventedClosing = useMemo(() => ({
@@ -32,10 +38,11 @@ const useInvertedNavigation = () => {
   }), [navigation])
 
   usePreventRemove(true, ({data}) => {
+    forceDeactivateBackButton(navigation)
     preventedClosing.close = () => navigation.dispatch(data.action)
     preventedClosing.handle?.() ?? preventedClosing.close()
   })
-  
+
   const navigator = useMemo(() => ReactNativeNavigator(navigation, preventedClosing), [navigation])
   return navigator
 }
