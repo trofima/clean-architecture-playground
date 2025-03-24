@@ -29,6 +29,8 @@ export const commonEslintConfig = [
       '@stylistic/js/comma-spacing': ['warn'],
       '@stylistic/js/comma-dangle': ['warn', 'always-multiline'],
       '@stylistic/js/object-curly-spacing': ['warn', 'never'],
+      '@stylistic/js/space-in-parens': ["warn", "never"],
+      '@stylistic/js/quote-props': ["warn", "as-needed"],
     },
   }, {
     ignores: ['dist/*'],
