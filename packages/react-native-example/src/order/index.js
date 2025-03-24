@@ -1,3 +1,4 @@
+import {BackHandler} from 'react-native';
 import {ChangeOrderField, CloseOrder, RenderOrder, SaveOrder} from '@clean-architecture-playground/core';
 import {CommonScreen} from '../common/common-screen';
 import {OrderView} from './view';
@@ -9,6 +10,7 @@ export class Order extends CommonScreen {
       // headerRight: () => (<Button title='Save' onPress={() => alert('Save Pressed')} />),
     }
   }
+
   View = OrderView
 
   controller = {
@@ -16,6 +18,11 @@ export class Order extends CommonScreen {
     change: (name, value) => this.#useCases.changeOrderField(name, value),
     save:() => this.#useCases.saveOrder(),
     close: () => this.#useCases.closeOrder(),
+  }
+
+  componentDidMount() {
+    super.componentDidMount()
+    this.props.navigator.onClose(this.controller.close)
   }
 
    #useCases = {

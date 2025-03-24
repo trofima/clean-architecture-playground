@@ -12,7 +12,7 @@ export class Notifier {
     return new Promise((resolve) => {
       Alert.alert(message, '', [
         {text: 'Cancel', onPress: () => resolve(false), style: 'cancel'},
-        {text: 'Yes', style: type === 'danger' && type === 'warning' ? 'destructive' : 'default', onPress: () => resolve(true)},
+        {text: 'Yes', style: type === 'danger' || type === 'warning' ? 'destructive' : 'default', onPress: () => resolve(true)},
       ]);
     })
   }
