@@ -26,7 +26,7 @@ suite('update order in list', () => {
     assert.deepInclude(presentation.get().list.at(0), {paymentStatus: 'paid', fulfillmentStatus: 'fulfilled'})
   })
 
-  test('update order data by id', async () => {
+  test('update order by id', async () => {
     const {updateOrderInList, presentation} = setup()
     presentation.init(OrderListPresentation.make({list: [
       OrderListPresentation.makeOrder({id: 'notUpdatingId', paymentStatus: 'unpaid'}),
