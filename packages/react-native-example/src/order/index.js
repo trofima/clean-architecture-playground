@@ -1,12 +1,12 @@
 import {ChangeOrderField, CloseOrder, RenderOrder, SaveOrder} from '@clean-architecture-playground/core';
 import {CommonScreen} from '../common/common-screen';
-import {OrderView} from './view';
+import {OrderView, OrderSaveButton} from './view';
 
 export class Order extends CommonScreen {
-  static getOptions({route: {params: {id}}}) {
+  static getOptions({route: {params: {id}}}, presentation, controller) {
     return {
       title: `Order ${id}`, 
-      // headerRight: () => (<Button title='Save' onPress={() => alert('Save Pressed')} />),
+      headerRight: OrderSaveButton(presentation, controller),
     }
   }
 
@@ -22,6 +22,10 @@ export class Order extends CommonScreen {
   componentDidMount() {
     super.componentDidMount()
     this.props.navigator.onClose(this.controller.close)
+  }
+
+  componentDidUpdate() {
+    this.props.navigator.setOptions({headerRight: OrderSaveButton(this.presentation.get(), this.controller)})
   }
 
    #useCases = {

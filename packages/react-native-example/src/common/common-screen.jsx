@@ -15,7 +15,7 @@ export class CommonScreen extends PureComponent {
   componentDidMount() {
     this.presentation.subscribe(this.#onPresentationChange);
     this.controller.initialize?.()
-    this.props.navigator.setOptions(this.constructor.getOptions(this.props))
+    this.props.navigator.setOptions(this.constructor.getOptions(this.props, this.presentation.get(), this.controller));
   }
 
   componentWillUnmount() {

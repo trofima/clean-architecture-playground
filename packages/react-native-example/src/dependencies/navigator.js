@@ -27,13 +27,21 @@ const ReactNativeNavigator = (navigation, preventedClosing) => {
 const useInvertedNavigation = () => {
   const navigation = useNavigation()
   const preventedClosing = useMemo(() => ({
-    close: undefined,
+    close: navigation.goBack,
     handle: undefined,
   }), [navigation])
 
   usePreventRemove(true, ({data}) => {
-    preventedClosing.close = () => navigation.dispatch(data.action)
-    preventedClosing.handle?.() ?? preventedClosing.close()
+    const proceedClosing = () => navigation.dispatch(data.action)
+    if (data.action.type === 'POP') {
+      // in scenario: make changes ->press back->confirmation cancel->press save: 
+      // it will override close from navigation.goBack (GO_BACK event) to navigation.dispatch(data.action) (POP event).
+      // it will still work, but dispatching POP event instead of GO_BACK.
+      // not important for this example, but a bit inconsistent.
+      // i have no idea how to invert this crap better. rnn and hooks are evil.
+      preventedClosing.close = proceedClosing
+      preventedClosing.handle?.() ?? proceedClosing()
+    } else proceedClosing()
   })
 
   const navigator = useMemo(() => ReactNativeNavigator(navigation, preventedClosing), [navigation])

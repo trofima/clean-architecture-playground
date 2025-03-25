@@ -10,7 +10,7 @@ export const OrderView = ({data, controller}) => (
       <TextField readonly floatingPlaceholder placeholder='Customer:' value={data.user?.name}/>
       <TextField readonly floatingPlaceholder placeholder='Created date:' value={data.createdDate}/>
       <TextField readonly floatingPlaceholder placeholder='Updated date:' value={data.updatedDate}/>
-      <TextField readonly floatingPlaceholder placeholder='Sum:' value={String(data.sum)}/>
+      <TextField readonly floatingPlaceholder placeholder='Sum:' value={data.sum !== undefined && String(data.sum)}/>
       <Picker
         floatingPlaceholder
         placeholder='Payment status'
@@ -40,4 +40,12 @@ export const OrderView = ({data, controller}) => (
     </View> 
     : <Text>Empty</Text>}
   </View>
+)
+
+export const OrderSaveButton = ({loading, hasChanges}, controller) => () => (
+  <Button
+    title='Save'
+    onPress={controller.save}
+    disabled={loading || !hasChanges}
+  />
 )
