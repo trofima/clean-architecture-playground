@@ -28,6 +28,11 @@ export const OrderListPresentation = {
     list: orderList.list.map((order) => order.id === id ? {...order, updating} : order),
   }),
 
+  updateOrder: (orderList, {id, updates}) => ({
+    ...orderList,
+    list: orderList.list.map((order) => order.id === id ? {...order, ...updates} : order),
+  }),
+
   removeOrder: (orderList, id) => ({
     ...orderList,
     list: orderList.list.filter((order) => order.id !== id),
