@@ -18,6 +18,15 @@ export class OrderList extends CommonScreen {
     open: (id) => this.#useCases.openOrder(id),
   }
 
+  componentDidMount() {
+    super.componentDidMount()
+    this.props.navigator.addToContext('orderList', this.presentation)
+  }
+
+  componentWillUnmount() {
+    this.props.navigator.removeFromContext('orderList')
+  }
+
   #updateOrderList = UpdateOrderList({
     presentation: this.presentation,
     dataStore: this.context.dataStore,

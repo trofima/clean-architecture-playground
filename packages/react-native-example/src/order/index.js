@@ -3,9 +3,9 @@ import {CommonScreen} from '../common/common-screen';
 import {OrderView, OrderSaveButton} from './view';
 
 export class Order extends CommonScreen {
-  static getOptions({route: {params: {id}}}, presentation, controller) {
+  static getOptions({route: {params: {queryParams: {id}}}}, presentation, controller) {
     return {
-      title: `Order ${id}`, 
+      title: `Order ${id}`,
       headerRight: OrderSaveButton(presentation, controller),
     }
   }
@@ -13,7 +13,7 @@ export class Order extends CommonScreen {
   View = OrderView
 
   controller = {
-    initialize: () => this.#useCases.renderOrder(this.props.route.params.id),
+    initialize: () => this.#useCases.renderOrder(this.props.route.params.queryParams.id),
     change: (name, value) => this.#useCases.changeOrderField(name, value),
     save:() => this.#useCases.saveOrder(),
     close: () => this.#useCases.closeOrder(),

@@ -7,9 +7,10 @@ const parseQueryEntry = (rawEntry) => {
 }
 
 const ReactNativeNavigator = (navigation, preventedClosing) => {
+  const context = {}
   return {
     ...navigation,
-    open: (name, _params) => {
+    open: (name) => {
       const [route, rawQueryParams] = name.split('?')
       const rawQueryEntries = rawQueryParams.split('&')
       const queryParams = rawQueryEntries.reduce((acc, rawEntry) => ({
@@ -17,8 +18,10 @@ const ReactNativeNavigator = (navigation, preventedClosing) => {
         ...parseQueryEntry(rawEntry),
       }), {})
 
-      return navigation.navigate(route, queryParams)
+      return navigation.navigate(route, {queryParams, context})
     },
+    addToContext: (key, value) => context[key] = value,
+    removeFromContext: (key) => delete context[key],
     close: () => preventedClosing.close(),
     onClose: (handler) => preventedClosing.handle = handler
   }
