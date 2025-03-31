@@ -10,11 +10,40 @@ object either contains the Critical Business Data or has very easy access to
 that data. The interface of the Entity consists of the functions that implement
 the Critical Business Rules that operate on that data.
 
+```javascript
+// here OrderList is just namespece of functions that operate on `orderList` data structure
+export const OrderList = {
+  make: ({list = [], total = 0} = {}) => ({list, total}),
+  getUniqueUserIds: ({list}) => {
+    const userIds = list.map(({user}) => user)
+    const uniqueUserIds = new Set(userIds)
+    return Array.from(uniqueUserIds)
+  },
+}
+```
+
 A **Use Case** is a description of the way that an automated
 system is used. **It specifies the input to be provided by the user, the output to
 be returned to the user, and the processing steps involved in producing that
 output**. A use case describes application-specific business rules as opposed to
 the Critical Business Rules within the Entities.
+
+```javascript
+// UpdateOrderList is a factory for `updateOrderList` use case. it's just closuring dependencies upon the use case creation
+export const UpdateOrderList = ({presentation, dataStore, notifier}) => async ({refresh = false} = {}) => {
+  const presentationModel = presentation.update(OrderListPresentation.setLoading, true)
+  try {
+    const readOptions = OrderListPresentation.getReadOptions(presentationModel, {refresh})
+    const orderList = await dataStore.get('orders', readOptions)
+    const uniqueUserIds = OrderList.getUniqueUserIds(orderList)
+    const {list, total} = orderList
+    const users = list.length ? await dataStore.get('users', uniqueUserIds) : []
+    // ...
+  } catch (error) {
+    // ...
+  }
+}
+```
 
 A **Gateway is basically an adapter** - it adapts some "foreign" interface to the one required by use cases.
 
