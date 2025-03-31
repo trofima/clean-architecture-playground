@@ -53,19 +53,125 @@ export const UpdateOrderList = ({presentation, dataStore, notifier}) => async ({
 ### Adapters
 A **Gateway is basically an adapter** - it adapts some "foreign" interface to the one required by use cases.
 
+```javascript
+// integration with react rendering mechanism
+export const useIntegration = (makeIntegration, dependencies = []) => {
+  const [viewModel, setViewModel] = useState()
+  // this callback creates integration tools. this should happen only once during first render
+  const cachedMakeIntegration = useCallback(makeIntegration, [])
+
+  useEffect(() => {
+    const {presentation} = cachedMakeIntegration(...dependencies)
+    const unsubscribe = presentation.subscribe((model) => setViewModel(model))
+
+    return () => unsubscribe()
+    // this effect creates integration tools. this should happen only once during first render
+  }, [])
+
+  return {
+    viewModel,
+  }
+}
+
+// angular router integration
+@Injectable({
+  providedIn: 'root',
+})
+export class AngularNavigator implements Navigator {
+  constructor(
+    currentRoute: ActivatedRoute,
+    router: Router,
+    location: Location,
+  ) {
+    this.currentRoute = currentRoute
+    this.#router = router
+    this.#location = location
+  }
+
+  currentRoute: ActivatedRoute
+
+  async open(path: string) {
+     await this.#router.navigateByUrl(path)
+  }
+
+  async close() {
+    if (this.#location.path().length)
+      await this.#location.back()
+    else
+      await this.open('')
+  }
+
+  #router
+  #location
+}
+```
+
 ### Controllers
 A **Controller recieves and parses input data, ivokes use cases**. It also controlls 
 how and when use cases are invoked (e.g. they implement retry rules for use cases failed because of offline error).
 
 ### Presenters
 A **Presenter's job is to accept data from the application and format it** 
-for presentation so that the View can simply move it
-to the screen.
+for presentation so that the View can simply move it to the screen.
+
+```javascript
+// note it's indifferent to the rendering framework. but it depends on view structure.
+export const presentOrderList = (presentation) => {
+  const firstLoading = !presentation.list.length && presentation.loading
+  return ({
+    ...presentation,
+    firstLoading,
+    list: firstLoading
+      ? Array(3).fill(undefined).map(makePlaceholderOrder)
+      : presentation.list.map(({createdDate, sum, ...rest}) => ({
+        ...rest,
+        createdDate: formatDate(createdDate),
+        sum: formatSum(sum),
+      })),
+  })
+}
+```
 
 ### Views
 A **View** is the humble object that is hard to test. The code in this object is
 kept as simple as possible. **It moves data into the GUI but does not process
 that data**.
+
+```html
+<div class="order-list-page">
+  <div class="order-page-header">
+    <h1>Order List</h1>
+    <button class="refresh-order-button" @click="controller.refresh">Refresh order list</button>
+  </div>
+  <p>Total order count: <span>{{viewModel.total}}</span></p>
+
+  <div class="head-of-list grid-line">
+      <!-- ... -->
+  </div>
+
+  <ul class="order-list">
+    <template v-if="viewModel.error">
+      <p>Error: {{ viewModel.error.message }}; Code: {{ viewModel.error.code }}</p>
+    </template>
+    <template v-else>
+      <order-list-item  
+        v-for="(order, index) in viewModel.list" 
+        :key="order.id" 
+        :itemIndex="index" 
+        :itemData="order"
+        :controller="controller"
+      ></order-list-item>
+    </template>
+  </ul>
+  <button v-if="viewModel.list.length < viewModel.total" 
+    class="add-order-button" 
+    :disabled="viewModel.loading"
+    @click="controller.loadMore" 
+  >
+    {{viewModel.loading ? '...' : 'LoadMore'}}
+  </button>
+</div>
+```
 
 
 ## Practice
