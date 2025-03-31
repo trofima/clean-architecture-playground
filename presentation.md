@@ -110,6 +110,22 @@ export class AngularNavigator implements Navigator {
 A **Controller recieves and parses input data, ivokes use cases**. It also controlls 
 how and when use cases are invoked (e.g. they implement retry rules for use cases failed because of offline error).
 
+```javascript
+  const Controller = ({system, reportError, renderOrder, changeOrderField, closeOrder, saveOrder) => ({
+    initialize: (orderId) => {
+      try {
+        await renderOrder(orderId)
+      } catch (error) {
+        if (error instanceof OfflineError) system.once('online', () => renderOrder(orderId))
+        else reportError(error)
+      }
+    },
+    change: ({currentTarget: {name, value}}) => changeOrderField(name, value),
+    close: closeOrder,
+    save: saveOrder,
+  })
+```
+
 ### Presenters
 A **Presenter's job is to accept data from the application and format it** 
 for presentation so that the View can simply move it to the screen.
