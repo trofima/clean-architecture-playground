@@ -56,6 +56,13 @@ Application wide state is nothing else but another data storage (like server or 
 any convenient interface of your choise. Current view needs to be updated upon state changes, so it's reasonable
 to implement its state container as some variant of Observer pattern.
 
+**What is the main difference of Clean Architecure for Clien Side - Presentation is an entity**
+On servers implementing CA they usually have some entity data structure, that is converted to presentation, 
+wrapped into the response model and sent by network and forget about it. 
+On client we actually render the presentation and often need to know its current state. So it's an entity for us!
+We still have the same data entity, obtained from server, but we also have the data we actually presented. 
+Those are two separate entities and should be treated as such. 
+
 **What about tests? - You should start with them**
 Entities, Use Cases, Controllers and Presenters should be easy to test without need to render anything or use any testkits.
 You should be able to substitute all dependencies with spies (mocks). If you can't - you are doing something wrong.
@@ -66,3 +73,12 @@ In such cases it may be totally reasonable to spy them and test separately.
 **But what about integration tests? - It's a good idea to have them. Few of them**
 You should test complex integrations (dependency inversions, base classes and hooks) using relevant testkits and renderes.
 But such tests should focus on testing **integration**, not system behavior. That's why you should not end up with many of such.
+
+**How do you even start to develop like that? - Easy**
+You start with a **user story**. You transform it to the **use case** and implement it (I advice using TDD).
+Implementing the use case will reveal needed dependencies and entities for you.
+You don't need any design, stabilized server api and what not to begin with. The user story is enough.
+The rest should be inverted anyway, because it is the very point if dependency inversion - you dictate contract, not them.
+After server stabilizes it's api you write an adapter for it. After having ui, you'll be able to format presentation accordingly.
+Maybe some refactor of presentation entity will be required (it won't if the user story is well defined).
+But that's not a problem at all. Agile system is always ready to relentless refactor and any changes because it's... **agile**.
