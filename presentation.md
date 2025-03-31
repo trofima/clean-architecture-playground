@@ -2,7 +2,10 @@
 
 ![image](https://github.com/user-attachments/assets/6283c8dc-ded6-4350-ac3a-d6183b8f9d90)
 
-Definitions from **Clean Architecture** book by **Bob Martin**
+Many misunderstand Clean Architecture as "hide everything behind abstraction" approach.
+It's not about that at all. It's about **abstraction organization** principles.
+
+## Definitions from **Clean Architecture** book by **Bob Martin**
 
 An **Entity is an object within our computer system that embodies a small set
 of critical business rules operating on Critical Business Data**. The Entity
@@ -59,6 +62,8 @@ kept as simple as possible. **It moves data into the GUI but does not process
 that data**.
 
 
+## Practice
+
 **Are all those abstractions mandatory? - No.**
 For instance, entity data can be very simple so not requiring separate set of functions to operate on it.
 Controller may be also degenerate - only accepting data and calling use cases with it without modification.
@@ -102,6 +107,9 @@ In such cases it may be totally reasonable to spy them and test separately.
 **But what about integration tests? - It's a good idea to have them. Few of them**
 You should test complex integrations (dependency inversions, base classes and hooks) using relevant testkits and renderes.
 But such tests should focus on testing **integration**, not system behavior. That's why you should not end up with many of such.
+
+**I prefer FP (OOP) - It doesn't matter. At all**
+Such an architecture can be implemented using any programming paradigm. Careful abstraction organization matter, not coding style.
 
 **How do you even start to develop like that? - Easy**
 You start with a **user story**. You transform it to the **use case** and implement it (I advice using TDD).
