@@ -35,7 +35,7 @@ For instance, entity data can be very simple so not requiring separate set of fu
 Controller may be also degenerate - only accepting data and calling use cases with it without modification.
 Such abstractions are not needed. Do not create them just to be.
 
-**Should system consists only from those four layers? - No.**
+**Should system consist only from those four layers? - No.**
 There are very complex systems that will definitly require more layers.
 Some layer itself may be split to layers. For instance a complex use case 
 can be split to smaller use cases and call them.
