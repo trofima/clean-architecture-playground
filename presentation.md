@@ -260,3 +260,19 @@ The rest should be inverted anyway, because it is the very point if dependency i
 After server stabilizes it's api you write an adapter for it. After having ui, you'll be able to format presentation accordingly.
 Maybe some refactor of presentation entity will be required (it won't if the user story is well defined).
 But that's not a problem at all. Agile system is always ready to relentless refactor and any changes because it's... **agile**.
+
+**Is this the only way? - No (Yes)**
+**No**, because dependnig on the system you may need totally different architecture (for a game, for example).
+Such an approach works well for ui-heavy web and mobile apps written in javascript.
+**Yes**, because in order to make system flexible and code reusable, 
+you'll have to identify relevant abstractions for your case and follow the same Clean Architecture principles to organize them well.
+
+**What about performance? -  Make it work -> make it right -> make it fast**
+On the web network requests are taking hundreds of milisecongs. This could be the end of the performance conversation.
+But since you insist... Yes, abstractions degrade performance, because any abstraction should be stored somewhere
+in memory, and then be found, and then be executed. But this is true for **any** abstraction including the simplest function.
+Ofcourse, you can write single scroll of code which is doing everything in fully procedural style with bitwise operations where possible.
+You'll win 1 or 10 or event 100ms of execution time. And will be fired. For a good reason.
+Apply common sence - care for you references to clear them, do not create redundant abstractions just in case, cache things, optimize heavy calculations etc.
+
+And start at last writing trully flexible, reusable and reliable code.
