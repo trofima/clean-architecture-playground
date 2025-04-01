@@ -54,25 +54,6 @@ export const UpdateOrderList = ({presentation, dataStore, notifier}) => async ({
 A **Gateway is basically an adapter** - it adapts some "foreign" interface to the one required by use cases.
 
 ```javascript
-// integration with react rendering mechanism
-export const useIntegration = (makeIntegration, dependencies = []) => {
-  const [viewModel, setViewModel] = useState()
-  // this callback creates integration tools. this should happen only once during first render
-  const cachedMakeIntegration = useCallback(makeIntegration, [])
-
-  useEffect(() => {
-    const {presentation} = cachedMakeIntegration(...dependencies)
-    const unsubscribe = presentation.subscribe((model) => setViewModel(model))
-
-    return () => unsubscribe()
-    // this effect creates integration tools. this should happen only once during first render
-  }, [])
-
-  return {
-    viewModel,
-  }
-}
-
 // angular router integration
 @Injectable({
   providedIn: 'root',
