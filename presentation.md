@@ -189,6 +189,37 @@ that data**.
 </div>
 ```
 
+### Dirty Class (Function)
+A Dirty Class (Function) is an integration point. This is the place where everything is initialized and connected.
+It is "dirty" because it has a lot of dependencies and is almost impossible to test.
+
+```javascript
+  import ...
+
+  // Dirty function for react hooks integration
+  export const OrderList = () => {
+    const {controller, viewModel} = useIntegration(makeOrderListIntegration)
+    
+    return viewModel && <OrderListView viewModel={viewModel} controller={controller} />
+  }
+  
+  const makeOrderListIntegration = () => {
+    const presentation = new Atom()
+    const updateOrderList = UpdateOrderList({presentation, dataStore, notifier})
+    const renderOrderList = RenderOrderList({presentation, updateOrderList})
+    const removeOrderFromList = RemoveOrderFromList({dataStore, notifier, presentation})
+    const openOrder = OpenOrder({
+      notifier, presentation,
+      navigator: appNavigator,
+    })
+  
+    return {
+      presentation,
+      present: presentOrderList,
+      controller: Controller({renderOrderList, updateOrderList, removeOrderFromList, openOrder}),
+    }
+  }
+```
 
 ## Practice
 
@@ -206,7 +237,7 @@ can be split to smaller use cases and call them.
 The framework related code is hard to test, so you should not couple your business and application logic to it.
 Adapters (gateways) implement integrations to the framework's subsystems like rendering, routing etc.
 Depending on the framework views contain markup and bind controllers to input events.
-"Dirty class" or integration point wires everything together.
+"Dirty class (function)" wires everything together.
 
 **What about the server? - Just another adapter.**
 Server is just a sort of data storage. So dependency on it should be inverted as any other.
