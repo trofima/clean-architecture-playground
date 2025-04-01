@@ -135,6 +135,7 @@ kept as simple as possible. **It moves data into the GUI but does not process
 that data**.
 
 ```html
+<!-- vue.js view -->
 <div class="order-list-page">
   <div class="order-page-header">
     <h1>Order List</h1>
