@@ -230,7 +230,7 @@ Apply common sence - care for you references to clear them, do not create redund
 
 **And start at last writing trully flexible, reusable and reliable code.**
 
-[^1]: Based on Clean Architecture bool by Bob Martin.
+[^1]: Based on "Clean Architecture" and "Functional Design" books by Uncle Bob Martin.
 
 [^2]: An Entity is an object within our computer system that embodies a small set
 of critical business rules operating on Critical Business Data. The Entity
