@@ -2,11 +2,11 @@
 
 ![image](https://github.com/user-attachments/assets/6283c8dc-ded6-4350-ac3a-d6183b8f9d90)
 
-Many misunderstand Clean Architecture[^1] as "hide everything behind abstraction" approach.
+Many misunderstand Clean Architecture[^1] as a "hide everything behind abstraction" approach.
 It's not about that at all. It's about **abstraction organization** principles.
 
 ### Entity
-**Entity[^2] contains critical business rules operating on critical business data**
+**Entity[^2] contains critical business rules operating on critical business data**.
 
 ```javascript
 // here OrderList is just namespece of functions that operate on `orderList` data structure
@@ -46,7 +46,7 @@ export const UpdateOrderList = ({presentation, dataStore, notifier}) => async ({
 <br>
 
 ### Adapters
-**Adapter (Gateway) adapts some "foreign" interface to the one required by use cases**.
+**Adapter (Gateway) adapts some "foreign" interface to the one required by use cases**. 
 This abstraction implements dependency inversion.
 
 ```javascript
@@ -65,8 +65,9 @@ export class DataStore {
 ```
 
 ### Controllers
-**Controller recieves and parses input data, ivokes use cases**. It also controlls 
-how and when use cases are invoked (e.g. they implement retry rules for use cases failed because of offline error).
+**Controller receives and parses input data, invokes use cases**. 
+It also controls how and when use cases are invoked 
+(e.g., they implement retry rules for use cases that failed because of an offline error).
 
 ```javascript
   const Controller = ({system, reportError, renderOrder, changeOrderField, closeOrder, saveOrder) => ({
@@ -123,7 +124,8 @@ export const OrderView = ({userInput, submitButtonLabel, controller}) => (
 ```
 
 ### Dirty Class (Function)
-**Dirty Class (Function) is an integration point**. This is the place where everything is initialized and connected.
+**Dirty Class (Function) is an integration point**. 
+This is the place where everything is initialized and connected.
 It is "dirty" because it has a lot of dependencies and is almost impossible to test.
 
 ```javascript
@@ -132,7 +134,6 @@ It is "dirty" because it has a lot of dependencies and is almost impossible to t
   // Dirty function for react hooks integration
   export const OrderList = () => {
     const {controller, viewModel} = useIntegration(makeOrderListIntegration)
-    
     return viewModel && <OrderListView viewModel={viewModel} controller={controller} />
   }
   
@@ -140,16 +141,12 @@ It is "dirty" because it has a lot of dependencies and is almost impossible to t
     const presentation = new Atom()
     const updateOrderList = UpdateOrderList({presentation, dataStore, notifier})
     const renderOrderList = RenderOrderList({presentation, updateOrderList})
-    const removeOrderFromList = RemoveOrderFromList({dataStore, notifier, presentation})
-    const openOrder = OpenOrder({
-      notifier, presentation,
-      navigator: appNavigator,
-    })
+    //...
   
     return {
       presentation,
       present: presentOrderList,
-      controller: Controller({renderOrderList, updateOrderList, removeOrderFromList, openOrder}),
+      controller: Controller({renderOrderList, updateOrderList, ...}),
     }
   }
 ```
@@ -157,78 +154,99 @@ It is "dirty" because it has a lot of dependencies and is almost impossible to t
 ## Practice
 
 _**Are all those abstractions mandatory? - No.**_
-<br>For instance, entity data can be very simple so not requiring separate set of functions to operate on it.
-Controller may be also degenerate - only accepting data and calling use cases with it without modification.
-Such abstractions are not needed. Do not create them just to be.
+<br>For instance, entity data can be very simple and not require 
+a separate set of functions to operate on it. 
+The controller may also be degenerate - only accepting data 
+and calling use cases with it without modification. 
+Such abstractions are not needed. Do not create them just to be..
 
-_**Should system consist only from those four layers? - No.**_
-<br>There are very complex systems that will definitly require more layers.
-Some layer itself may be split to layers. For instance a complex use case 
-can be split to smaller use cases and call them.
+_**Should the system consist only of those four layers? - No.**_
+<br>There are very complex systems that will definitely require more layers. 
+Some layers themselves may be split into layers. 
+For instance, a complex use case can be split into smaller use cases and call them.
 
-_**Where is a framework (react, angular, vue etc)? - It is outside.**_
-<br>The framework related code is hard to test, so you should not couple your business and application logic to it.
-Adapters implement integrations to the framework's subsystems like rendering, routing etc.
-Depending on the framework views contain markup and bind controllers to input events.
-"Dirty class (function)" wires everything together.
+_**Where is a framework (React, Angular, Vue, etc.)? - It is outside.**_
+<br>The framework-related code is hard to test, 
+so you should not couple your business and application logic to it. 
+Adapters implement integrations to the framework's subsystems like rendering, routing, etc. 
+Depending on the framework, views contain markup and bind controllers to input events. 
+This allows for relatively simple migration to newer breaking framework versions 
+or even changing the framework altogether.
 
 _**What about the server? - Just another adapter.**_
-<br>Server is just a sort of data storage. So dependency on it should be inverted as any other.
+<br>The server is just a sort of data storage. So, dependency on it should be inverted like any other.
 
-_**What about state management? Which to use: Redux, rxjs, mobX? - None**_
-<br>State of your application consists of two parts: application wide and specific to current view.
-Both of them are separate **entities**. It does not matter at all which interface you choose to interact with them.
-Application wide state is nothing else but another data storage (like server or database) and so can be implemented with
-any convenient interface of your choise. Current view needs to be updated upon state changes, so it's reasonable
-to implement its state container as some variant of Observer pattern.
+_**What about state management? Which to use: Redux, RxJS, MobX? - None.**_
+<br>The state of your application consists of two parts: 
+application-wide and specific to the current view.
+Both of them are separate entities. 
+It does not matter which interface you choose to interact with them. 
+The application-wide state is nothing more than another data storage (like a server or database) 
+and can be implemented with any convenient interface of your choice. 
+The current view needs to be updated upon state changes, 
+so it's reasonable to implement its state container as some variant of the Observer pattern.
 
-_**What is the main difference of Clean Architecure for Clien Side - Presentation is an entity**_
-<br>On servers implementing CA they usually have some entity data structure that is converted to presentation, 
-wrapped into the response model, sent by network and is forgotten.
-On client we actually render the presentation and often need to know its current state. So it's an entity for us!
-We still have the same data entity, obtained from server, but we also have the data we actually presented. 
-Those are two separate entities and should be treated as such. 
+_**What is the main difference of Clean Architecure for Clien Side - Presentation is an entity!**_
+<br>On servers implementing CA, 
+they usually have some entity data structure that is converted to presentation, 
+wrapped into the response model, sent by network, and is forgotten. 
+On the client side, we actually render the presentation and often need to know its current state. 
+So, it's an entity for us! We still have the same data entity obtained from the server, 
+but we also have the data we actually presented. 
+These are two separate entities and should be treated as such. 
 
-_**What about tests? - You should start with them**_
-<br>Entities, Use Cases, Controllers and Presenters should be easy to test without need to render anything or use any testkits.
-You should be able to substitute all dependencies with spies (mocks). If you can't - you are doing something wrong.
-If you need complex testkits - you are doing something wrong.
-Should you test entites separately and substitute them with spies while testing use cases? I prefer not to because testing 
-use cases and entities together ensures better system integrity. But entities may be very complex, leading to very complex test setup for use cases.
-In such cases it may be totally reasonable to spy them and test separately.
+_**What about tests? - You should start with them.**_
+<br>Entities, Use Cases, Controllers, and Presenters should be easy to test 
+without needing to render anything or use any test kits. 
+You should be able to substitute all dependencies with spies (mocks). 
+If you can't, you are doing something wrong. 
+If you need complex test kits, you are doing something wrong. 
+Should you test entities separately and substitute them with spies while testing use cases? 
+I prefer not to because testing use cases and entities together ensures better system integrity. 
+However, entities may be very complex, leading to a very complex test setup for use cases. 
+In such cases, it may be totally reasonable to spy on them and test separately."
 
-_**But what about integration tests? - It's a good idea to have them. Few of them**_
-<br>You should test complex integrations (dependency inversions, base classes and hooks) using relevant testkits and renderers.
-But such tests should focus on testing **integration, not system behavior**. That's why you should not end up with many of such.
+_**But what about integration tests? - It's a good idea to have them. Few of them.**_
+<br>You should test complex integrations (dependency inversions, base classes, and hooks) 
+using relevant test kits and renderers. 
+But such tests should focus on testing **integration, not system behavior**. 
+That's why you should not end up with many of them.
 
-_**I prefer FP (OOP) - It doesn't matter. At all**_
-<br>Such an architecture can be implemented using any programming paradigm. Careful abstraction organization matter, not coding style.
+_**I prefer FP (OOP) - It doesn't matter. At all.**_
+<br>Such an architecture can be implemented using any programming paradigm. 
+**Careful abstraction organization matters**, not coding style.
 
-_**How do you even start to develop like that? - Easy**_
-<br>You start with a **user story**. You transform it to the **use case** and implement it (I advice using TDD).
-Implementing the use case will reveal needed dependencies and entities for you.
-You don't need any design, stabilized server api and what not to begin with. The user story is enough.
-The rest should be inverted anyway, because it is the very point of dependency inversion - you dictate contract, not them.
-After server stabilizes it's api you write an adapter for it. After having ui, you'll be able to format presentation accordingly.
-Maybe some refactor of presentation entity will be required (it won't if the user story is well defined).
-But that's not a problem at all. Agile system is always ready to relentless refactor and any changes because it's... **agile**.
+_**How do you even start to develop like that? - Easy.**_
+<br>You start with a user story. You transform it into the use case and implement it (I advise using TDD). 
+Implementing the use case will reveal the needed dependencies and entities for you. 
+You don't need any design, stabilized server API, and whatnot to begin with. 
+The user story is enough. The rest should be inverted anyway, 
+because it is the very point of dependency inversion - you dictate the contract, not them. 
+After the server stabilizes its API, you write an adapter for it. 
+After having the UI, you'll be able to format the presentation accordingly. 
+Maybe some refactoring of the presentation entity will be required (it won't if the user story is well defined). 
+But that's not a problem at all. 
+An agile system is always ready for relentless refactoring and any changes because it's... **agile**.
 
-_**Is this the only way? - No (Yes)**_
-<br>**No**, because dependnig on the system you may need totally different architecture (for a game, for example).
-Presented approach works well for ui-heavy web and mobile apps written in javascript.
-<br>**Yes**, because in order to make system flexible and code reusable, 
-you'll have to identify relevant abstractions for your case and follow the same Clean Architecture principles to organize them well.
-(SOLID, Dependency Rule etc.)
+_**Is this the only way? - No (Yes).**_
+<br>**No**, because depending on the system, you may need a totally different architecture (for a game, for example). 
+The presented approach works well for UI-heavy web and mobile apps written in JavaScript. 
+<br>**Yes**, because in order to make the system flexible and code reusable, 
+you need to identify relevant abstractions for your case 
+and follow the same Clean Architecture principles to organize them well (SOLID, Dependency Rule, etc.).
 
-_**What about performance? -  Make it work -> make it right -> make it fast**_
-<br>On the web network requests are taking hundreds of milisecongs. This could be the end of the performance conversation.
-But since you insist... Yes, abstractions degrade performance, because any abstraction should be stored somewhere
-in memory, and then be found, and then be executed. But this is true for **any** abstraction including the simplest function.
-Ofcourse, you can write single scroll of code which is doing everything in fully procedural style with bitwise operations where possible.
-You'll win 1 or 10 or event 100ms of execution time. And will be fired. For a good reason.
-Apply common sence - care for you references to clear them, do not create redundant abstractions just in case, cache things, optimize heavy calculations etc.
+_**What about performance? -  Make it work -> make it right -> make it fast.**_
+<br>On the web, network requests take hundreds of milliseconds. 
+This could be the end of the performance conversation. But since you insist... 
+Yes, abstractions degrade performance, because any abstraction should be stored somewhere in memory, 
+and then be found, and then be executed. But **this is true for any abstraction**, including the simplest function. 
+Of course, you can write a single scroll of code 
+that does everything in a fully procedural style with bitwise operations where possible. 
+You'll win 1 or 10 or even 100ms of execution time. And you will be fired. For a good reason. 
+Apply common sense - care for your references to clear them, 
+do not create redundant abstractions just in case, cache things, optimize heavy calculations, etc.
 
-**And start at last writing trully flexible, reusable and reliable code.**
+**So start at last writing trully flexible, reusable and reliable code.**
 
 [^1]: Based on "Clean Architecture" and "Functional Design" books by Uncle Bob Martin.
 
