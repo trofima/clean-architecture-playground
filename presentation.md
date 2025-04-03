@@ -2,10 +2,8 @@
 
 ![image](https://github.com/user-attachments/assets/6283c8dc-ded6-4350-ac3a-d6183b8f9d90)
 
-Many misunderstand Clean Architecture as "hide everything behind abstraction" approach.
+Many misunderstand Clean Architecture[^1] as "hide everything behind abstraction" approach.
 It's not about that at all. It's about **abstraction organization** principles.
-
-## Definitions from **Clean Architecture** book by **Bob Martin**
 
 ### Entity
 **Entity[^1] contains critical business rules operating on critical business data**
@@ -170,7 +168,7 @@ can be split to smaller use cases and call them.
 
 _**Where is a framework (react, angular, vue etc)? - It is outside.**_
 <br>The framework related code is hard to test, so you should not couple your business and application logic to it.
-Adapters (gateways) implement integrations to the framework's subsystems like rendering, routing etc.
+Adapters implement integrations to the framework's subsystems like rendering, routing etc.
 Depending on the framework views contain markup and bind controllers to input events.
 "Dirty class (function)" wires everything together.
 
@@ -185,8 +183,8 @@ any convenient interface of your choise. Current view needs to be updated upon s
 to implement its state container as some variant of Observer pattern.
 
 _**What is the main difference of Clean Architecure for Clien Side - Presentation is an entity**_
-<br>On servers implementing CA they usually have some entity data structure, that is converted to presentation, 
-wrapped into the response model and sent by network and forget about it. 
+<br>On servers implementing CA they usually have some entity data structure that is converted to presentation, 
+wrapped into the response model, sent by network and is forgotten.
 On client we actually render the presentation and often need to know its current state. So it's an entity for us!
 We still have the same data entity, obtained from server, but we also have the data we actually presented. 
 Those are two separate entities and should be treated as such. 
@@ -194,13 +192,14 @@ Those are two separate entities and should be treated as such.
 _**What about tests? - You should start with them**_
 <br>Entities, Use Cases, Controllers and Presenters should be easy to test without need to render anything or use any testkits.
 You should be able to substitute all dependencies with spies (mocks). If you can't - you are doing something wrong.
+If you need complex testkits - you are doing something wrong.
 Should you test entites separately and substitute them with spies while testing use cases? I prefer not to because testing 
 use cases and entities together ensures better system integrity. But entities may be very complex, leading to very complex test setup for use cases.
 In such cases it may be totally reasonable to spy them and test separately.
 
 _**But what about integration tests? - It's a good idea to have them. Few of them**_
-<br>You should test complex integrations (dependency inversions, base classes and hooks) using relevant testkits and renderes.
-But such tests should focus on testing **integration**, not system behavior. That's why you should not end up with many of such.
+<br>You should test complex integrations (dependency inversions, base classes and hooks) using relevant testkits and renderers.
+But such tests should focus on testing **integration, not system behavior**. That's why you should not end up with many of such.
 
 _**I prefer FP (OOP) - It doesn't matter. At all**_
 <br>Such an architecture can be implemented using any programming paradigm. Careful abstraction organization matter, not coding style.
@@ -209,16 +208,17 @@ _**How do you even start to develop like that? - Easy**_
 <br>You start with a **user story**. You transform it to the **use case** and implement it (I advice using TDD).
 Implementing the use case will reveal needed dependencies and entities for you.
 You don't need any design, stabilized server api and what not to begin with. The user story is enough.
-The rest should be inverted anyway, because it is the very point if dependency inversion - you dictate contract, not them.
+The rest should be inverted anyway, because it is the very point of dependency inversion - you dictate contract, not them.
 After server stabilizes it's api you write an adapter for it. After having ui, you'll be able to format presentation accordingly.
 Maybe some refactor of presentation entity will be required (it won't if the user story is well defined).
 But that's not a problem at all. Agile system is always ready to relentless refactor and any changes because it's... **agile**.
 
 _**Is this the only way? - No (Yes)**_
 <br>**No**, because dependnig on the system you may need totally different architecture (for a game, for example).
-Such an approach works well for ui-heavy web and mobile apps written in javascript.
+Presented approach works well for ui-heavy web and mobile apps written in javascript.
 <br>**Yes**, because in order to make system flexible and code reusable, 
 you'll have to identify relevant abstractions for your case and follow the same Clean Architecture principles to organize them well.
+(SOLID, Dependency Rule etc.)
 
 _**What about performance? -  Make it work -> make it right -> make it fast**_
 <br>On the web network requests are taking hundreds of milisecongs. This could be the end of the performance conversation.
@@ -230,13 +230,15 @@ Apply common sence - care for you references to clear them, do not create redund
 
 **And start at last writing trully flexible, reusable and reliable code.**
 
-[^1]: An Entity is an object within our computer system that embodies a small set
+[^1]: Based on Clean Architecture bool by Bob Martin.
+
+[^2]: An Entity is an object within our computer system that embodies a small set
 of critical business rules operating on Critical Business Data. The Entity
 object either contains the Critical Business Data or has very easy access to
 that data. The interface of the Entity consists of the functions that implement
 the Critical Business Rules that operate on that data ("Clean Architecture" Bob Martin).
 
-[^2]: A Use Case is a description of the way that an automated
+[^3]: A Use Case is a description of the way that an automated
 system is used. It specifies the input to be provided by the user, the output to
 be returned to the user, and the processing steps involved in producing that
 output. A use case describes application-specific business rules as opposed to
