@@ -8,7 +8,7 @@ It's not about that at all. It's about **abstraction organization** principles.
 ## Definitions from **Clean Architecture** book by **Bob Martin**
 
 ### Entity
-Entity[^1] contains critical business rules operating on critical business data
+**Entity[^1] contains critical business rules operating on critical business data**
 
 ```javascript
 // here OrderList is just namespece of functions that operate on `orderList` data structure
@@ -24,8 +24,8 @@ export const OrderList = {
 <br>
 
 ### Use Case
-Use Case[^2] specifies the input provided by the user, the output returned to the user, 
-and the processing steps involved in producing that output.
+**Use Case[^2] specifies the input provided by the user, the output returned to the user, 
+and the processing steps involved in producing that output**.
 A use case describes application-specific rules as opposed to
 the critical business rules within the Entities.
 
@@ -48,7 +48,7 @@ export const UpdateOrderList = ({presentation, dataStore, notifier}) => async ({
 <br>
 
 ### Adapters
-Adapter (Gateway) adapts some "foreign" interface to the one required by use cases.
+**Adapter (Gateway) adapts some "foreign" interface to the one required by use cases**.
 This abstraction implements dependency inversion.
 
 ```javascript
@@ -67,7 +67,7 @@ export class DataStore {
 ```
 
 ### Controllers
-A **Controller recieves and parses input data, ivokes use cases**. It also controlls 
+**Controller recieves and parses input data, ivokes use cases**. It also controlls 
 how and when use cases are invoked (e.g. they implement retry rules for use cases failed because of offline error).
 
 ```javascript
@@ -87,8 +87,8 @@ how and when use cases are invoked (e.g. they implement retry rules for use case
 ```
 
 ### Presenters
-A **Presenter's job is to accept data from the application and format it** 
-for presentation so that the View can simply move it to the screen.
+**Presenter's job is to accept data from the use case and format it** 
+for presentation so that the View can simply display it on the screen.
 
 ```javascript
 // note it's indifferent to the rendering framework. but it depends on view structure.
@@ -109,49 +109,23 @@ export const presentOrderList = (presentation) => {
 ```
 
 ### Views
-A **View** is the humble object that is hard to test. The code in this object is
-kept as simple as possible. **It moves data into the GUI but does not process
+**View** is the humble object that is hard to test. The code in this object is
+kept as simple as possible. **It renders data on the screen but does not process
 that data**.
 
-```html
-<!-- vue.js view -->
-<div class="order-list-page">
-  <div class="order-page-header">
-    <h1>Order List</h1>
-    <button class="refresh-order-button" @click="controller.refresh">Refresh order list</button>
+```jsx
+// react markup
+export const OrderView = ({userInput, submitButtonLabel, controller}) => (
+  <div class="order-list-page">
+    <label>{userInput.label}:</label>
+    <input value="{userInput.value}">
+    <button onClick={controller.submit}>{submitButtonLabel}<button/>
   </div>
-  <p>Total order count: <span>{{viewModel.total}}</span></p>
-
-  <div class="head-of-list grid-line">
-      <!-- ... -->
-  </div>
-
-  <ul class="order-list">
-    <template v-if="viewModel.error">
-      <p>Error: {{ viewModel.error.message }}; Code: {{ viewModel.error.code }}</p>
-    </template>
-    <template v-else>
-      <order-list-item  
-        v-for="(order, index) in viewModel.list" 
-        :key="order.id" 
-        :itemIndex="index" 
-        :itemData="order"
-        :controller="controller"
-      ></order-list-item>
-    </template>
-  </ul>
-  <button v-if="viewModel.list.length < viewModel.total" 
-    class="add-order-button" 
-    :disabled="viewModel.loading"
-    @click="controller.loadMore" 
-  >
-    {{viewModel.loading ? '...' : 'LoadMore'}}
-  </button>
-</div>
+)
 ```
 
 ### Dirty Class (Function)
-A Dirty Class (Function) is an integration point. This is the place where everything is initialized and connected.
+**Dirty Class (Function) is an integration point**. This is the place where everything is initialized and connected.
 It is "dirty" because it has a lot of dependencies and is almost impossible to test.
 
 ```javascript
