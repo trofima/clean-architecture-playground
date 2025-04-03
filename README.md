@@ -43,7 +43,7 @@ The project contains [core](./packages/core) module and it's integration to the 
 ><br>
 >You just need some util to rerender view when presentation changes by a UseCase.
 ><br>
->It can be existing tool or you can implement yours, the bestest and perfect one.
+>It can be existing tool or you can implement yours, the bestest and perfectest one.
 
 >[!NOTE]
 > UI is primitive, because I'm not going to waste time on styles; only structure and use cases matter.
