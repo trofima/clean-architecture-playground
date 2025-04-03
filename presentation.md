@@ -8,7 +8,7 @@ It's not about that at all. It's about **abstraction organization** principles.
 ## Definitions from **Clean Architecture** book by **Bob Martin**
 
 ### Entity
-TODO[^1] : simpler description
+Entity[^1] contains critical business rules operating on critical business data
 
 ```javascript
 // here OrderList is just namespece of functions that operate on `orderList` data structure
@@ -21,13 +21,13 @@ export const OrderList = {
   },
 }
 ```
+<br>
 
-### Use Cases
-A **Use Case** is a description of the way that an automated
-system is used. **It specifies the input to be provided by the user, the output to
-be returned to the user, and the processing steps involved in producing that
-output**. A use case describes application-specific business rules as opposed to
-the Critical Business Rules within the Entities.
+### Use Case
+Use Case[^2] specifies the input provided by the user, the output returned to the user, 
+and the processing steps involved in producing that output.
+A use case describes application-specific rules as opposed to
+the critical business rules within the Entities.
 
 ```javascript
 // UpdateOrderList is a factory for `updateOrderList` use case. it's just closuring dependencies upon the use case creation
@@ -45,41 +45,24 @@ export const UpdateOrderList = ({presentation, dataStore, notifier}) => async ({
   }
 }
 ```
+<br>
 
 ### Adapters
-A **Gateway is basically an adapter** - it adapts some "foreign" interface to the one required by use cases.
+Adapter (Gateway) adapts some "foreign" interface to the one required by use cases.
+This abstraction implements dependency inversion.
 
 ```javascript
-// angular router integration
-@Injectable({
-  providedIn: 'root',
-})
-export class AngularNavigator implements Navigator {
-  constructor(
-    currentRoute: ActivatedRoute,
-    router: Router,
-    location: Location,
-  ) {
-    this.currentRoute = currentRoute
-    this.#router = router
-    this.#location = location
+// adaptation of the "foreign" server interface to internal DataStore interface
+
+export class DataStore {
+  async get(entitiName, options) {
+    const response = await fetch(`http://server.url/${entityName}?${makeQueryParams(options)}}`)
+    return await response.json()
   }
 
-  currentRoute: ActivatedRoute
-
-  async open(path: string) {
-     await this.#router.navigateByUrl(path)
+  async set(entityName) {
+    //...
   }
-
-  async close() {
-    if (this.#location.path().length)
-      await this.#location.back()
-    else
-      await this.open('')
-  }
-
-  #router
-  #location
 }
 ```
 
@@ -278,3 +261,9 @@ of critical business rules operating on Critical Business Data. The Entity
 object either contains the Critical Business Data or has very easy access to
 that data. The interface of the Entity consists of the functions that implement
 the Critical Business Rules that operate on that data ("Clean Architecture" Bob Martin).
+
+[^2]: A Use Case is a description of the way that an automated
+system is used. It specifies the input to be provided by the user, the output to
+be returned to the user, and the processing steps involved in producing that
+output. A use case describes application-specific business rules as opposed to
+the Critical Business Rules within the Entities.
