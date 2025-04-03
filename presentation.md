@@ -7,12 +7,8 @@ It's not about that at all. It's about **abstraction organization** principles.
 
 ## Definitions from **Clean Architecture** book by **Bob Martin**
 
-### Entities
-An **Entity is an object within our computer system that embodies a small set
-of critical business rules operating on Critical Business Data**. The Entity
-object either contains the Critical Business Data or has very easy access to
-that data. The interface of the Entity consists of the functions that implement
-the Critical Business Rules that operate on that data.
+### Entities[^1]
+TODO: simpler description
 
 ```javascript
 // here OrderList is just namespece of functions that operate on `orderList` data structure
@@ -276,3 +272,9 @@ You'll win 1 or 10 or event 100ms of execution time. And will be fired. For a go
 Apply common sence - care for you references to clear them, do not create redundant abstractions just in case, cache things, optimize heavy calculations etc.
 
 **And start at last writing trully flexible, reusable and reliable code.**
+
+[^1] An Entity is an object within our computer system that embodies a small set
+of critical business rules operating on Critical Business Data. The Entity
+object either contains the Critical Business Data or has very easy access to
+that data. The interface of the Entity consists of the functions that implement
+the Critical Business Rules that operate on that data ("Clean Architecture" Bob Martin).
