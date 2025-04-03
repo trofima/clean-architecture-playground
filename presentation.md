@@ -7,8 +7,8 @@ It's not about that at all. It's about **abstraction organization** principles.
 
 ## Definitions from **Clean Architecture** book by **Bob Martin**
 
-### Entities[^1]
-TODO: simpler description
+### Entity
+TODO [^1]: simpler description
 
 ```javascript
 // here OrderList is just namespece of functions that operate on `orderList` data structure
