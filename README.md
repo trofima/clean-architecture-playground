@@ -52,11 +52,6 @@ The project contains [core](./packages/core) module and it's integration to the 
 
 <br>
 
->[!CAUTION]
->Not all examples are already integrated. Why? Because you didn't pay me for that.
-
-<br>
-
 To run example locally, clone repo, then navigate to example you are interested in (i.e. `packages/react-example`). Then:
 
 ```
