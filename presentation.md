@@ -8,7 +8,7 @@ It's not about that at all. It's about **abstraction organization** principles.
 ## Definitions from **Clean Architecture** book by **Bob Martin**
 
 ### Entity
-TODO [^1]: simpler description
+TODO[^1] : simpler description
 
 ```javascript
 // here OrderList is just namespece of functions that operate on `orderList` data structure
@@ -273,7 +273,7 @@ Apply common sence - care for you references to clear them, do not create redund
 
 **And start at last writing trully flexible, reusable and reliable code.**
 
-[^1] An Entity is an object within our computer system that embodies a small set
+[^1]: An Entity is an object within our computer system that embodies a small set
 of critical business rules operating on Critical Business Data. The Entity
 object either contains the Critical Business Data or has very easy access to
 that data. The interface of the Entity consists of the functions that implement
