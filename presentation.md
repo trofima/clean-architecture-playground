@@ -6,7 +6,7 @@ Many misunderstand Clean Architecture[^1] as "hide everything behind abstraction
 It's not about that at all. It's about **abstraction organization** principles.
 
 ### Entity
-**Entity[^1] contains critical business rules operating on critical business data**
+**Entity[^2] contains critical business rules operating on critical business data**
 
 ```javascript
 // here OrderList is just namespece of functions that operate on `orderList` data structure
@@ -22,7 +22,7 @@ export const OrderList = {
 <br>
 
 ### Use Case
-**Use Case[^2] specifies the input provided by the user, the output returned to the user, 
+**Use Case[^3] specifies the input provided by the user, the output returned to the user, 
 and the processing steps involved in producing that output**.
 A use case describes application-specific rules as opposed to
 the critical business rules within the Entities.
