@@ -7,7 +7,7 @@ export const useIntegration = (makeIntegration, dependencies = []) => {
   const cachedMakeIntegration = useCallback(makeIntegration, [])
 
   useEffect(() => {
-    const {controller, present, presentation} = cachedMakeIntegration(...dependencies)
+    const {controller, presentation, present = (viewModel) => viewModel} = cachedMakeIntegration(...dependencies)
     const unsubscribe = presentation.subscribe((model) => setViewModel(present(model)))
     controllerRef.current = controller
     controller.initialize()
