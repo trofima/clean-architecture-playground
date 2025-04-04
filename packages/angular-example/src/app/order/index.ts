@@ -2,7 +2,7 @@ import { Component } from '@angular/core'
 import { Atom } from '@borshch/utilities'
 import { dataStore, notifier } from '@clean-architecture-playground/core/dummy-dependencies'
 import { ChangeOrderField, CloseOrder, RenderOrder, SaveOrder } from '@clean-architecture-playground/core'
-import { AngularNavigator } from '../../dependencies/navigator'
+import { AngularNavigator } from '../dependencies/navigator'
 import {presentOrder} from './presenter'
 import {Subscription} from 'rxjs'
 
@@ -12,7 +12,7 @@ import {Subscription} from 'rxjs'
   templateUrl: './view.html',
   styleUrl: './view.css'
 })
-export class OrderPageComponent {
+export class OrderPage {
   constructor(navigator: AngularNavigator) {
     this.#navigator = navigator
     this.#useCases = {
@@ -36,11 +36,7 @@ export class OrderPageComponent {
     }
   }
 
-  viewModel: ViewModel = {
-    loading: false,
-    hasChanges: false,
-    data: {} as OrderData,
-  }
+  viewModel = {} as any
 
   controller = {
     initialize: () => {
@@ -79,24 +75,4 @@ export class OrderPageComponent {
   #presentation = new Atom()
   #queryParamsSubscriber!: Subscription
   #unsubscribeFromPresentation!: () => void
-}
-
-type Error = {message: string; code: string;}
-type OrderData = {
-  id: string
-  createdDate: string
-  updatedDate: string
-  user: string
-  sum: number
-  paymentStatus: string
-  fulfillmentStatus: string
-  shippingAddress: string
-  billingAddress: string
-}
-
-type ViewModel = {
-  loading: boolean
-  error?: Error
-  data: OrderData
-  hasChanges: boolean
 }

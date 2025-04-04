@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { OrderListPageComponent } from './pages/order-list-page';
-import { OrderPageComponent } from './pages/order-page';
+import { OrderListPage } from './order-list';
+import { OrderPage } from './order';
 
 export const routes: Routes = [
-  { path: '', component: OrderListPageComponent },
-  { path: 'order', component: OrderPageComponent },
+  { path: '', component: OrderListPage },
+  { path: 'order', component: OrderPage },
 ];
 
 @NgModule({

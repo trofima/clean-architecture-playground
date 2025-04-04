@@ -2,7 +2,7 @@ import { Atom } from '@borshch/utilities';
 import { Component } from '@angular/core';
 import { RenderOrderList, UpdateOrderList, OpenOrder, RemoveOrderFromList } from '@clean-architecture-playground/core';
 import { dataStore, notifier } from '@clean-architecture-playground/core/dummy-dependencies';
-import { AngularNavigator } from '../../dependencies/navigator';
+import { AngularNavigator } from '../dependencies/navigator';
 import {presentOrderList} from './presenter';
 
 @Component({
@@ -11,7 +11,7 @@ import {presentOrderList} from './presenter';
   templateUrl: './view.html',
   styleUrl: './view.css'
 })
-export class OrderListPageComponent {
+export class OrderListPage {
   constructor(
     navigator: AngularNavigator
   ) {
