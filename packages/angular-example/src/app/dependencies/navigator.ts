@@ -25,11 +25,12 @@ export class AngularNavigator implements Navigator {
   currentRoute: ActivatedRoute
 
   async open(path: string) {
-     await this.#router.navigateByUrl(path)
+    this.#history.push(path)
+    await this.#router.navigateByUrl(path)
   }
 
   async close() {
-    if (this.#location.path().length)
+    if (this.#history.length > 0)
       await this.#location.back()
     else
       await this.open('')
@@ -37,4 +38,5 @@ export class AngularNavigator implements Navigator {
 
   #router
   #location
+  #history: string[] = []
 }

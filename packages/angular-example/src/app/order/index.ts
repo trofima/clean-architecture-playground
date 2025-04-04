@@ -36,7 +36,9 @@ export class OrderPage {
     }
   }
 
-  viewModel = {} as any
+  viewModel = {
+    data: {},
+  } as any
 
   controller = {
     initialize: (id: string) => this.#useCases.renderOrder(id),
@@ -46,13 +48,13 @@ export class OrderPage {
       this.#useCases.changeOrderField(name, value)
     },
     save: () => this.#useCases.saveOrder(),
+    // TODO: close does not work
     close: () => this.#useCases.closeOrder(),
   }
 
   ngOnInit() {
-    const queryParamsSubscriber = this.#navigator.currentRoute.queryParams.subscribe(({id}) => {
+    this.#queryParamsSubscriber = this.#navigator.currentRoute.queryParams.subscribe(({id}) => {
       this.controller.initialize(id)
-      queryParamsSubscriber.unsubscribe()
     })
     this.#unsubscribeFromPresentation = this.#presentation.subscribe((model: any) => {
       this.viewModel = presentOrder(model)
