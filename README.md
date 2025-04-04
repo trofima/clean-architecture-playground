@@ -4,7 +4,7 @@ You will see **UseCases**, **Entities**, **Presenters**, **Controllers**, invert
 <br>
 And **TESTS** of course - simple, fast Developer tests (as Kent Beck commanded).
 <br>
-(experiment: copy pasted tests just to make plenty of them and ran)
+(experiment: copy pasted tests just to make plenty of them and ran. result - 20k tests passed in 4s. try to beat it)
 <br>
 <img width="172" alt="image" src="https://github.com/user-attachments/assets/18c5a9ba-507f-4445-83b0-0fa4a57ca69a" />
 <br>
@@ -43,17 +43,12 @@ The project contains [core](./packages/core) module and it's integration to the 
 ><br>
 >You just need some util to rerender view when presentation changes by a UseCase.
 ><br>
->It can be existing tool or you can implement yours, the bestest and perfect one.
+>It can be existing tool or you can implement yours, the bestest and perfectest one.
 
 >[!NOTE]
 > UI is primitive, because I'm not going to waste time on styles; only structure and use cases matter.
 ><br>
 > But your are welcome to PR better styles.
-
-<br>
-
->[!CAUTION]
->Not all examples are already integrated. Why? Because you didn't pay me for that.
 
 <br>
 
