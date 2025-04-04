@@ -22,7 +22,7 @@ The intent is make it conceivable to everyone.
 ><br>
 ><span style="color:red">If you don't like something - I don't care...</span>
 ><br>
->If you have better ideas (unlikely) - create a PR and prepare to fight.
+>If you have better ideas (unlikely:) - create a PR and prepare to fight.
 
 <br>
 
@@ -32,6 +32,7 @@ The project contains [core](./packages/core) module and it's integration to the 
 * Usecases and Entities can be found in [core (order, order-list)](./packages/core/src).
 * Simple inverted dependency examples are in [core/src/dummy-dependencies](./packages/core/src/dummy-dependencies/index.js).
 * More complex presenter example is [here](./packages/react-example/src/order/presenter.js).
+* Since the system is very simple, controllers are quite degenerate and so not extracted, but there is one example [here](./packages/react-example/src/order-list/controller.js).
 * Usecases and entities are written in procedural style. On UpdateOrderList usecase example you can see alternative [FP](./packages/core/src/alternatives/update-order-list.fp.js) or [OOP](./packages/core/src/alternatives/update-order-list.oop.js) style. Style doesn't really matter.
 
 <br>

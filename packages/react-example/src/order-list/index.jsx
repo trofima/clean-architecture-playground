@@ -5,6 +5,7 @@ import {appNavigator} from '../dependencies/navigator.js'
 import {OrderListView} from './view.jsx'
 import {useIntegration} from '../common/hooks.js';
 import {presentOrderList} from './presenter.js';
+import {Controller} from './controller.js';
 
 export const OrderList = () => {
   const {controller, viewModel} = useIntegration(makeOrderListIntegration)
@@ -25,15 +26,6 @@ const makeOrderListIntegration = () => {
   return {
     presentation,
     present: presentOrderList,
-    controller: {
-      initialize: () => renderOrderList(),
-      refresh: () => updateOrderList({refresh: true}),
-      loadMore: () => updateOrderList(),
-      remove: (event) => {
-        event.stopPropagation()
-        removeOrderFromList(event.currentTarget.dataset.id);
-      },
-      open: (event) => openOrder(event.currentTarget.dataset.id),
-    },
+    controller: Controller({renderOrderList, openOrder, updateOrderList, removeOrderFromList}),
   }
 }
