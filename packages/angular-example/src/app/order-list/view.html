@@ -4,7 +4,7 @@
     <button id="refresh" class="add-order-button" (click)="controller.refresh()">Refresh order list</button>
   </div>
 
-  <p>Total order count: <span id="total-count">{{viewModel.list.length}} of {{viewModel.total}}</span></p>
+  <p>Total order count: <span id="total-count">{{viewModel.loading ? 0 : viewModel.list.length}} of {{viewModel.total}}</span></p>
   
   <div class="head-of-list grid-line">
     <div class="user-name">
@@ -24,7 +24,7 @@
     </div>
   </div>
   <ul class="order-list">
-    <li *ngFor="let order of orders" class="order grid-line" (click)="controller.openOrder(order.id)">
+    <li *ngFor="let order of viewModel.list" class="order grid-line" (click)="controller.openOrder(order.id)">
       <div class="user-name">
           <p>{{order.user}}</p>
       </div>

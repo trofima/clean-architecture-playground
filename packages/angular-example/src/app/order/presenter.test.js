@@ -13,6 +13,7 @@ suite('present order', () => {
         shippingAddress: 'shipping address',
       }),
     }))
+    assert.equal(viewModel.dataIsEmpty, false)
     assert.deepInclude(viewModel.data, {
       id: 'id',
       user: 'A Name',
@@ -46,6 +47,7 @@ suite('present order', () => {
       data: undefined,
     }))
     assert.deepEqual(viewModel.data, {})
+    assert.equal(viewModel.dataIsEmpty, true)
   })
 
   test('format created date', () => {

@@ -12,9 +12,7 @@ import {presentOrderList} from './presenter';
   styleUrl: './view.css'
 })
 export class OrderListPage {
-  constructor(
-    navigator: AngularNavigator
-  ) {
+  constructor(navigator: AngularNavigator) {
     this.#navigator = navigator
     this.#useCases = {
       renderOrderList: RenderOrderList({
@@ -55,16 +53,8 @@ export class OrderListPage {
   }
 
   viewModel = {} as any
-
-  get orders() { // TODO: ivanko - move to presenter and test it
-    return this.viewModel.loading && !this.viewModel.list?.length
-      ? Array(3).fill(emptyOrderPresentation)
-      : this.viewModel.list
-  }
-  
   #presentation = new Atom()
   #navigator
-
   #useCases
 
   controller = {
@@ -80,5 +70,3 @@ export class OrderListPage {
   
   #unsubscribeFromPresentation: any
 }
-
-const emptyOrderPresentation = {createdDate: '...', user: '...', sum: '...', paymentStatus: '...', fulfillmentStatus: '...'}

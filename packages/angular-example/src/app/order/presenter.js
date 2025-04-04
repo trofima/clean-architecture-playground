@@ -1,8 +1,9 @@
-export const presentOrder = (presentation: any) => {
+export const presentOrder = (presentation) => {
   const dataIsEmpty = Object.keys(presentation.data).length === 0
   const {createdDate, updatedDate, sum, user, ...rest} = presentation.data
   return ({
     ...presentation,
+    dataIsEmpty,
     data: dataIsEmpty
       ? {}
       : {
@@ -16,11 +17,11 @@ export const presentOrder = (presentation: any) => {
   })
 }
 
-const formatDate = (isoDate: string) => {
+const formatDate = (isoDate) => {
   if (!isoDate) return ''
   const [date, time] = isoDate.split('T')
   const [hours, minutes] = time.split(':')
   return `${date}, ${hours}:${minutes}`
 }
 
-const formatSum = (sum: number) => Number(sum).toFixed(2).toString()
+const formatSum = (sum) => Number(sum).toFixed(2).toString()

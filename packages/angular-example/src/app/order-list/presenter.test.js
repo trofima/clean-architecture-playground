@@ -69,4 +69,20 @@ suite('present order list', () => {
     )
     assert.equal(roundedSum, '1.13')
   })
+
+  test('render placeholder items, when loading for the first time', () => {
+    const {list} = presentOrderList(
+      OrderListPresentation.make({list: [], loading: true}),
+    )
+    assert.deepEqual(list, [
+      {createdDate: '...', user: '...', sum: '...', paymentStatus: '...', fulfillmentStatus: '...'},
+      {createdDate: '...', user: '...', sum: '...', paymentStatus: '...', fulfillmentStatus: '...'},
+      {createdDate: '...', user: '...', sum: '...', paymentStatus: '...', fulfillmentStatus: '...'},
+    ])
+
+    const {list: emptyList} = presentOrderList(
+      OrderListPresentation.make({list: [], loading: false}),
+    )
+    assert.deepEqual(emptyList, [])
+  })
 })

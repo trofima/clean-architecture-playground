@@ -66,10 +66,6 @@ export class OrderPage {
     this.#queryParamsSubscriber.unsubscribe()
   }
 
-  get dataIsEmpty() { //TODO: ivanko - move to presenter
-    return Object.keys(this.viewModel.data).length === 0
-  }
-  
   #useCases
   #navigator
   #presentation = new Atom()

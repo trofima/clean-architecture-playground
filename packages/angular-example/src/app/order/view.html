@@ -4,7 +4,7 @@
     <button [disabled]="viewModel.loading || !viewModel.hasChanges" (click)="controller.save()">Save</button>
   </header>
 
-  <div id="order-data" *ngIf="!dataIsEmpty">
+  <div id="order-data" *ngIf="!viewModel.dataIsEmpty">
     <div class="title">
       Order No 
       <span>{{viewModel.data.id}}</span>
@@ -71,11 +71,11 @@
     </div>
   </div>
 
-  <div class="loading-state" *ngIf="viewModel.loading && dataIsEmpty">
+  <div class="loading-state" *ngIf="viewModel.loading && viewModel.dataIsEmpty">
     <p>Loading...</p>
   </div>
 
-  <div class="error-state" *ngIf="viewModel.error && dataIsEmpty">
+  <div class="error-state" *ngIf="viewModel.error && viewModel.dataIsEmpty">
     <p>Order loading failed with error</p>
     <p>{{viewModel.error.message}} ({{viewModel.error.code}})</p>
   </div>
