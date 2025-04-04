@@ -39,12 +39,7 @@ export class OrderPage {
   viewModel = {} as any
 
   controller = {
-    initialize: () => {
-      this.#queryParamsSubscriber = this.#navigator.currentRoute.queryParams.subscribe(({id}) => {
-        this.#useCases.renderOrder(id)
-        this.#queryParamsSubscriber?.unsubscribe()
-      })
-    },
+    initialize: (id: string) => this.#useCases.renderOrder(id),
     change: (event: Event) => {
       const {target} = event
       const {name, value} = target as HTMLInputElement
@@ -55,10 +50,13 @@ export class OrderPage {
   }
 
   ngOnInit() {
+    const queryParamsSubscriber = this.#navigator.currentRoute.queryParams.subscribe(({id}) => {
+      this.controller.initialize(id)
+      queryParamsSubscriber.unsubscribe()
+    })
     this.#unsubscribeFromPresentation = this.#presentation.subscribe((model: any) => {
       this.viewModel = presentOrder(model)
     })
-    this.controller.initialize()
   }
 
   ngOnDestroy() {
