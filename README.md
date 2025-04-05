@@ -45,6 +45,7 @@ Such architectural approach allows you to implement classical testing pyramid -
 many unit tests, some integration, few e2e.
 <br>
 **Whole application logic is tested with fast and simple unit tests**, like [here](./packages/core/src/order-list/use-cases/update-order-list.test.js).
+<br>
 Integration tests should test only... **integrations, not application logic**! 
 So they should test things like integration [hooks](./packages/react-example/src/common/hooks.it.test.jsx), base classes, inverted dependencies etc.
 
