@@ -37,6 +37,14 @@ The project contains [core](./packages/core) module and it's integration to the 
 
 <br>
 
+Regarding **tests**. Such architectural approach allows you to implement classical testing pyramid -
+many unit tests, some integration, few e2e. 
+**Whole application logic is tested with fast and simple unit tests**, like [here](./packages/core/src/order-list/use-cases/update-order-list.test.js).
+Integration tests should test only... **integrations, not application logic**! 
+So they should test things like integration [hooks](./packages/react-example/src/common/hooks.it.test.jsx), base classes, inverted dependencies etc.
+
+<br>
+
 >[!NOTE]
 >For holding state the [Atom](https://github.com/trofima/borshch/blob/main/packages/utilities/src/atom.js) is used.
 ><br>
