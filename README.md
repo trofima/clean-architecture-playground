@@ -37,8 +37,13 @@ The project contains [core](./packages/core) module and it's integration to the 
 
 <br>
 
-Regarding **tests**. Such architectural approach allows you to implement classical testing pyramid -
-many unit tests, some integration, few e2e. 
+<img width="180" alt="image" align="right" src="https://github.com/user-attachments/assets/b82b3ec7-b576-4dc9-9f3e-849614a85bfb" />
+
+Regarding **tests**. 
+<br>
+Such architectural approach allows you to implement classical testing pyramid -
+many unit tests, some integration, few e2e.
+<br>
 **Whole application logic is tested with fast and simple unit tests**, like [here](./packages/core/src/order-list/use-cases/update-order-list.test.js).
 Integration tests should test only... **integrations, not application logic**! 
 So they should test things like integration [hooks](./packages/react-example/src/common/hooks.it.test.jsx), base classes, inverted dependencies etc.
