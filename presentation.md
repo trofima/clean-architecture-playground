@@ -7,7 +7,9 @@ Often there is a lot of code to share between
 modules, projects (editor, viewer), or even platforms (web, mobile).
 Usually it end up's in sharing some functions, but not business, let alone application logic.
 That's because code, describing behaviors, coupled to specific frameworks or libs.
+<br>
 **Solution: Clean Architecture**
+<br>
 Isolate your entities, invert dependencies to frameworks and libs.
 Finally implement your use cases using the entities and inverted dependencies.
 
@@ -19,41 +21,48 @@ Usually among the reasons devs would list things like:
 * outdated framework, tool whatever version
 * change in server contract
 * etc
+
 **Solution: Clean Architecture**
+<br>
 Well, the only thing we can predict at the early stages of any project 
 is that all those thing will *definitely* happen sooner or later (rather sooner).
 So code rotting is solved by not trying to predict everything.
-Work with what you know now, do not thing ahead to much.
-Better focus on making system agile, so ready for changes from the very start.
+Work with what you know now, do not thing ahead too much.
+Better focus on making system agile - ready for changes from the very start.
 How? By decoupling from frameworks, servers, tools etc.
 Will you do everything right? Surely NO!
-But when your system is ready for change it won't be a problem, because it's ready for the change! 
+But when your system is ready for change it won't be a problem, because it's ready for **the** change! 
 Agile methodology implies *relentless* refactor. If you afraid to refactor - you did something wrong.
 
 ### Hard to test, fragile tests, flaky tests
-The best tests are e2e, because they test fully integrated system works. Sure!
-At the same time these are the slowest and the flakiest tests. Very hard to wright and maintain.
-Another options is to fake some staff, like server, to render in memory and so to test.
-Such tests are more like integration by complexity.
-While they are much faster, they are still slow, because in memory rendering is hard thing to do.
+The best tests are e2e, because they test how fully integrated system works. Sure!
+At the same time these are the slowest and the flakiest tests. Very hard to write and maintain.
+<br>
+Another options is to fake some staff, like server, to render UI in memory and so to test.
+Such tests are more like integration by complexity level.
+While they are much faster than e2e, they are still slow, 
+because in memory rendering is hard thing to do.
 The setup of the tests is often very complex.
-For checking certain aspect you need to setup or mock tons of irrelevant stuff just for the thing to run.
+For checking certain aspect you need to setup or mock tons of irrelevant stuff 
+just for the thing to run.
 Fake implementations grow complex by themselves and so may have bugs, that are very hard to find.
 Changing some code may break dozens or even hundreds of seemingly irrelevant tests.
 Sometimes you need to spend more time for writing and fixing tests
 than writing actual code that implements the desired change.
+<br>
 **Solution: Clean Architecture**
+<br>
 Decoupling your use cases allows you to substitute any dependency with mock.
 You do not need to render anything for checking the **behavior**. Checking use case's output is enough. 
 And so your test will be fast, the mocks will be simple (no fakes!!!)
-and the test suites will be isolates themselves so no irrelevant tests failures.
-You will still need integration and e2e tests. 
+and the test suites will be isolated themselves so no irrelevant tests failures.
+You still need integration and e2e tests. 
 But since all behaviors are already tested, integration tests will test only... integrations!
 So you'll need not many of them and they will be much simpler.
 Adding couple e2e's for some happy and critical flows 
 will be sufficient to sleep well after Friday evening GA
 
-
+<br>
 
 
 ![image](https://github.com/user-attachments/assets/6283c8dc-ded6-4350-ac3a-d6183b8f9d90)
