@@ -79,7 +79,7 @@ See instructions in terminal.
 
 <br>
 
-**Rough UML diagram of the project architecture:**
+### Rough UML diagram of the project architecture:
 ![image](https://github.com/user-attachments/assets/f4f9da3a-f52d-402b-8bd2-308200a98650)
 Note that all arrows cross the App boundary **inwards**. This means <ins>everything is dependent on business logic</ins>.
 <br>
@@ -88,7 +88,7 @@ This allows easy testing, since any inverted dependency can be substituted by a 
 Also there is no need to render markup and simulate events for executing a UseCase. It can be simply called from the test suite.
 <br>
 
-**Workflow diagram of the abstraction interactions:**
+### Workflow diagram of the abstraction interactions:
 ![image](https://github.com/user-attachments/assets/8fcc3d01-35b1-427d-b65f-9b06cfb3e98b)
 
 * **[abstractionName]?** means abstraction can be omitted for some reason.
