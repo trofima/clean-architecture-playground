@@ -39,4 +39,6 @@ export const OrderListPresentation = {
     offset: orderList.offset - 1,
     total: orderList.total - 1,
   }),
+
+  hasOrders: ({list: {length}}) => length > 0,
 }

@@ -7,22 +7,22 @@ export const UpdateOrderList = ({presentation, dataStore, notifier}) => async ({
     const readOptions = OrderListPresentation.getReadOptions(presentationModel, {refresh})
     const orderList = await dataStore.get('orders', readOptions)
     const uniqueUserIds = OrderList.getUniqueUserIds(orderList)
-    const {list, total} = orderList
-    const users = list.length ? await dataStore.get('users', uniqueUserIds) : []
+    const users = !OrderList.isEmpty(orderList) ? await dataStore.get('users', uniqueUserIds) : []
 
     presentation.update(OrderListPresentation.update, {
-      refresh, total,
-      list: setUsers(list, users),
+      refresh,
+      total: OrderList.getTotal(orderList),
+      list: mapUsers(orderList, users),
     })
   } catch (error) {
-    const orderCount = presentationModel.list.length
     presentation.update(OrderListPresentation.setError, error)
-
-    if (orderCount) notifier.showNotification({type: 'error', message: error.message})
+    if (OrderListPresentation.hasOrders(presentationModel))
+      notifier.showNotification({type: 'error', message: error.message})
   }
 }
 
-const setUsers = (list, users) => list.map(({user, ...rest}) => OrderListPresentation.makeOrder({
-  user: users.find(({id: userId}) => userId === user)?.name,
-  ...rest,
-}))
+const mapUsers = (orderList, users) => OrderList.getList(orderList)
+  .map(({user, ...rest}) => OrderListPresentation.makeOrder({
+    user: users.find(({id: userId}) => userId === user)?.name,
+    ...rest,
+  }))

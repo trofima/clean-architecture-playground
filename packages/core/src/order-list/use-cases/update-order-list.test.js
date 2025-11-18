@@ -23,28 +23,21 @@ suite('update order list', () => {
     assert.deepEqual(presentation.get(), {loading: false, list: [], error: undefined, offset: 0, limit: 20, total: 0})
   })
 
-  test('present error, when data getting failed and list is empty', async () => {
-    const {updateOrderList, presentation, dataStore} = setup()
-    presentation.init(OrderListPresentation.make())
+  ;[
+    {message: 'Oj vej', code: '001'},
+    {message: 'Oj vavoj', code: '100'},
+  ].forEach(({message, code}) => {
+    test('present error, when data getting failed and list is empty', async () => {
+      const {updateOrderList, presentation, dataStore} = setup()
+      presentation.init(OrderListPresentation.make())
+      dataStore.get.fails(new DataStoreError(message, {code}))
 
-    dataStore.get.fails(new DataStoreError('Oj vej', {code: '001'}))
-    await updateOrderList()
-    assert.deepInclude(presentation.get(), {
-      loading: false,
-      error: {
-        message: 'Oj vej',
-        code: '001',
-      },
-    })
+      await updateOrderList()
 
-    dataStore.get.fails(new DataStoreError('Oj vavoj', {code: '100'}))
-    await updateOrderList()
-    assert.deepInclude(presentation.get(), {
-      loading: false,
-      error: {
-        message: 'Oj vavoj',
-        code: '100',
-      },
+      assert.deepInclude(presentation.get(), {
+        loading: false,
+        error: {message, code},
+      })
     })
   })
 
@@ -74,101 +67,89 @@ suite('update order list', () => {
     await secondUpdating
   })
 
-  test('show error notification, when data getting failed and list is not empty', async () => {
-    const {updateOrderList, presentation, dataStore, notifier} = setup()
-    presentation.init(OrderListPresentation.make({list: [OrderListPresentation.makeOrder()]}))
+  ;[
+    {message: 'Oj vej', code: '001'},
+    {message: 'Oj vavoj', code: '100'},
+  ].forEach(({message, code}) => {
+    test('show error notification, when data getting failed and list is not empty', async () => {
+      const {updateOrderList, presentation, dataStore, notifier} = setup()
+      presentation.init(OrderListPresentation.make({list: [OrderListPresentation.makeOrder()]}))
+      dataStore.get.fails(new DataStoreError(message, {code}))
 
-    dataStore.get.fails(new DataStoreError('Oj vej', {code: '001'}))
-    await updateOrderList()
-    assert.deepEqual(notifier.showNotification.lastCall, [{type: 'error', message: 'Oj vej'}])
-    assert.deepInclude(presentation.get(), {loading: false, error: undefined})
+      await updateOrderList()
 
-    dataStore.get.fails(new DataStoreError('Oj vavoj', {code: '100'}))
-    await updateOrderList()
-    assert.deepEqual(notifier.showNotification.lastCall, [{type: 'error', message: 'Oj vavoj'}])
-    assert.deepInclude(presentation.get(), {loading: false, error: undefined})
+      assert.deepEqual(notifier.showNotification.lastCall, [{type: 'error', message}])
+      assert.deepInclude(presentation.get(), {loading: false, error: undefined})
+    })
   })
 
-  test('update an order list meta data', async () => {
-    const {updateOrderList, presentation, dataStore} = setup()
-    presentation.init(OrderListPresentation.make({offset: 0, limit: 1}))
-    dataStore.get
-      .for('orders', {offset: 0, limit: 1})
-      .returns(OrderList.make({list: makeDummyOrders(1), total: 1}))
 
-    await updateOrderList()
+  ;[{
+    initialMetadata: {offset: 0, limit: 1},
+    orderCount: 1,
+    total: 1,
+    offset: 1,
+  }, {
+    initialMetadata: {offset: 1, limit: 2},
+    orderCount: 2,
+    total: 3,
+    offset: 3,
+  }].forEach(({initialMetadata, orderCount, offset, total}) => {
+    test('update order list meta data', async () => {
+      const {updateOrderList, presentation, dataStore} = setup()
+      presentation.init(OrderListPresentation.make(initialMetadata))
+      dataStore.get
+        .for('orders', initialMetadata)
+        .returns(OrderList.make({list: makeDummyOrders(orderCount), total}))
 
-    assert.deepInclude(presentation.get(), {offset: 1, total: 1})
+      await updateOrderList()
+
+      assert.deepInclude(presentation.get(), {offset, total})
+    })
   })
 
-  test('update another order list meta data', async () => {
-    const {updateOrderList, presentation, dataStore} = setup()
-    presentation.init(OrderListPresentation.make({offset: 1, limit: 2}))
-    dataStore.get
-      .for('orders', {offset: 1, limit: 2})
-      .returns(OrderList.make({list: makeDummyOrders(2), total: 3}))
-
-    await updateOrderList()
-
-    assert.deepInclude(presentation.get(), {offset: 3, total: 3})
-  })
-
-  test('present an order data', async () => {
-    const {updateOrderList, presentation, dataStore} = setup()
-    presentation.init(OrderListPresentation.make({offset: 0, limit: 1}))
-
-    dataStore.get.for('orders', {offset: 0, limit: 1}).returns(OrderList.make({
-      list: [Order.make({
-        id: 'id',
-        createdDate: '2023-11-12T08:12:01.010Z',
-        user: 'userId',
-        sum: 0.5,
-        paymentStatus: 'unpaid',
-        fulfillmentStatus: 'pending',
-      })],
-    }))
-    dataStore.get.for('users', ['userId']).returns([User.make(({id: 'userId', name: 'user name'}))])
-
-    await updateOrderList()
-
-    assert.deepEqual(presentation.get().list, [{
+  ;[{
+    orderData: {
       id: 'id',
       createdDate: '2023-11-12T08:12:01.010Z',
-      user: 'user name',
+      user: 'userId',
       sum: 0.5,
       paymentStatus: 'unpaid',
       fulfillmentStatus: 'pending',
-      updating: false,
-    }])
-  })
-
-  test('present another order data', async () => {
-    const {updateOrderList, presentation, dataStore} = setup()
-    presentation.init(OrderListPresentation.make({offset: 0, limit: 1}))
-
-    dataStore.get.for('orders', {offset: 0, limit: 1}).returns(OrderList.make({
-      list: [Order.make({
-        id: 'anotherId',
-        createdDate: '2024-07-10T11:85:20.390Z',
-        user: 'anotherUserId',
-        sum: 5.6,
-        paymentStatus: 'paid',
-        fulfillmentStatus: 'fulfilled',
-      })],
-    }))
-    dataStore.get.for('users', ['anotherUserId']).returns([User.make({id: 'anotherUserId', name: 'another user name'})])
-
-    await updateOrderList()
-
-    assert.deepEqual(presentation.get().list, [{
+    },
+    userData: {id: 'userId', name: 'User Name'},
+  }, {
+    orderData: {
       id: 'anotherId',
       createdDate: '2024-07-10T11:85:20.390Z',
-      user: 'another user name',
+      user: 'anotherUserId',
       sum: 5.6,
       paymentStatus: 'paid',
       fulfillmentStatus: 'fulfilled',
-      updating: false,
-    }])
+    },
+    userData: {id: 'anotherUserId', name: 'another user name'},
+  }].forEach(({orderData, userData}) => {
+    test('present order data', async () => {
+      const {updateOrderList, presentation, dataStore} = setup()
+      presentation.init(OrderListPresentation.make({offset: 0, limit: 1}))
+
+      dataStore.get.for('orders', {offset: 0, limit: 1})
+        .returns(OrderList.make({list: [Order.make(orderData)]}))
+      dataStore.get.for('users', [userData.id])
+        .returns([User.make((userData))])
+
+      await updateOrderList()
+
+      assert.deepEqual(presentation.get().list, [{
+        id: orderData.id,
+        createdDate: orderData.createdDate,
+        sum: orderData.sum,
+        paymentStatus: orderData.paymentStatus,
+        fulfillmentStatus: orderData.fulfillmentStatus,
+        user: userData.name,
+        updating: false,
+      }])
+    })
   })
 
   test('present all orders data', async () => {
@@ -194,7 +175,10 @@ suite('update order list', () => {
     }))
     dataStore.get
       .for('users', ['userId', 'anotherUserId'])
-      .returns([User.make({id: 'userId', name: 'user name'}), User.make({id: 'anotherUserId', name: 'another user name'})])
+      .returns([
+        User.make({id: 'userId', name: 'user name'}),
+        User.make({id: 'anotherUserId', name: 'another user name'}),
+      ])
 
     await updateOrderList()
 
@@ -236,7 +220,7 @@ suite('update order list', () => {
     assert.deepEqual(dataStore.get.callCount, 2)
   })
 
-  test('update order list by default', async () => {
+  test('loads more items to list by default', async () => {
     const {updateOrderList, presentation, dataStore} = setup()
     presentation.init(OrderListPresentation.make({offset: 0, limit: 1}))
 
@@ -248,56 +232,89 @@ suite('update order list', () => {
     }))
 
     await updateOrderList()
-    await updateOrderList()
+    const {list: listAfterFirstUpdate} = presentation.get()
+    assert.equal(listAfterFirstUpdate.length, 1)
+    assert.equal(listAfterFirstUpdate.at(0).id, 'id')
 
-    const {list} = presentation.get()
-    assert.equal(list.length, 2)
-    assert.equal(list.at(0).id, 'id')
-    assert.equal(list.at(1).id, 'anotherId')
+    await updateOrderList()
+    const {list: listAfterSecondUpdate} = presentation.get()
+    assert.equal(listAfterSecondUpdate.length, 2)
+    assert.equal(listAfterSecondUpdate.at(0).id, 'id')
+    assert.equal(listAfterSecondUpdate.at(1).id, 'anotherId')
   })
 
-  test('refresh order list', async () => {
+  ;[{
+    initialOrder: {paymentStatus: 'unpaid'},
+    updatedOrder: {paymentStatus: 'paid'},
+  }, {
+    initialOrder: {fulfillmentStatus: 'pending'},
+    updatedOrder: {fulfillmentStatus: 'fulfilled'},
+  }, {
+    initialOrder: {paymentStatus: 'unpaid', fulfillmentStatus: 'pending'},
+    updatedOrder: {paymentStatus: 'paid', fulfillmentStatus: 'fulfilled'},
+  }].forEach(({initialOrder, updatedOrder}) => {
+    test('refresh order list item', async () => {
+      const {updateOrderList, presentation, dataStore} = setup()
+      presentation.update(() => OrderListPresentation.make({
+        offset: 1,
+        limit: 1,
+        list: [OrderListPresentation.makeOrder(initialOrder)],
+      }))
+      dataStore.get.for('orders', {offset: 0, limit: 1})
+        .returns(OrderList.make({list: [Order.make(updatedOrder)]}))
+
+      await updateOrderList({refresh: true})
+
+      const {list} = presentation.get()
+      assert.deepInclude(list.at(0), updatedOrder)
+    })
+  })
+
+  test('refresh all order list items', async () => {
     const {updateOrderList, presentation, dataStore} = setup()
     presentation.update(() => OrderListPresentation.make({
       offset: 2,
       limit: 1,
-      list: [OrderListPresentation.makeOrder({id: 'id1'}), OrderListPresentation.makeOrder({id: 'id2'})],
-    }))
-    dataStore.get.for('orders', {offset: 0, limit: 2}).returns(OrderList.make({
-      list: [Order.make({id: 'refreshedId1'}), Order.make({id: 'refreshedId2'})],
-    }))
-
-    await updateOrderList({refresh: true})
-
-    const {list, offset} = presentation.get()
-    assert.equal(list.length, 2)
-    assert.equal(list.at(0).id, 'refreshedId1')
-    assert.equal(list.at(1).id, 'refreshedId2')
-    assert.equal(offset, 2)
-
-    presentation.update(() => OrderListPresentation.make({
-      offset: 3,
-      limit: 1,
       list: [
-        OrderListPresentation.makeOrder({id: 'id1'}),
-        OrderListPresentation.makeOrder({id: 'id2'}),
-        OrderListPresentation.makeOrder({id: 'id3'}),
+        OrderListPresentation.makeOrder({paymentStatus: 'unpaid'}),
+        OrderListPresentation.makeOrder({fulfillmentStatus: 'pending'}),
       ],
     }))
-    dataStore.get.for('orders', {offset: 0, limit: 3}).returns(OrderList.make({list: [
-      Order.make({id: 'refreshedId1'}),
-      Order.make({id: 'refreshedId2'}),
-      Order.make({id: 'refreshedId3'}),
-    ]}))
+    dataStore.get.for('orders', {offset: 0, limit: 2}).returns(OrderList.make({
+      list: [
+        Order.make({paymentStatus: 'paid'}),
+        Order.make({fulfillmentStatus: 'fulfilled'}),
+      ],
+    }))
 
     await updateOrderList({refresh: true})
 
-    const {list: anotherList, offset: anotherOffset} = presentation.get()
-    assert.equal(anotherList.length, 3)
-    assert.equal(anotherList.at(0).id, 'refreshedId1')
-    assert.equal(anotherList.at(1).id, 'refreshedId2')
-    assert.equal(anotherList.at(2).id, 'refreshedId3')
-    assert.equal(anotherOffset, 3)
+    const {list} = presentation.get()
+    assert.deepInclude(list.at(0), {paymentStatus: 'paid'})
+    assert.deepInclude(list.at(1), {fulfillmentStatus: 'fulfilled'})
+  })
+
+  ;[
+    {currentOffset: 2},
+    {currentOffset: 3},
+  ].forEach(({currentOffset}) => {
+    test('refresh order list of different length', async () => {
+      const {updateOrderList, presentation, dataStore} = setup()
+      presentation.update(() => OrderListPresentation.make({
+        offset: currentOffset,
+        limit: 1,
+        list: Array(currentOffset).fill().map(OrderListPresentation.makeOrder),
+      }))
+      dataStore.get.for('orders', {offset: 0, limit: currentOffset}).returns(OrderList.make({
+        list: Array(currentOffset).fill().map(Order.make),
+      }))
+
+      await updateOrderList({refresh: true})
+
+      const {list, offset} = presentation.get()
+      assert.equal(list.length, currentOffset)
+      assert.equal(offset, currentOffset)
+    })
   })
 })
 
