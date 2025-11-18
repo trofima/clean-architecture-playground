@@ -3,76 +3,68 @@ import {presentOrderList} from './presenter.js'
 import {OrderListPresentation} from '@clean-architecture-playground/core'
 
 suite('present order list', () => {
-  test('render list to view model', () => {
-    const viewModel = presentOrderList(
-      OrderListPresentation.make({list: [
-        OrderListPresentation.makeOrder({user: 'A Name', paymentStatus: 'unpaid', fulfillmentStatus: 'pending'}),
-      ]})
-    )
-    assert.deepInclude(viewModel.list.at(0), {
-      user: 'A Name', paymentStatus: 'unpaid', fulfillmentStatus: 'pending',
-    })
+  [
+    {user: 'Name', paymentStatus: 'unpaid', fulfillmentStatus: 'pending'},
+    {user: 'Another Name', paymentStatus: 'paid', fulfillmentStatus: 'fulfilled'},
+  ].forEach(({user, paymentStatus, fulfillmentStatus}) => {
+    test('render order item to view model', () => {
+      const viewModel = presentOrderList(
+        OrderListPresentation.make({list: [
+          OrderListPresentation.makeOrder({user, paymentStatus, fulfillmentStatus}),
+        ]}),
+      )
 
-    const anotherViewModel = presentOrderList(
-      OrderListPresentation.make({list: [
-        OrderListPresentation.makeOrder({user: 'Another Name', paymentStatus: 'paid', fulfillmentStatus: 'fulfilled'}),
-      ]})
-    )
-    assert.deepInclude(anotherViewModel.list.at(0), {
-      user: 'Another Name', paymentStatus: 'paid', fulfillmentStatus: 'fulfilled',
+      assert.deepInclude(viewModel.list.at(0), {user, paymentStatus, fulfillmentStatus})
     })
+  })
 
+  test('render multiple order items to view model', () => {
     const allViewModel = presentOrderList(
       OrderListPresentation.make({list: [
-        OrderListPresentation.makeOrder({user: 'A Name', paymentStatus: 'unpaid', fulfillmentStatus: 'pending'}),
+        OrderListPresentation.makeOrder({user: 'Name', paymentStatus: 'unpaid', fulfillmentStatus: 'pending'}),
         OrderListPresentation.makeOrder({user: 'Another Name', paymentStatus: 'paid', fulfillmentStatus: 'fulfilled'}),
-      ]})
+      ]}),
     )
+
     assert.deepInclude(allViewModel.list.at(0), {
-      user: 'A Name', paymentStatus: 'unpaid', fulfillmentStatus: 'pending',
+      user: 'Name', paymentStatus: 'unpaid', fulfillmentStatus: 'pending',
     })
     assert.deepInclude(allViewModel.list.at(1), {
       user: 'Another Name', paymentStatus: 'paid', fulfillmentStatus: 'fulfilled',
     })
   })
 
-  test('format date', () => {
-    const {list: [{createdDate: emptyCreatedDate}]} = presentOrderList(
-      OrderListPresentation.make({list: [OrderListPresentation.makeOrder({createdDate: ''})]})
-    )
-    assert.equal(emptyCreatedDate, '')
+  ;[
+    {createdDate: '', formattedCreatedDate: ''},
+    {createdDate: '2023-11-12T08:12:01.010Z', formattedCreatedDate: '2023-11-12, 08:12'},
+    {createdDate: '2024-12-24T17:57:03.444Z', formattedCreatedDate: '2024-12-24, 17:57'},
+  ].forEach(({createdDate, formattedCreatedDate}) => {
+    test('format date', () => {
+      const {list: [{createdDate: renderedCreatedDate}]} = presentOrderList(
+        OrderListPresentation.make({list: [OrderListPresentation.makeOrder({createdDate})]}),
+      )
 
-    const {list: [{createdDate}]} = presentOrderList(
-      OrderListPresentation.make({list: [OrderListPresentation.makeOrder({createdDate: '2023-11-12T08:12:01.010Z'})]})
-    )
-    assert.equal(createdDate, '2023-11-12, 08:12')
-
-    const {list: [{createdDate: anotherCreatedDate}]} = presentOrderList(
-      OrderListPresentation.make({list: [OrderListPresentation.makeOrder({createdDate: '2024-12-24T17:57:03.444Z'})]})
-    )
-    assert.equal(anotherCreatedDate, '2024-12-24, 17:57')
+      assert.equal(renderedCreatedDate, formattedCreatedDate)
+    })
   })
 
-  test('format sum', () => {
-    const {list: [{sum: zeroSum}]} = presentOrderList(
-      OrderListPresentation.make({list: [OrderListPresentation.makeOrder({sum: '0'})]})
-    )
-    assert.equal(zeroSum, '0.00')
+  ;[
+    {sum: '0', formattedSum: '0.00'},
+    {sum: '1.123', formattedSum: '1.12'},
+    {sum: '1.125', formattedSum: '1.13'},
+  ].forEach(({sum, formattedSum}) => {
+    test('format sum', () => {
+      const {list: [{sum: renderedSum}]} = presentOrderList(
+        OrderListPresentation.make({list: [OrderListPresentation.makeOrder({sum})]}),
+      )
 
-    const {list: [{sum}]} = presentOrderList(
-      OrderListPresentation.make({list: [OrderListPresentation.makeOrder({sum: '1.123'})]})
-    )
-    assert.equal(sum, '1.12')
-
-    const {list: [{sum: roundedSum}]} = presentOrderList(
-      OrderListPresentation.make({list: [OrderListPresentation.makeOrder({sum: '1.125'})]})
-    )
-    assert.equal(roundedSum, '1.13')
+      assert.equal(renderedSum, formattedSum)
+    })
   })
 
-  test('render placeholder items, when loading for the first time', () => {
+  test('render placeholder items (skeleton list), when loading empty list', () => {
     const {list} = presentOrderList(
-      OrderListPresentation.make({list: [], loading: true})
+      OrderListPresentation.make({list: [], loading: true}),
     )
     assert.deepEqual(list, [
       {id: 'placeholder1', createdDate: '...', user: '...', sum: '...', paymentStatus: '...', fulfillmentStatus: '...'},
@@ -81,7 +73,7 @@ suite('present order list', () => {
     ])
 
     const {list: emptyList} = presentOrderList(
-      OrderListPresentation.make({list: [], loading: false})
+      OrderListPresentation.make({list: [], loading: false}),
     )
     assert.deepEqual(emptyList, [])
   })

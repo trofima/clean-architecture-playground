@@ -1,7 +1,7 @@
 import './view.css'
 import deleteIcon from '../static/delete.svg'
 
-export const OrderListView = ({viewModel: {total, list, error, loading, firstLoading}, controller}) => (
+export const OrderListView = ({viewModel: {total, list, error, loading, skeletonListIsDisplayed}, controller}) => (
   <div className="order-list-page">
     <div className="order-page-header">
       <h1>Order List</h1>
@@ -32,7 +32,7 @@ export const OrderListView = ({viewModel: {total, list, error, loading, firstLoa
       <div className="list">
         {error
           ? <p>Error: {error.message}; Code: {error.code}</p>
-          : list?.map(OrderItemView(controller, firstLoading))
+          : list?.map(OrderItemView(controller, skeletonListIsDisplayed))
         }
       </div>
     </ul>
@@ -44,8 +44,8 @@ export const OrderListView = ({viewModel: {total, list, error, loading, firstLoa
   </div>
 )
 
-const OrderItemView = (controller, firstLoading) => ({id, createdDate, user, sum, paymentStatus, fulfillmentStatus, updating}) => (
-  <li key={id} data-id={id} className={`order-item ${updating ? 'updating' : ''}`} onClick={!firstLoading ? controller.open : undefined}>
+const OrderItemView = (controller, skeletonListIsDisplayed) => ({id, createdDate, user, sum, paymentStatus, fulfillmentStatus, updating}) => (
+  <li key={id} data-id={id} className={`order-item ${updating ? 'updating' : ''}`} onClick={!skeletonListIsDisplayed ? controller.open : undefined}>
     <div>
       <p>{user}</p>
     </div>
@@ -63,7 +63,7 @@ const OrderItemView = (controller, firstLoading) => ({id, createdDate, user, sum
     </div>
     <div className="delete-button">
       {id &&
-        <button disabled={updating} data-id={id} onClick={!firstLoading ? controller.remove : undefined}>
+        <button disabled={updating} data-id={id} onClick={!skeletonListIsDisplayed ? controller.remove : undefined}>
           <img src={deleteIcon} alt="Delete order button" />
         </button>}
     </div>

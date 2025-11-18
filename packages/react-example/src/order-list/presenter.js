@@ -1,9 +1,9 @@
 export const presentOrderList = (presentation) => {
-  const firstLoading = !presentation.list.length && presentation.loading
+  const skeletonListIsDisplayed = !presentation.list.length && presentation.loading
   return ({
     ...presentation,
-    firstLoading,
-    list: firstLoading
+    skeletonListIsDisplayed,
+    list: skeletonListIsDisplayed
       ? Array(3).fill(undefined).map(makePlaceholderOrder)
       : presentation.list.map(({createdDate, sum, ...rest}) => ({
         ...rest,

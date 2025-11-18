@@ -34,14 +34,17 @@ suite('order list controller', () => {
   })
 
   suite('open', () => {
-    test('open order by id', async () => {
-      const {controller, openOrder} = setUp()
+    [
+      {orderId: 'id'},
+      {orderId: 'anotherId'},
+    ].forEach(({orderId}) => {
+      test('open order by id', async () => {
+        const {controller, openOrder} = setUp()
 
-      await controller.open(makeEvent({dataset: {id: 'anId'}}))
-      assert.deepEqual(openOrder.lastCall, ['anId'])
+        await controller.open(makeEvent({dataset: {id: orderId}}))
 
-      await controller.open(makeEvent({dataset: {id: 'anotherId'}}))
-      assert.deepEqual(openOrder.lastCall, ['anotherId'])
+        assert.deepEqual(openOrder.lastCall, [orderId])
+      })
     })
   })
 
@@ -55,14 +58,17 @@ suite('order list controller', () => {
       assert.equal(event.stopPropagation.called, true)
     })
 
-    test('remove order by id', async () => {
-      const {controller, removeOrderFromList} = setUp()
+    ;[
+      {orderId: 'id'},
+      {orderId: 'anotherId'},
+    ].forEach(({orderId}) => {
+      test('remove order by id', async () => {
+        const {controller, removeOrderFromList} = setUp()
 
-      await controller.remove(makeEvent({dataset: {id: 'anId'}}))
-      assert.deepEqual(removeOrderFromList.lastCall, ['anId'])
+        await controller.remove(makeEvent({dataset: {id: orderId}}))
 
-      await controller.remove(makeEvent({dataset: {id: 'anotherId'}}))
-      assert.deepEqual(removeOrderFromList.lastCall, ['anotherId'])
+        assert.deepEqual(removeOrderFromList.lastCall, [orderId])
+      })
     })
   })
 })
