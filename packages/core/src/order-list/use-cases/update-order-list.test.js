@@ -222,7 +222,7 @@ suite('update order list', () => {
 
   test('loads more items to list by default', async () => {
     const {updateOrderList, presentation, dataStore} = setup()
-    presentation.init(OrderListPresentation.make({offset: 0, limit: 1}))
+    presentation.init(OrderListPresentation.make({offset: 0, limit: 1, list: []}))
 
     dataStore.get.for('orders', {offset: 0, limit: 1}).returns(OrderList.make({
       list: [Order.make({id: 'id'})],
