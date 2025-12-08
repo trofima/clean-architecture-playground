@@ -17,7 +17,8 @@ export const OrderPresentation = {
     paymentStatus = '',
     fulfillmentStatus = '',
     shippingAddress = '',
-  } = {}) => ({id, createdDate, updatedDate, user, sum, paymentStatus, fulfillmentStatus, shippingAddress}),
+  } = {}) =>
+    ({id, createdDate, updatedDate, user, sum, paymentStatus, fulfillmentStatus, shippingAddress}),
 
   setData: (order, data) => ({...order, data, originalData: {...data}, loading: false}),
 
