@@ -2,8 +2,9 @@ export const renderOrderListView = () => `
   <link rel="stylesheet" href="src/order-list/view.css">
     
   <div class="order-list-page">
+    <h1>Native (Web Components) Example</h1>
     <div class="order-page-header">
-      <h1>Order List</h1>
+      <h2>Order List</h2>
       <button id="refresh" class="add-order-button">Refresh order list</button>
     </div>
     

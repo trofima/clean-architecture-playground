@@ -3,8 +3,9 @@ import deleteIcon from '../static/delete.svg'
 
 export const OrderListView = ({viewModel: {total, list, error, loading, skeletonListIsDisplayed}, controller}) => (
   <div className="order-list-page">
+    <h1>React Example</h1>
     <div className="order-page-header">
-      <h1>Order List</h1>
+      <h2>Order List</h2>
       <button className="add-order-button" onClick={controller.refresh}>Refresh order list</button>
     </div>
 
