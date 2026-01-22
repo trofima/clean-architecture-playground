@@ -14,7 +14,7 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "mocha -u tdd --timeout 10000 --colors './src/**/*.test.js'",
+    "test": "mocha'",
     "lint": "eslint --fix",
     "lint-staged": "lint-staged"
   },

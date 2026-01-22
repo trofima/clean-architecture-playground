@@ -68,7 +68,7 @@ suite('useIntegration', () => {
   })
 
   test('bind controller', () => {
-    const makeTestIntegration = (dependency1, dependency2) => {
+    const makeTestIntegration = () => {
       const presentation = new Atom()
       return {
         presentation,
@@ -79,11 +79,11 @@ suite('useIntegration', () => {
       }
     }
     const TestComponent = () => {
-      const {viewModel, controller} = useIntegration(makeTestIntegration, ['dependency1value', 'dependency2value'])
+      const {viewModel, controller} = useIntegration(makeTestIntegration)
       return (
         <>
           <TestView viewModel={viewModel} />
-          <button data-testId="testController" onClick={controller.test} />
+          <button data-testid="testController" onClick={controller.test} />
         </>
       )
     }
@@ -98,7 +98,7 @@ suite('useIntegration', () => {
 
 const TestView = ({viewModel}) => viewModel && (
   <div>
-    <div data-testId="test1">{viewModel.test1}</div>
-    <div data-testId="test2">{viewModel.test2}</div>
+    <div data-testid="test1">{viewModel.test1}</div>
+    <div data-testid="test2">{viewModel.test2}</div>
   </div>
 )

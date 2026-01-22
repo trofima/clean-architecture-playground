@@ -1,0 +1,7 @@
+{
+  "ui": "tdd",
+  "timeout": 1000,
+  "colors": true,
+  "require": ["@babel/register"],
+  "spec": ["./src/**/*.test.js", "./src/**/*.test.jsx"]
+}

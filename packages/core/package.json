@@ -14,7 +14,7 @@
     "url": "git+https://github.com:trofima/clean-architecture-playground.git"
   },
   "scripts": {
-    "test": "mocha -u tdd --timeout 10000 --colors './src/**/*.test.js'",
+    "test": "mocha",
     "lint": "eslint --fix",
     "lint-staged": "lint-staged"
   },
