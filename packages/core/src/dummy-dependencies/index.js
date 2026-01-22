@@ -1,5 +1,11 @@
 import {DataStoreError} from '../dependencies/index.js'
 
+/**
+ * The following are dummy dependencies used by framework examples.
+ * They are here just for convenience.
+ * Real production core should never contain any dependency implementations, only their interfaces.
+ */
+
 export const dummyData = {
   orders: [{
     id: '1',
